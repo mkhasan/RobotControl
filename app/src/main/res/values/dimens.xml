@@ -1,0 +1,15 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="seekbar_padding">2dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="move_btn_horizontal_margin">60dp</dimen>
+    <dimen name="camera_btn_horizontal_margin">65dp</dimen>
+    <dimen name="zoom_btn_horizontal_margin">60dp</dimen>
+    <dimen name="player_width">355dp</dimen>
+    <dimen name="player_height">200dp</dimen>
+    <dimen name="seeker_width">250dp</dimen>
+    <dimen name="seeker_end_pos">260dp</dimen>
+    <dimen name="img_btn_width">35dp</dimen>
+    <dimen name="img_btn_height">35dp</dimen>
+</resources>

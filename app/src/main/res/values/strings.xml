@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RobotControl</string>
+    <string name="Speed">Speed</string>
+    <string name="Move">Move</string>
+    <string name="Camera">Camera</string>
+    <string name="Zoom">Zoom</string>
+</resources>
