@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="/media/usrc/external/App/RailRobot/MyApplication/RobotControl" />
-            <option value="/media/usrc/external/App/RailRobot/MyApplication/RobotControl/app" />
+            <option value="/media/usrc/external/App/RailRobot/RobotControl" />
+            <option value="/media/usrc/external/App/RailRobot/RobotControl/app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

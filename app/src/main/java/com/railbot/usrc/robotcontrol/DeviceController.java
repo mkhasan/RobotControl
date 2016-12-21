@@ -13,7 +13,7 @@ public class DeviceController {
     }
 
     boolean SendMsg(String str) {
-        return msgSender.SendUDP_Msg(str);
+        return true;//msgSender.SendUDP_Msg(str);
     }
 
 }

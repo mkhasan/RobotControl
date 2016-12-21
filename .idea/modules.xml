@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file:///media/usrc/external/App/RailRobot/MyApplication/RobotControl/RobotControl.iml" filepath="/media/usrc/external/App/RailRobot/MyApplication/RobotControl/RobotControl.iml" />
-      <module fileurl="file:///media/usrc/external/App/RailRobot/MyApplication/RobotControl/app/app.iml" filepath="/media/usrc/external/App/RailRobot/MyApplication/RobotControl/app/app.iml" />
+      <module fileurl="file:///media/usrc/external/App/RailRobot/RobotControl/RobotControl.iml" filepath="/media/usrc/external/App/RailRobot/RobotControl/RobotControl.iml" />
+      <module fileurl="file:///media/usrc/external/App/RailRobot/RobotControl/app/app.iml" filepath="/media/usrc/external/App/RailRobot/RobotControl/app/app.iml" />
     </modules>
   </component>
 </project>

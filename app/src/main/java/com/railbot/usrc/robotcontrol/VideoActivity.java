@@ -56,7 +56,8 @@ public class VideoActivity extends Activity {
 
 
         //msgSe = new DeviceController("172.24.1.1", 8000, 8081);
-        msgSender = new MsgSender("172.24.1.1", 8000, 8081);
+        msgSender = new MsgSender("172.24.1.1", 8000, MsgSender.protocoletype.udp);
+        //msgSender = new MsgSender("192.168.0.254", 8899, MsgSender.protocoletype.udp);
 
         railController = new RailController(msgSender, (float) 0.0, (float) 3.0);
 
@@ -66,7 +67,7 @@ public class VideoActivity extends Activity {
         tv.setText(Float.toString(railController.GetMaxSpeed()));
 
         speedView = (TextView) findViewById(R.id.speed_text);
-        speedView.setText(Float.toString(railController.GetCurSpeed()));
+        speedView.setText(Float.toString(railController.GetCurSpeed())+" m/s");
 
 
         speedBar.setOnSeekBarChangeListener(
@@ -82,7 +83,8 @@ public class VideoActivity extends Activity {
                         progress = progresValue;
                         //speedView.setText();
                         curSpeed = (float) ((double) minSpeed +  ((maxSpeed-minSpeed)*(float) progress/(100.0)));
-                        speedView.setText(Float.toString(curSpeed));
+                        speedView.setText(Float.toString(curSpeed)+" m/s");
+                        railController.SetCurSpeed(curSpeed);
                         Log.e(TAG, Float.toString(curSpeed));
                     }
 
@@ -200,21 +202,32 @@ public class VideoActivity extends Activity {
         }
     }
 
+    public void moveStop(View view) {
+
+        railController.StopMoving();
+        Log.e(TAG, "move stop");
+    }
+
     public void moveBack() {
+
+        railController.MoveBackward();
         Log.e(TAG, "move back");
     }
 
 
     public void moveBackRelease() {
+        railController.StopMoving();
         Log.e(TAG, "move back release");
     }
 
     public void moveFront() {
+        railController.MoveForward();
         Log.e(TAG, "move front");
     }
 
 
     public void moveFrontRelease() {
+        railController.StopMoving();
         Log.e(TAG, "move front release");
     }
 
