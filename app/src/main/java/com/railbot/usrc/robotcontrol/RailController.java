@@ -98,7 +98,7 @@ public class RailController extends DeviceController {
     }
 
     private void SetRailSpeed() {
-        int value = Math.round(currSpeed*10);    // in 0.1m/sec
+        int value = Math.round(currSpeed*100);    // in 0.1m/sec
 
 
 

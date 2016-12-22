@@ -13,11 +13,12 @@ import java.util.Objects;
  */
 
 public class MsgSender {
-    public enum protocoletype
-    {
+    public enum protocoletype {
         udp,
         tcp
-    };
+    }
+
+    ;
 
     private static final String TAG = "MsgSender";
 
@@ -82,26 +83,23 @@ public class MsgSender {
                     dsocket.close();
 
 
-
                 } catch (Exception e) {
                     System.err.println(e);
                     return false;
                 }
-                
-                return  true;
-            }
-            else
+
+                return true;
+            } else
                 return false;
         }
 
     }
 
 
-
     public MsgSender(String _destAddr, int _port, protocoletype _protocol) {
 
         destAddr = _destAddr;
-        port  = _port;
+        port = _port;
         protocol = _protocol;
 
 
@@ -117,6 +115,7 @@ public class MsgSender {
 
     public void SendMsg(String msg, Boolean sleepBeforeSending) {
         new SendMsgTask(this, msg, sleepBeforeSending).execute();
+
     }
 
 

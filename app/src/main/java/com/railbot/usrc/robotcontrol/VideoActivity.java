@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 public class VideoActivity extends Activity {
 
@@ -34,6 +37,9 @@ public class VideoActivity extends Activity {
     ImageButton moveBackwardBtn;
     ImageButton moveForwardBtn;
 
+    VideoView videoView;
+
+    private View mLoadingView;
 
     ////////////////////////// newly added ///////////////////////////////
 
@@ -46,6 +52,7 @@ public class VideoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         mVideoView = findViewById(R.id.video_view);
+        mLoadingView = this.findViewById(R.id.loading_view);
 
         /////////////////////////////  newly added ///////////////////////
         speedBar = (SeekBar) findViewById(R.id.speed_bar);
@@ -56,10 +63,24 @@ public class VideoActivity extends Activity {
 
 
         //msgSe = new DeviceController("172.24.1.1", 8000, 8081);
-        msgSender = new MsgSender("172.24.1.1", 8000, MsgSender.protocoletype.udp);
-        //msgSender = new MsgSender("192.168.0.254", 8899, MsgSender.protocoletype.udp);
+        //msgSender = new MsgSender("172.24.1.1", 8000, MsgSender.protocoletype.udp);
+        msgSender = new MsgSender("192.168.0.254", 8899, MsgSender.protocoletype.udp);
+
 
         railController = new RailController(msgSender, (float) 0.0, (float) 3.0);
+
+        videoView = (VideoView) findViewById(R.id.video_view);
+
+        videoView.setVideoURI(Uri.parse("rtsp://admin:admin@192.168.0.101:554/stream1"));
+
+        videoView.requestFocus();
+
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            public void onPrepared(MediaPlayer mp) {
+                videoView.start();
+                mLoadingView.setVisibility(View.GONE);
+            }
+        });
 
         TextView tv = (TextView) findViewById(R.id.min_val);
         tv.setText(Float.toString(railController.GetMinSpeed()));
@@ -180,8 +201,12 @@ public class VideoActivity extends Activity {
         super.onConfigurationChanged(newConfig);
 
         Log.e(TAG, "onChagne");
+
+        RelativeLayout contorlSet = (RelativeLayout) findViewById(R.id.control_set);
+
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            contorlSet.setVisibility(View.GONE);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             android.view.ViewGroup.LayoutParams params = mVideoView.getLayoutParams();
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -192,7 +217,7 @@ public class VideoActivity extends Activity {
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
             //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+            contorlSet.setVisibility(View.VISIBLE);
             android.view.ViewGroup.LayoutParams params = mVideoView.getLayoutParams();
             params.width = (int) getResources().getDimension(R.dimen.player_width);
             params.height = (int) getResources().getDimension(R.dimen.player_height);

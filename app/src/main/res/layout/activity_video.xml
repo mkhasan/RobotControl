@@ -16,14 +16,14 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <com.railbot.usrc.robotcontrol.VideoSurfaceView
+        <VideoView
             android:id="@+id/video_view"
             android:layout_width="@dimen/player_width"
             android:layout_height="@dimen/player_height"
             android:visibility="visible"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:onClick="sendMessage"/>
+            android:layout_centerVertical="true" >
+        </VideoView>
 
 
         <ProgressBar
@@ -37,6 +37,7 @@
 
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/control_set"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
