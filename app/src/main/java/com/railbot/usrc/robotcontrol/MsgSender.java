@@ -2,6 +2,7 @@ package com.railbot.usrc.robotcontrol;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -106,6 +107,8 @@ public class MsgSender {
     }
 
     public void SendMsg(String msg) {
+
+
 
         new SendMsgTask(this, msg).execute();
 

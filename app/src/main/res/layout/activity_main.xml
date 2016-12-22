@@ -8,14 +8,27 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/black"
     android:orientation="vertical"
+
     tools:context="com.railbot.usrc.robotcontrol.MainActivity">
 
-    <TextView android:id="@+id/sample_text" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:text="Hello World!" />
-
-    <Button
+    <TextView
+        android:id="@+id/select"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Connect"
-        android:onClick="sendMessage"/>
+        android:layout_height="40dp"
+        android:textColor="#acffffff"
+        android:textSize="25sp"
+        android:text="@string/select_item">
+    </TextView>
+
+    <ListView
+        android:id="@+id/main_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </ListView>
+
+
+
 </LinearLayout>
+
+

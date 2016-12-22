@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 public class VideoActivity extends Activity {
@@ -27,6 +28,7 @@ public class VideoActivity extends Activity {
     boolean portraitOrientation;
     private View mVideoView;
 
+    Boolean connected;
 
     ////////////////////////// newly added ///////////////////////////////
     private SeekBar speedBar;
@@ -40,6 +42,7 @@ public class VideoActivity extends Activity {
     VideoView videoView;
 
     private View mLoadingView;
+
 
     ////////////////////////// newly added ///////////////////////////////
 
@@ -60,25 +63,36 @@ public class VideoActivity extends Activity {
         moveForwardBtn = (ImageButton) findViewById(R.id.button_forward);
 
         portraitOrientation = true;
+        connected = false;
 
 
         //msgSe = new DeviceController("172.24.1.1", 8000, 8081);
         //msgSender = new MsgSender("172.24.1.1", 8000, MsgSender.protocoletype.udp);
-        msgSender = new MsgSender("192.168.0.254", 8899, MsgSender.protocoletype.udp);
+        //msgSender = new MsgSender("192.168.0.254", 8899, MsgSender.protocoletype.udp);
 
+        msgSender = new MsgSender(getString(R.string.rail_server_ip), Integer.parseInt(getString(R.string.rail_server_port)), MsgSender.protocoletype.udp);
 
         railController = new RailController(msgSender, (float) 0.0, (float) 3.0);
 
         videoView = (VideoView) findViewById(R.id.video_view);
 
-        videoView.setVideoURI(Uri.parse("rtsp://admin:admin@192.168.0.101:554/stream1"));
+        String url = "rtsp://admin:admin@"+getString(R.string.rail_server_ip)+":554/stream1";
 
+        //videoView.setVideoURI(Uri.parse("rtsp://admin:admin@192.168.0.101:554/stream1"));
+
+        videoView.setVideoURI(Uri.parse(url));
         videoView.requestFocus();
+
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             public void onPrepared(MediaPlayer mp) {
                 videoView.start();
                 mLoadingView.setVisibility(View.GONE);
+
+                Toast.makeText(getApplicationContext(), getString(R.string.connected),
+                        Toast.LENGTH_LONG).show();
+
+                connected = true;
             }
         });
 
@@ -202,6 +216,8 @@ public class VideoActivity extends Activity {
 
         Log.e(TAG, "onChagne");
 
+
+
         RelativeLayout contorlSet = (RelativeLayout) findViewById(R.id.control_set);
 
         // Checks the orientation of the screen
@@ -220,7 +236,7 @@ public class VideoActivity extends Activity {
             contorlSet.setVisibility(View.VISIBLE);
             android.view.ViewGroup.LayoutParams params = mVideoView.getLayoutParams();
             params.width = (int) getResources().getDimension(R.dimen.player_width);
-            params.height = (int) getResources().getDimension(R.dimen.player_height);
+            params.height = (int) getResources().getDimension(R.dimen.player_height);//getResources().getDimension(R.dimen.player_height);
             mVideoView.setLayoutParams(params);
             portraitOrientation = true;
 
@@ -229,11 +245,24 @@ public class VideoActivity extends Activity {
 
     public void moveStop(View view) {
 
+        if (!connected) {
+
+            Toast.makeText(this, getString(R.string.wait_for_connection), Toast.LENGTH_LONG).show();
+            return;
+        }
+
         railController.StopMoving();
         Log.e(TAG, "move stop");
     }
 
     public void moveBack() {
+
+        if (!connected) {
+
+            Toast.makeText(this, getString(R.string.wait_for_connection), Toast.LENGTH_LONG).show();
+            return;
+        }
+
 
         railController.MoveBackward();
         Log.e(TAG, "move back");
@@ -241,17 +270,28 @@ public class VideoActivity extends Activity {
 
 
     public void moveBackRelease() {
+
+
         railController.StopMoving();
         Log.e(TAG, "move back release");
     }
 
     public void moveFront() {
+
+        if (!connected) {
+
+            Toast.makeText(this, getString(R.string.wait_for_connection), Toast.LENGTH_LONG).show();
+            return;
+        }
+
         railController.MoveForward();
         Log.e(TAG, "move front");
     }
 
 
     public void moveFrontRelease() {
+
+
         railController.StopMoving();
         Log.e(TAG, "move front release");
     }
