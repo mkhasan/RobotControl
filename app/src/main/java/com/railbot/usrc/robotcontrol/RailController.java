@@ -58,8 +58,6 @@ public class RailController extends DeviceController {
         msg += frameTail;
 
         msgSender.SendMsg(msg, true);
-        msgSender.SendMsg(msg, true);
-        msgSender.SendMsg(msg, true);
 
         Log.e(TAG, msg);
     }
@@ -76,8 +74,6 @@ public class RailController extends DeviceController {
         msg += checkSum;
         msg += frameTail;
 
-        msgSender.SendMsg(msg, true);
-        msgSender.SendMsg(msg, true);
         msgSender.SendMsg(msg, true);
 
         Log.e(TAG, msg);
@@ -98,8 +94,6 @@ public class RailController extends DeviceController {
         Log.e(TAG, msg);
 
         msgSender.SendMsg(msg);
-        msgSender.SendMsg(msg, true);
-        msgSender.SendMsg(msg, true);
 
     }
 

@@ -1,6 +1,8 @@
 package com.railbot.usrc.robotcontrol;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
@@ -22,11 +24,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-public class VideoActivity extends Activity {
+import com.railbot.usrc.mediaplayer.FFError;
+import com.railbot.usrc.mediaplayer.FFListener;
+import com.railbot.usrc.mediaplayer.NotPlayingException;
+import com.railbot.usrc.mediaplayer.StreamInfo;
+import com.railbot.usrc.mediaplayer.VideoDisplay;
+import com.railbot.usrc.mediaplayer.VideoPlayer;
+
+import java.util.HashMap;
+
+public class VideoActivity extends Activity implements FFListener {
 
     private static final String TAG 	 = "VideoActiveity";
+    private VideoPlayer mMpegPlayer;
     boolean portraitOrientation;
-    private View mVideoView;
+    protected boolean mPlay = false;
 
     Boolean connected;
 
@@ -40,6 +52,7 @@ public class VideoActivity extends Activity {
     ImageButton moveForwardBtn;
 
     VideoView videoView;
+    private View surfaceView;
 
     private View mLoadingView;
 
@@ -54,8 +67,10 @@ public class VideoActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-        mVideoView = findViewById(R.id.video_view);
+        surfaceView = findViewById(R.id.surface_view);
         mLoadingView = this.findViewById(R.id.loading_view);
+
+        mMpegPlayer = new VideoPlayer((VideoDisplay) surfaceView, this);
 
         /////////////////////////////  newly added ///////////////////////
         speedBar = (SeekBar) findViewById(R.id.speed_bar);
@@ -72,15 +87,18 @@ public class VideoActivity extends Activity {
 
         msgSender = new MsgSender(getString(R.string.rail_server_ip), Integer.parseInt(getString(R.string.rail_server_port)), MsgSender.protocoletype.udp);
 
-        railController = new RailController(msgSender, (float) 0.0, (float) 3.0);
+        railController = new RailController(msgSender, (float) 0.0, (float) 4.0);
 
         videoView = (VideoView) findViewById(R.id.video_view);
 
         String url = "rtsp://admin:admin@"+getString(R.string.rail_server_ip)+":554/stream1";
 
-        //videoView.setVideoURI(Uri.parse("rtsp://admin:admin@192.168.0.101:554/stream1"));
 
-        videoView.setVideoURI(Uri.parse(url));
+        /*
+        videoView.setVideoURI(Uri.parse("rtsp://admin:admin@192.168.0.101:554/stream1"));
+
+
+        //videoView.setVideoURI(Uri.parse(url));
         videoView.requestFocus();
 
 
@@ -95,6 +113,24 @@ public class VideoActivity extends Activity {
                 connected = true;
             }
         });
+
+
+*/
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        mPlay = false;
+
+        mMpegPlayer.setListener(this);
+        mMpegPlayer.setDataSource(url, params, VideoPlayer.UNKNOWN_STREAM, VideoPlayer.NO_STREAM,
+                VideoPlayer.NO_STREAM);
+        String str = Integer.toHexString(mMpegPlayer.NativePlayer()) + " ";
+        Log.e(TAG, str);
+        connected = true;
+
+        //Toast.makeText(getApplicationContext(), getString(R.string.connected) + " to " + getString(R.string.rail_server_ip),
+          //      Toast.LENGTH_LONG).show();
+
+        //connected = true;
 
         TextView tv = (TextView) findViewById(R.id.min_val);
         tv.setText(Float.toString(railController.GetMinSpeed()));
@@ -224,20 +260,20 @@ public class VideoActivity extends Activity {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             contorlSet.setVisibility(View.GONE);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            android.view.ViewGroup.LayoutParams params = mVideoView.getLayoutParams();
+            android.view.ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            mVideoView.setLayoutParams(params);
+            surfaceView.setLayoutParams(params);
             portraitOrientation = false;
             //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
             //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             contorlSet.setVisibility(View.VISIBLE);
-            android.view.ViewGroup.LayoutParams params = mVideoView.getLayoutParams();
+            android.view.ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
             params.width = (int) getResources().getDimension(R.dimen.player_width);
             params.height = (int) getResources().getDimension(R.dimen.player_height);//getResources().getDimension(R.dimen.player_height);
-            mVideoView.setLayoutParams(params);
+            surfaceView.setLayoutParams(params);
             portraitOrientation = true;
 
         }
@@ -320,6 +356,108 @@ public class VideoActivity extends Activity {
     public void zoomPlus(View view) {
         Log.e(TAG, "zoom plus");
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.mMpegPlayer.stop();
+
+
+    }
+
+    private void stop() {
+        //this.mControlsView.setVisibility(View.GONE);
+        //this.mStreamsView.setVisibility(View.GONE);
+        this.mLoadingView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onFFUpdateTime(long currentTimeUs, long videoDurationUs, boolean isFinished) {
+        /*
+        mCurrentTimeUs = currentTimeUs;
+        if (!mTracking) {
+            int currentTimeS = (int)(currentTimeUs / 1000 / 1000);
+            int videoDurationS = (int)(videoDurationUs / 1000 / 1000);
+            mSeekBar.setMax(videoDurationS);
+            mSeekBar.setProgress(currentTimeS);
+        }
+
+        if (isFinished) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.dialog_end_of_video_title)
+                    .setMessage(R.string.dialog_end_of_video_message)
+                    .setCancelable(true).show();
+        }
+        */
+    }
+
+    @Override
+    public void onFFDataSourceLoaded(FFError err, StreamInfo[] streams) {
+        if (err != null) {
+            String format = getResources().getString(
+                    R.string.main_could_not_open_stream);
+            String message = String.format(format, err.getMessage());
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(VideoActivity.this);
+            builder.setTitle(R.string.app_name)
+                    .setMessage(message)
+                    .setOnCancelListener(
+                            new DialogInterface.OnCancelListener() {
+
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    VideoActivity.this.finish();
+                                }
+                            }).show();
+            return;
+        }
+        //mPlayPauseButton.setBackgroundResource(android.R.drawable.ic_media_play);
+        //mPlayPauseButton.setEnabled(true);
+        //this.mControlsView.setVisibility(View.VISIBLE);
+
+        this.mLoadingView.setVisibility(View.GONE);
+
+        /*
+
+        for (FFmpegStreamInfo streamInfo : streams) {
+            CodecType mediaType = streamInfo.getMediaType();
+            Locale locale = streamInfo.getLanguage();
+            String languageName = locale == null ? getString(
+                    R.string.unknown) : locale.getDisplayLanguage();
+            if (FFmpegStreamInfo.CodecType.AUDIO.equals(mediaType)) {
+                audio.addRow(new Object[] {languageName, streamInfo.getStreamNumber()});
+            } else if (FFmpegStreamInfo.CodecType.SUBTITLE.equals(mediaType)) {
+                subtitles.addRow(new Object[] {languageName, streamInfo.getStreamNumber()});
+            }
+        }
+        mLanguageAdapter.swapCursor(audio);
+        mSubtitleAdapter.swapCursor(subtitles);
+
+        */
+    }
+
+    @Override
+    public void onFFResume(NotPlayingException result) {
+        mPlay = true;
+    }
+
+    public void onFFPause(NotPlayingException err) {
+        mPlay = false;
+    }
+
+
+    @Override
+    public void onFFStop() {
+    }
+
+    @Override
+    public void onFFSeeked(NotPlayingException result) {
+//		if (result != null)
+//			throw new RuntimeException(result);
+    }
+
+
 
 
 }

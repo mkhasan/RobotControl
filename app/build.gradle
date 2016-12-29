@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.railbot.usrc.robotcontrol"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -36,4 +36,5 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
+    compile project(path: ':library')
 }

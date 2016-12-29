@@ -20,11 +20,19 @@
             android:id="@+id/video_view"
             android:layout_width="@dimen/player_width"
             android:layout_height="@dimen/player_height"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" >
         </VideoView>
 
+        <com.railbot.usrc.mediaplayer.VideoSurfaceView
+            android:id="@+id/surface_view"
+            android:layout_width="@dimen/player_width"
+            android:layout_height="@dimen/player_height"
+            android:visibility="visible"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:onClick="sendMessage"/>
 
         <ProgressBar
             android:id="@+id/loading_view"
