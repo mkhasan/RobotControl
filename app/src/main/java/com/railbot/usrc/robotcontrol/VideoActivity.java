@@ -42,6 +42,14 @@ public class VideoActivity extends Activity implements FFListener {
 
     Boolean connected;
 
+    private enum CameraType {
+        image,
+        thermal,
+        both,
+        none
+    }
+
+
     ////////////////////////// newly added ///////////////////////////////
     private SeekBar speedBar;
     public RailController railController;
@@ -55,6 +63,8 @@ public class VideoActivity extends Activity implements FFListener {
     private View surfaceView;
 
     private View mLoadingView;
+
+    CameraType cameraType;
 
 
     ////////////////////////// newly added ///////////////////////////////
@@ -80,6 +90,20 @@ public class VideoActivity extends Activity implements FFListener {
         portraitOrientation = true;
         connected = false;
 
+        String choice = getIntent().getStringExtra("choice");
+
+        Log.e(TAG, "Choice is "+choice);
+
+        if (choice.equals(getString(R.string.motion_only)))
+            cameraType = CameraType.none;
+        else if (choice.equals(getString(R.string.image_camera)))
+            cameraType = CameraType.image;
+        else if (choice.equals(getString(R.string.thermal_camera)))
+            cameraType = CameraType.thermal;
+        else
+            cameraType = CameraType.none;
+
+
 
         //msgSe = new DeviceController("172.24.1.1", 8000, 8081);
         //msgSender = new MsgSender("172.24.1.1", 8000, MsgSender.protocoletype.udp);
@@ -91,9 +115,14 @@ public class VideoActivity extends Activity implements FFListener {
 
         videoView = (VideoView) findViewById(R.id.video_view);
 
-        String url = "rtsp://admin:admin@"+getString(R.string.rail_server_ip)+":554/stream1";
+        //String url = "rtsp://admin:admin@"+getString(R.string.rail_server_ip)+":554/stream1";
 
+        String url = "rtsp://admin:admin@"+getString(R.string.image_camera_ip)+":554/stream1";
 
+        if (cameraType == CameraType.thermal)
+            url = "rtsp://admin:admin@"+getString(R.string.thermal_camera_ip)+":554/stream0";
+
+        //String url = "rtsp://admin:admin@192.168.1.100:554/12";
         /*
         videoView.setVideoURI(Uri.parse("rtsp://admin:admin@192.168.0.101:554/stream1"));
 
@@ -121,11 +150,26 @@ public class VideoActivity extends Activity implements FFListener {
         mPlay = false;
 
         mMpegPlayer.setListener(this);
-        mMpegPlayer.setDataSource(url, params, VideoPlayer.UNKNOWN_STREAM, VideoPlayer.NO_STREAM,
-                VideoPlayer.NO_STREAM);
-        String str = Integer.toHexString(mMpegPlayer.NativePlayer()) + " ";
-        Log.e(TAG, str);
-        connected = true;
+
+        if (cameraType == CameraType.none) {
+
+            mLoadingView.setVisibility(View.GONE);
+            connected = true;
+        }
+        else if (cameraType == CameraType.image || cameraType == CameraType.thermal) {
+            surfaceView.setVisibility(View.VISIBLE);
+            mMpegPlayer.setDataSource(url, params, VideoPlayer.UNKNOWN_STREAM, VideoPlayer.NO_STREAM,
+                    VideoPlayer.NO_STREAM);
+            String str = Integer.toHexString(mMpegPlayer.NativePlayer()) + " ";
+            Log.e(TAG, str);
+
+
+
+        }
+        else
+            connected = false;
+
+
 
         //Toast.makeText(getApplicationContext(), getString(R.string.connected) + " to " + getString(R.string.rail_server_ip),
           //      Toast.LENGTH_LONG).show();
@@ -417,6 +461,7 @@ public class VideoActivity extends Activity implements FFListener {
         //this.mControlsView.setVisibility(View.VISIBLE);
 
         this.mLoadingView.setVisibility(View.GONE);
+        connected = true;
 
         /*
 

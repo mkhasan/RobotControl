@@ -61,6 +61,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         final List<ListItem> items = new ArrayList<ListItem>();
         items.add(new ListItem(
                 items.size(),
+                getResources().getText(R.string.motion_only).toString(),
+                null,
+                true));
+
+        items.add(new ListItem(
+                items.size(),
                 getResources().getText(R.string.image_camera).toString(),
                 null,
                 true));
@@ -98,12 +104,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     startActivity(intent);
     */
 
+
         String str = item.text();
-        if (str == "Exit")
+
+
+        Log.e(TAG, "Str is "+str.length());
+        if (str.equals("Exit")) {
+
+            Log.e(TAG, "Str is "+str);
             finish();
+        }
+
         else
         {
             Intent intent = new Intent(this, VideoActivity.class);
+            intent.putExtra("choice", str);
             this.startActivity(intent);
         }
         // text_view.setText(str);

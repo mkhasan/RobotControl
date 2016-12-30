@@ -4,12 +4,14 @@
 
     <string name="rail_server_ip">192.168.0.254</string>
     <string name="rail_server_port">8899</string>
-    <string name="camera_server_ip">192.168.0.101</string>
+    <string name="image_camera_ip">192.168.0.101</string>
+    <string name="thermal_camera_ip">192.168.0.100</string>
     <string name="camera_server_port">80</string>
 
 
 
     <string name="select_item">Select Item</string>
+    <string name="motion_only">Motion Only</string>
     <string name="image_camera">Image Camera</string>
     <string name="thermal_camera">Thermal Camera</string>
     <string name="image_and_thermal_cam">Image And Thrermal Cameras</string>
