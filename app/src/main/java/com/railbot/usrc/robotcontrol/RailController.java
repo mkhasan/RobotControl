@@ -8,6 +8,13 @@ import android.util.Log;
 
 public class RailController extends DeviceController {
 
+    public enum CurMove {
+        stop,
+        forward,
+        backward
+
+    }
+
     private static final String TAG = "RailController";
 
     float minSpeed;
@@ -17,11 +24,14 @@ public class RailController extends DeviceController {
     private final char frameHead, frameTail;
     private final char checkSum;
 
+    private CurMove curMove;
+
     RailController(MsgSender _msgSender, float _minSpeed, float _maxSpeed) {
         super(_msgSender);
         minSpeed = _minSpeed;
         maxSpeed = _maxSpeed;
         currSpeed = _minSpeed;
+        curMove = CurMove.stop;
 
         frameHead = 0x02;
         frameTail = 0x03;
@@ -59,6 +69,7 @@ public class RailController extends DeviceController {
 
         msgSender.SendMsg(msg, true);
 
+        curMove = CurMove.forward;
         Log.e(TAG, msg);
     }
 
@@ -76,6 +87,8 @@ public class RailController extends DeviceController {
 
         msgSender.SendMsg(msg, true);
 
+        curMove = CurMove.backward;
+
         Log.e(TAG, msg);
 
     }
@@ -83,6 +96,7 @@ public class RailController extends DeviceController {
 
     void StopMoving() {
 
+        curMove = CurMove.stop;
         String msg;
         msg = "" + frameHead;
         msg += '1';     // type
@@ -118,4 +132,7 @@ public class RailController extends DeviceController {
     }
 
 
+    CurMove GetCurMove() {
+        return curMove;
+    }
 }

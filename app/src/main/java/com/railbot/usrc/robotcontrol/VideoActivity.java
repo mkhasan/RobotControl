@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.FloatProperty;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ public class VideoActivity extends Activity implements FFListener {
     private VideoPlayer mMpegPlayer;
     boolean portraitOrientation;
     protected boolean mPlay = false;
+    private boolean stopOnRelease;
 
     Boolean connected;
 
@@ -55,6 +58,7 @@ public class VideoActivity extends Activity implements FFListener {
     public RailController railController;
     private MsgSender msgSender;
     TextView speedView;
+
 
     ImageButton moveBackwardBtn;
     ImageButton moveForwardBtn;
@@ -89,6 +93,7 @@ public class VideoActivity extends Activity implements FFListener {
 
         portraitOrientation = true;
         connected = false;
+        stopOnRelease = true;
 
         String choice = getIntent().getStringExtra("choice");
 
@@ -108,10 +113,18 @@ public class VideoActivity extends Activity implements FFListener {
         //msgSe = new DeviceController("172.24.1.1", 8000, 8081);
         //msgSender = new MsgSender("172.24.1.1", 8000, MsgSender.protocoletype.udp);
         //msgSender = new MsgSender("192.168.0.254", 8899, MsgSender.protocoletype.udp);
-
         msgSender = new MsgSender(getString(R.string.rail_server_ip), Integer.parseInt(getString(R.string.rail_server_port)), MsgSender.protocoletype.udp);
 
-        railController = new RailController(msgSender, (float) 0.0, (float) 4.0);
+        float minSpeed = Float.parseFloat(getString(R.string.min_speed));
+        float maxSpeed = Float.parseFloat(getString(R.string.max_speed));
+        railController = new RailController(msgSender, minSpeed, maxSpeed);
+
+        String speedStr = getString(R.string.speed) + " (" + minSpeed + "~" + maxSpeed + ")";
+
+
+
+        TextView speedLabel = (TextView) findViewById(R.id.speed_label);
+        speedLabel.setText(speedStr);
 
         videoView = (VideoView) findViewById(R.id.video_view);
 
@@ -176,10 +189,10 @@ public class VideoActivity extends Activity implements FFListener {
 
         //connected = true;
 
-        TextView tv = (TextView) findViewById(R.id.min_val);
-        tv.setText(Float.toString(railController.GetMinSpeed()));
-        tv = (TextView) findViewById(R.id.max_val);
-        tv.setText(Float.toString(railController.GetMaxSpeed()));
+        //TextView tv = (TextView) findViewById(R.id.min_val);
+        //tv.setText(Float.toString(railController.GetMinSpeed()));
+        //tv = (TextView) findViewById(R.id.max_val);
+        //tv.setText(Float.toString(railController.GetMaxSpeed()));
 
         speedView = (TextView) findViewById(R.id.speed_text);
         speedView.setText(Float.toString(railController.GetCurSpeed())+" m/s");
@@ -200,6 +213,11 @@ public class VideoActivity extends Activity implements FFListener {
                         curSpeed = (float) ((double) minSpeed +  ((maxSpeed-minSpeed)*(float) progress/(100.0)));
                         speedView.setText(Float.toString(curSpeed)+" m/s");
                         railController.SetCurSpeed(curSpeed);
+                        if (railController.GetCurMove() == RailController.CurMove.forward)
+                            railController.MoveForward();
+                        else if (railController.GetCurMove() == RailController.CurMove.backward)
+                            railController.MoveBackward();
+
                         Log.e(TAG, Float.toString(curSpeed));
                     }
 
@@ -352,7 +370,8 @@ public class VideoActivity extends Activity implements FFListener {
     public void moveBackRelease() {
 
 
-        railController.StopMoving();
+        if (stopOnRelease)
+            railController.StopMoving();
         Log.e(TAG, "move back release");
     }
 
@@ -372,7 +391,8 @@ public class VideoActivity extends Activity implements FFListener {
     public void moveFrontRelease() {
 
 
-        railController.StopMoving();
+        if (stopOnRelease)
+            railController.StopMoving();
         Log.e(TAG, "move front release");
     }
 
@@ -502,7 +522,26 @@ public class VideoActivity extends Activity implements FFListener {
 //			throw new RuntimeException(result);
     }
 
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
 
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_yes:
+                if (checked)
+                    // Pirates are the best
+                    stopOnRelease = true;
+                    Log.e(TAG, "stp on release is true");
+                    break;
+            case R.id.radio_no:
+                if (checked)
+                    // Ninjas rule
+                    stopOnRelease = false;
+                    Log.e(TAG, "stp on release is false");
+                    break;
+        }
+    }
 
 
 }

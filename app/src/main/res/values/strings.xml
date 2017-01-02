@@ -9,6 +9,13 @@
     <string name="camera_server_port">80</string>
 
 
+    <string name="speed">Speed</string>
+    <string name="min_speed">0.0</string>
+    <string name="max_speed">4.0</string>
+
+    <string name="stop_on_release">Stop on release</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="select_item">Select Item</string>
     <string name="motion_only">Motion Only</string>

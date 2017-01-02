@@ -63,13 +63,13 @@
             android:onClick="moveStop"/>
         <TextView
             android:id="@+id/speed_label"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_marginLeft="0dp"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:padding="@dimen/activity_horizontal_margin"
             android:layout_height="wrap_content"
             android:textColor="@color/off_white"
-            android:text="@string/Speed"/>
+            android:text="Speed (0.0~4.0)"/>
         <SeekBar
             android:id="@+id/speed_bar"
             android:layout_width="@dimen/seeker_width"
@@ -92,33 +92,55 @@
             android:textSize="20sp"
             android:text="0.0 m/s"/>
 
-        <TextView
-            android:id="@+id/min_val"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/off_white"
-            android:text="0"
-            android:layout_below="@id/speed_bar"/>
 
-        <TextView
-            android:id="@+id/max_val"
+        <LinearLayout
+            android:id="@+id/relative_grp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/seeker_end_pos"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/off_white"
-            android:text="3"
-            android:layout_below="@id/speed_bar"/>
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_below="@id/speed_bar"
+            android:visibility="visible"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/off_white"
+                android:textSize="20sp"
+                android:text="@string/stop_on_release"
+                android:paddingRight="10dp"
+                android:gravity="center"/>
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/off_white"
+                android:orientation="horizontal"                >
+                <RadioButton android:id="@+id/radio_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/off_white"
+                    android:checked="true"
+                    android:buttonTint="@color/blue"
+                    android:text="@string/yes"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/off_white"
+                    android:buttonTint="@color/blue"
+                    android:text="@string/no"
+                    android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/button_backward"
             android:layout_width="@dimen/img_btn_width"
             android:layout_height="@dimen/img_btn_height"
             android:padding="0dp"
-            android:layout_below="@id/min_val"
+            android:layout_below="@id/relative_grp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/move_btn_horizontal_margin"
             android:src="@drawable/backward"
@@ -128,7 +150,7 @@
             android:id="@+id/move_text"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/img_btn_height"
-            android:layout_below="@id/min_val"
+            android:layout_below="@id/relative_grp"
             android:text="@string/Move"
             android:textSize="20sp"
             android:textColor="@color/off_white"
@@ -140,7 +162,7 @@
             android:layout_width="@dimen/img_btn_width"
             android:layout_height="@dimen/img_btn_height"
             android:padding="0dp"
-            android:layout_below="@id/min_val"
+            android:layout_below="@id/relative_grp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/move_btn_horizontal_margin"
             android:src="@drawable/forward"
