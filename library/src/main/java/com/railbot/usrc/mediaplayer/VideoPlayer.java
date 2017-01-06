@@ -21,6 +21,9 @@ public class VideoPlayer {
     }
 
 
+    private static final String TAG 	 = "VideoPlayer";
+
+
 
     private static class StopTask extends AsyncTask<Void, Void, Void> {
 
@@ -34,6 +37,7 @@ public class VideoPlayer {
 
         @Override
         protected Void doInBackground(Void... params) {
+
             player.stopNative();
             return null;
         }
@@ -47,6 +51,31 @@ public class VideoPlayer {
 
     }
 
+    private static class CommErrorTask extends AsyncTask<Void, Void, Void> {
+
+        private final VideoPlayer player;
+
+        public CommErrorTask(VideoPlayer player) {
+            this.player = player;
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if (player.mpegListener != null)
+                player.mpegListener.onFFError();
+        }
+
+
+    }
     private static class SetDataSourceTaskResult {
         FFError error;
         StreamInfo[] streams;
@@ -130,6 +159,8 @@ public class VideoPlayer {
     }
 
     public VideoPlayer(VideoDisplay videoView, Activity activity) {
+
+
         this.activity = activity;
         mNativePlayer = -1;
         Log.e("Init", "Initiating");
@@ -146,6 +177,7 @@ public class VideoPlayer {
     }
 
     public void stop() {
+        Log.e(TAG, "going to stop");
         new StopTask(this).execute();
     }
 
@@ -184,6 +216,14 @@ public class VideoPlayer {
     private StreamInfo[] mStreamsInfos = null;
     protected StreamInfo[] getStreamsInfo() {
         return mStreamsInfos;
+    }
+
+    private void callback() {
+
+
+        //mpegListener.onFFError();
+        new CommErrorTask(this).execute();
+        Log.e(TAG, "From callback");
     }
 
 }

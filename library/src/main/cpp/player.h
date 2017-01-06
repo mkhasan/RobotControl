@@ -39,6 +39,7 @@ void jni_player_dealloc(JNIEnv *env, jobject thiz);
 void jni_player_stop(JNIEnv *env, jobject thiz);
 void jni_player_render(JNIEnv *env, jobject thiz, jobject surface);
 void jni_player_render_frame_stop(JNIEnv *env, jobject thiz);
+void callback(struct Player * player, JNIEnv *env);
 
 #ifdef __cplusplus
 }
@@ -142,6 +143,11 @@ enum PlayerErrors {
 #define TRUE 1
 #define FALSE 0
 
+enum ErrorType {
+    NO_ERROR,
+    PTS_ERROR
+};
+
 enum StreamNumber {
     NO_STREAM = -2,
     UNKNOWN_STREAM = -1,
@@ -215,6 +221,9 @@ struct Player {
     int64_t pause_time;
 
 
+    int Test;
+
+    int error;
     //AVCodecContext    *pCodecCtx;
 
 };

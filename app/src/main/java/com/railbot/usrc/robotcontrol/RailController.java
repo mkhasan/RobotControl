@@ -70,6 +70,7 @@ public class RailController extends DeviceController {
         msgSender.SendMsg(msg, true);
 
         curMove = CurMove.forward;
+
         Log.e(TAG, msg);
     }
 
@@ -94,7 +95,7 @@ public class RailController extends DeviceController {
     }
 
 
-    void StopMoving() {
+    void StopMoving(int nCout) {
 
         curMove = CurMove.stop;
         String msg;
@@ -107,9 +108,21 @@ public class RailController extends DeviceController {
 
         Log.e(TAG, msg);
 
-        msgSender.SendMsg(msg);
+        int i;
+        for (i=0; i<nCout; i++) {
+            if (i==0)
+                msgSender.SendMsg(msg);
+            else
+                msgSender.SendMsg(msg, true);
+        }
 
     }
+
+    void StopMoving() {
+
+        StopMoving(1);
+    }
+
 
     private void SetRailSpeed() {
         int value = Math.round(currSpeed*100);    // in 0.1m/sec

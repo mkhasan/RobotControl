@@ -18,4 +18,6 @@ public interface FFListener {
 
     void onFFSeeked(NotPlayingException result);
 
+    void onFFError();
+
 }

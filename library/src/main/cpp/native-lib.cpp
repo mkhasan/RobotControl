@@ -38,8 +38,18 @@ Java_com_railbot_usrc_mediaplayer_VideoPlayer_initNative(
         jobject thisObj/* this */) {
 
 
+/*
 
+    jclass thisClass = env->GetObjectClass(thisObj);
+    jmethodID midCallBack = env->GetMethodID(env, player->thiz, "callback", "()V");
 
+    if (NULL == midCallBack) {
+        LOGE(0, "callback error");
+        return;
+    }
+    (*env)->CallVoidMethod(env, player->thiz, midCallBack);
+
+    */
     return jni_player_init(env, thisObj);
 
 

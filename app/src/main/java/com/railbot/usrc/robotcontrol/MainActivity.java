@@ -1,5 +1,8 @@
 package com.railbot.usrc.robotcontrol;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -52,6 +55,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+
+
+        VideoActivity.ShowAllertTest(this);
+
+
+
 
 
     }
@@ -119,11 +128,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         {
             Intent intent = new Intent(this, VideoActivity.class);
             intent.putExtra("choice", str);
-            this.startActivity(intent);
+            this.startActivityForResult(intent, 0);
+
         }
         // text_view.setText(str);
     }
 
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (requestCode == 0) {
+            if (resultCode == 0) {
+                // A contact was picked.  Here we will just display it
+                // to the user.
+                //Log.e(TAG, "10");
+            }
+            //else
+              //  Log.e(TAG, "100");
+        }
+
+        Log.e(TAG, Integer.toString(requestCode)+ " " + (resultCode == 0 ? "OK" : "ERROR"));
+    }
 
 
     public native String stringFromJNI();

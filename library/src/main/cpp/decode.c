@@ -1,6 +1,4 @@
 //
-// Created by usrc on 16. 12. 14.
-//
 
 #include <android/log.h>
 #include <assert.h>
@@ -13,6 +11,8 @@
 void player_update_time(struct State *state, int is_finished);
 void player_assign_to_no_boolean_array(struct Player *player, int* array, int value);
 int player_if_all_no_array_elements_has_value(struct Player *player, int *array, int value);
+// Created by usrc on 16. 12. 14.
+//
 
 enum DecodeCheckMsg {
     DECODE_CHECK_MSG_STOP = 0, DECODE_CHECK_MSG_FLUSH,
@@ -407,11 +407,19 @@ int player_decode_video(struct DecoderData * decoder_data, JNIEnv * env,
     int64_t pts = av_frame_get_best_effort_timestamp(frame);
     if (pts == AV_NOPTS_VALUE) {
         pts = 0;
+        LOGE(1, "severe error");
     }
     int64_t time = av_rescale_q(pts, stream->time_base, AV_TIME_BASE_Q);
     LOGI(10,
          "player_decode_video Decoded video frame: %f, time_base: %" SCNd64,
          time/1000000.0, pts);
+
+
+    if (time > 10*1000000.0 && !player->error) {
+        //callback(player, env);
+        player->error = 1;
+    }
+
     player_wait_for_frame(player, time, stream_no);
 
 
@@ -508,7 +516,7 @@ enum WaitFuncRet player_wait_for_frame(struct Player *player, int64_t stream_tim
     LOGI(6, "player_wait_for_frame[%d] start", stream_no);
     pthread_mutex_lock(&player->mutex_queue);
     int ret = WAIT_FUNC_RET_OK;
-    static int Test = 1;
+
     while (1) {
         if (player->flush_streams[stream_no]) {
             LOGI(3, "player_wait_for_frame[%d] flush_streams", stream_no);
@@ -541,11 +549,13 @@ enum WaitFuncRet player_wait_for_frame(struct Player *player, int64_t stream_tim
              stream_no, sleep_time);
 
 
-        if (sleep_time < -300000ll || Test == 1 ) {
+
+
+        if (sleep_time < -300000ll || player->Test == 1 ) {
             // 300 ms late
             //if (Test)
-                LOGE(1, "test captured ");
-            Test = 0;
+                LOGE(1, "player_wait test captured ");
+            player->Test = 0;
             int64_t new_value = player->start_time - sleep_time;
 
             LOGI(4,
@@ -625,8 +635,9 @@ void * player_read_from_stream(void *data) {
         goto end;
     }
 
-    int head = 30;
+    int head = 100;
 
+    player->Test = 1;
     for (;;) {
         int ret = av_read_frame(player->input_format_ctx, pkt);
         if (ret >= 0 && head > 0) {

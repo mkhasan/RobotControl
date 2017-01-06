@@ -2,12 +2,14 @@ package com.railbot.usrc.robotcontrol;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.FloatProperty;
@@ -35,6 +37,8 @@ import com.railbot.usrc.mediaplayer.VideoPlayer;
 
 import java.util.HashMap;
 
+import static android.content.RestrictionsManager.RESULT_ERROR;
+
 public class VideoActivity extends Activity implements FFListener {
 
     private static final String TAG 	 = "VideoActiveity";
@@ -58,7 +62,7 @@ public class VideoActivity extends Activity implements FFListener {
     public RailController railController;
     private MsgSender msgSender;
     TextView speedView;
-
+    private TextView state;
 
     ImageButton moveBackwardBtn;
     ImageButton moveForwardBtn;
@@ -70,8 +74,24 @@ public class VideoActivity extends Activity implements FFListener {
 
     CameraType cameraType;
 
+    int count;
 
     ////////////////////////// newly added ///////////////////////////////
+
+    Handler timerHandler = new Handler();
+    Runnable timerRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+
+
+
+            state.setText(String.format("%d", count++));
+
+            Log.e(TAG, "onTimer");
+            timerHandler.postDelayed(this, 1000);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +148,16 @@ public class VideoActivity extends Activity implements FFListener {
 
         videoView = (VideoView) findViewById(R.id.video_view);
 
+        state = (TextView) findViewById(R.id.state);
+
+        state.setText(getString(R.string.state)+getString(R.string.stop));
+
+        count = 0;
+
+        //timerHandler.postDelayed(timerRunnable, 0);
+
+        Log.e(TAG, "onCreate");
+
         //String url = "rtsp://admin:admin@"+getString(R.string.rail_server_ip)+":554/stream1";
 
         String url = "rtsp://admin:admin@"+getString(R.string.image_camera_ip)+":554/stream1";
@@ -135,6 +165,16 @@ public class VideoActivity extends Activity implements FFListener {
         if (cameraType == CameraType.thermal)
             url = "rtsp://admin:admin@"+getString(R.string.thermal_camera_ip)+":554/stream0";
 
+
+        String testStr = getString(R.string.image_camera_ip);
+
+
+
+        String[] parts = testStr.split("\\.");
+
+
+        if (parts.length == 4 && parts[2].equals("1"))
+            url = "rtsp://admin:admin@"+getString(R.string.image_camera_ip)+":554/12";
         //String url = "rtsp://admin:admin@192.168.1.100:554/12";
         /*
         videoView.setVideoURI(Uri.parse("rtsp://admin:admin@192.168.0.101:554/stream1"));
@@ -213,10 +253,13 @@ public class VideoActivity extends Activity implements FFListener {
                         curSpeed = (float) ((double) minSpeed +  ((maxSpeed-minSpeed)*(float) progress/(100.0)));
                         speedView.setText(Float.toString(curSpeed)+" m/s");
                         railController.SetCurSpeed(curSpeed);
+
+                        /*
                         if (railController.GetCurMove() == RailController.CurMove.forward)
                             railController.MoveForward();
                         else if (railController.GetCurMove() == RailController.CurMove.backward)
                             railController.MoveBackward();
+                        */
 
                         Log.e(TAG, Float.toString(curSpeed));
                     }
@@ -286,6 +329,7 @@ public class VideoActivity extends Activity implements FFListener {
         /////////////////////////////  newly added ///////////////////////
 
 
+
     }
 
 
@@ -343,13 +387,23 @@ public class VideoActivity extends Activity implements FFListener {
 
     public void moveStop(View view) {
 
+        ShowAllert();
+        //setResult(-1);
+        //finish();
+        Log.e(TAG, cameraType == CameraType.image ? "Image" : (cameraType == CameraType.none ? "none" : "error"));
         if (!connected) {
 
             Toast.makeText(this, getString(R.string.wait_for_connection), Toast.LENGTH_LONG).show();
             return;
         }
 
-        railController.StopMoving();
+        if (stopOnRelease == false)
+            railController.StopMoving(3);
+        else
+            railController.StopMoving();
+
+        //Toast.makeText(this, getString(R.string.stop), Toast.LENGTH_LONG).show();
+        state.setText(getString(R.string.state)+getString(R.string.stop));
         Log.e(TAG, "move stop");
     }
 
@@ -363,6 +417,8 @@ public class VideoActivity extends Activity implements FFListener {
 
 
         railController.MoveBackward();
+        //Toast.makeText(this, getString(R.string.backward), Toast.LENGTH_LONG).show();
+        state.setText(getString(R.string.state)+getString(R.string.backward));
         Log.e(TAG, "move back");
     }
 
@@ -370,8 +426,10 @@ public class VideoActivity extends Activity implements FFListener {
     public void moveBackRelease() {
 
 
-        if (stopOnRelease)
+        if (stopOnRelease) {
             railController.StopMoving();
+            state.setText(getString(R.string.state)+getString(R.string.stop));
+        }
         Log.e(TAG, "move back release");
     }
 
@@ -384,6 +442,7 @@ public class VideoActivity extends Activity implements FFListener {
         }
 
         railController.MoveForward();
+        state.setText(getString(R.string.state)+getString(R.string.forward));
         Log.e(TAG, "move front");
     }
 
@@ -391,8 +450,10 @@ public class VideoActivity extends Activity implements FFListener {
     public void moveFrontRelease() {
 
 
-        if (stopOnRelease)
+        if (stopOnRelease) {
             railController.StopMoving();
+            state.setText(getString(R.string.state)+getString(R.string.stop));
+        }
         Log.e(TAG, "move front release");
     }
 
@@ -425,8 +486,10 @@ public class VideoActivity extends Activity implements FFListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.e(TAG, "going to stop");
         this.mMpegPlayer.stop();
 
+        setResult(RESULT_OK);
 
     }
 
@@ -458,10 +521,10 @@ public class VideoActivity extends Activity implements FFListener {
 
     @Override
     public void onFFDataSourceLoaded(FFError err, StreamInfo[] streams) {
-        if (err != null) {
+        if (err == null) {
             String format = getResources().getString(
                     R.string.main_could_not_open_stream);
-            String message = String.format(format, err.getMessage());
+            String message = "test";//String.format(format, err.getMessage());
 
             AlertDialog.Builder builder = new AlertDialog.Builder(VideoActivity.this);
             builder.setTitle(R.string.app_name)
@@ -541,6 +604,92 @@ public class VideoActivity extends Activity implements FFListener {
                     Log.e(TAG, "stp on release is false");
                     break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //timerHandler.postDelayed(timerRunnable, 0);
+
+        Log.e(TAG, "onResume");
+    }
+
+
+    @Override
+    protected void onPause()
+    {
+        // TODO Auto-generated method stub
+        super.onPause();
+
+        timerHandler.removeCallbacks(timerRunnable);
+
+        Log.e(TAG, "onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Log.e(TAG, "onStop");
+        finish();
+    }
+
+    @Override
+    public void onFFError() {
+
+
+        callback();
+
+
+    }
+    void callback() {
+        Log.e(TAG, "From callback");
+        finish();
+    }
+
+    static public void ShowAllertTest(Context context) {
+
+        new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_DARK)
+                .setTitle("Error")
+                .setMessage("Communication Error Occured")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        //finish();
+                    }
+                })
+                /*
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                */
+
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void ShowAllert() {
+
+        Context context = this;
+        new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_DARK)
+                .setTitle("Delete entry")
+                .setMessage("Are you sure you want to delete this entry?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        //finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 
