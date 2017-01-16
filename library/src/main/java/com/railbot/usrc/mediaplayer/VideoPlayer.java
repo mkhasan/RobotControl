@@ -54,9 +54,11 @@ public class VideoPlayer {
     private static class CommErrorTask extends AsyncTask<Void, Void, Void> {
 
         private final VideoPlayer player;
+        private final int errorCode;
 
-        public CommErrorTask(VideoPlayer player) {
+        public CommErrorTask(VideoPlayer player, int errorCode) {
             this.player = player;
+            this.errorCode = errorCode;
 
         }
 
@@ -70,8 +72,10 @@ public class VideoPlayer {
 
         @Override
         protected void onPostExecute(Void result) {
-            if (player.mpegListener != null)
-                player.mpegListener.onFFError();
+            if (player.mpegListener != null) {
+                FFError error = new FFError(errorCode);
+                player.mpegListener.onFFError(error);
+            }
         }
 
 
@@ -218,12 +222,12 @@ public class VideoPlayer {
         return mStreamsInfos;
     }
 
-    private void callback() {
+    private void callbackError(int i) {
 
 
         //mpegListener.onFFError();
-        new CommErrorTask(this).execute();
-        Log.e(TAG, "From callback");
+        new CommErrorTask(this, i).execute();
+        Log.e(TAG, "From callback: " + Integer.toString(i));
     }
 
 }

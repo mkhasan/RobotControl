@@ -416,8 +416,9 @@ int player_decode_video(struct DecoderData * decoder_data, JNIEnv * env,
 
 
     if (time > 10*1000000.0 && !player->error) {
-        //callback(player, env);
-        player->error = 1;
+        player->error = ERROR_PTS_IS_ZERO;
+        callback(player, env);
+
     }
 
     player_wait_for_frame(player, time, stream_no);

@@ -520,15 +520,25 @@ public class VideoActivity extends Activity implements FFListener {
     }
 
     @Override
-    public void onFFDataSourceLoaded(FFError err, StreamInfo[] streams) {
-        if (err == null) {
+    public void onFFError(FFError error) {
+
+
+        //callback();
+
+        if (error != null) {
             String format = getResources().getString(
                     R.string.main_could_not_open_stream);
-            String message = "test";//String.format(format, err.getMessage());
+            String message = String.format(format, error.getMessage());
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(VideoActivity.this);
-            builder.setTitle(R.string.app_name)
+            Log.e(TAG, error.getMessage());
+            new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK)
+                    .setTitle("Error")
                     .setMessage(message)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            VideoActivity.this.finish();
+                        }
+                    })
                     .setOnCancelListener(
                             new DialogInterface.OnCancelListener() {
 
@@ -536,7 +546,41 @@ public class VideoActivity extends Activity implements FFListener {
                                 public void onCancel(DialogInterface dialog) {
                                     VideoActivity.this.finish();
                                 }
-                            }).show();
+                            })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            return;
+        }
+
+
+    }
+
+    @Override
+    public void onFFDataSourceLoaded(FFError err, StreamInfo[] streams) {
+        if (err != null) {
+            String format = getResources().getString(
+                    R.string.main_could_not_open_stream);
+            String message = String.format(format, err.getMessage());
+
+            Log.e(TAG, err.getMessage());
+            new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK)
+                    .setTitle("Error")
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            VideoActivity.this.finish();
+                        }
+                    })
+                    .setOnCancelListener(
+                            new DialogInterface.OnCancelListener() {
+
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    VideoActivity.this.finish();
+                                }
+                            })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
             return;
         }
         //mPlayPauseButton.setBackgroundResource(android.R.drawable.ic_media_play);
@@ -635,14 +679,7 @@ public class VideoActivity extends Activity implements FFListener {
         finish();
     }
 
-    @Override
-    public void onFFError() {
 
-
-        callback();
-
-
-    }
     void callback() {
         Log.e(TAG, "From callback");
         finish();

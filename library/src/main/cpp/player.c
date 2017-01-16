@@ -1041,11 +1041,12 @@ void jni_player_render_frame_stop(JNIEnv *env, jobject thiz) {
 
 void callback(struct Player *player, JNIEnv *env) {
     jclass thisClass = (*env)->GetObjectClass(env, player->thiz);
-    jmethodID midCallBack = (*env)->GetMethodID(env, thisClass, "callback", "()V");
+    jmethodID midCallBack = (*env)->GetMethodID(env, thisClass, "callbackError", "(I)V");
 
     if (NULL == midCallBack) {
         LOGE(0, "callback error");
         return;
     }
-    (*env)->CallVoidMethod(env, player->thiz, midCallBack);
+    jint error = player->error;
+    (*env)->CallVoidMethod(env, player->thiz, midCallBack, error);
 }

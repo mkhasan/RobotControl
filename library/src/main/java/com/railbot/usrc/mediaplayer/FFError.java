@@ -6,13 +6,9 @@ package com.railbot.usrc.mediaplayer;
 
 public class FFError extends Throwable {
 
-    public enum ErrorType {
-        NO_ERROR,
-        PTS_ERROR
-    }
 
     public FFError(int err) {
-        super(String.format("FFmpegPlayer error %d", err));
+        super(String.format("Player Setup error %d", err));
     }
 
     /**

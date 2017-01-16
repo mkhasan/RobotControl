@@ -127,6 +127,7 @@ enum PlayerErrors {
     ERROR_COULD_NOT_CREATE_PTHREAD,
     ERROR_COULD_NOT_DESTROY_PTHREAD_ATTR,
     ERROR_COULD_NOT_ALLOCATE_MEMORY,
+    ERROR_PTS_IS_ZERO
 };
 
 #define MIN_SLEEP_TIME_US 1000ll
@@ -143,10 +144,6 @@ enum PlayerErrors {
 #define TRUE 1
 #define FALSE 0
 
-enum ErrorType {
-    NO_ERROR,
-    PTS_ERROR
-};
 
 enum StreamNumber {
     NO_STREAM = -2,
