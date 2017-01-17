@@ -21,7 +21,7 @@
             android:id="@+id/video_view"
             android:layout_width="@dimen/player_width"
             android:layout_height="@dimen/player_height"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" >
         </VideoView>
@@ -34,6 +34,15 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:onClick="sendMessage"/>
+
+        <com.railbot.usrc.robotcontrol.IR_SurfaceView
+            android:id="@+id/ir_view"
+            android:layout_width="@dimen/player_width"
+            android:layout_height="@dimen/player_height"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
 
         <ProgressBar
             android:id="@+id/loading_view"

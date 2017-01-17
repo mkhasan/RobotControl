@@ -415,7 +415,7 @@ int player_decode_video(struct DecoderData * decoder_data, JNIEnv * env,
          time/1000000.0, pts);
 
 
-    if (time > 10*1000000.0 && !player->error) {
+    if (time > 10*1000000.0 && !player->error && 0) {
         player->error = ERROR_PTS_IS_ZERO;
         callback(player, env);
 

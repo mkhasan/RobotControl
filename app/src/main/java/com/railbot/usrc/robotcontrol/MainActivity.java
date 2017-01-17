@@ -25,9 +25,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     // Used to load the 'native-lib' library on application startup.
     String TAG = "RobotControl";
-    static {
-        System.loadLibrary("native-lib");
-    }
 
     TextView tv;
 
@@ -57,7 +54,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setOnItemClickListener(this);
 
 
-        VideoActivity.ShowAllertTest(this);
+        //VideoActivity.ShowAllertTest(this);
+
+        //String str = stringFromJNI();
+
+        //Log.e(TAG, stringFromJNI());
 
 
 
@@ -150,5 +151,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-    public native String stringFromJNI();
+ //   public native String stringFromJNI();
 }

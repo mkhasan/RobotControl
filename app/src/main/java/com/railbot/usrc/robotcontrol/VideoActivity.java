@@ -69,7 +69,9 @@ public class VideoActivity extends Activity implements FFListener {
 
     VideoView videoView;
     private View surfaceView;
+    private IR_SurfaceView irSurfaceView;
 
+    private IR_Viewer irViewer = null;
     private View mLoadingView;
 
     CameraType cameraType;
@@ -102,6 +104,12 @@ public class VideoActivity extends Activity implements FFListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         surfaceView = findViewById(R.id.surface_view);
+        irSurfaceView = (IR_SurfaceView) findViewById(R.id.ir_view);
+
+
+
+
+
         mLoadingView = this.findViewById(R.id.loading_view);
 
         mMpegPlayer = new VideoPlayer((VideoDisplay) surfaceView, this);
@@ -207,9 +215,10 @@ public class VideoActivity extends Activity implements FFListener {
         if (cameraType == CameraType.none) {
 
             mLoadingView.setVisibility(View.GONE);
+
             connected = true;
         }
-        else if (cameraType == CameraType.image || cameraType == CameraType.thermal) {
+        else if (cameraType == CameraType.image ) {
             surfaceView.setVisibility(View.VISIBLE);
             mMpegPlayer.setDataSource(url, params, VideoPlayer.UNKNOWN_STREAM, VideoPlayer.NO_STREAM,
                     VideoPlayer.NO_STREAM);
@@ -219,8 +228,19 @@ public class VideoActivity extends Activity implements FFListener {
 
 
         }
-        else
+        else if (cameraType == CameraType.thermal) {
+            irSurfaceView.setVisibility(View.VISIBLE);
+            mLoadingView.setVisibility(View.GONE);
+            irViewer = new IR_Viewer(irSurfaceView);
+
+        } else
             connected = false;
+
+
+
+
+        if (cameraType == CameraType.thermal)
+            irViewer.Connect();
 
 
 
@@ -336,6 +356,11 @@ public class VideoActivity extends Activity implements FFListener {
     public void sendMessage(View view) {
 
         Log.e(TAG, "fullscreen");
+
+        if (cameraType == CameraType.thermal) {
+            //Log.e(TAG, "onConnect");
+            //irViewer.Connect();
+        }
 
         /*
 
@@ -486,10 +511,16 @@ public class VideoActivity extends Activity implements FFListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e(TAG, "going to stop");
-        this.mMpegPlayer.stop();
 
-        setResult(RESULT_OK);
+        if (cameraType == CameraType.image) {
+            Log.e(TAG, "going to stop");
+            this.mMpegPlayer.stop();
+
+            setResult(RESULT_OK);
+        }
+
+
+
 
     }
 
