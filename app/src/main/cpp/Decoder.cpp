@@ -23,7 +23,7 @@ int DecodeFrame(struct Viewer * pViewer)
     int     frameType = -1;
     BYTE   *pFrameData;
     TCP_LIVE LiveHeader;
-    static unsigned short frame_t[WIDTH*HEIGHT]={0,};
+    WORD * frame_t = pViewer->pData;
     CCircularBuffer * m_pStreamBuffer = pViewer->pStreamBuffer;
     BYTE * m_pFrameData = pViewer->pFrameData;
     BYTE * m_pOutFrame = pViewer->pOutFrame;
@@ -310,3 +310,62 @@ void Render(struct Viewer * pViewer) {
     SDL_UnlockMutex(screen_mutex);
 }
 #endif
+
+/*
+
+DWORD v1=min;
+DWORD v2=max;
+
+float T1;
+float T2;
+
+double objSig1,objSig2;
+double m_K1=1.0;
+double m_K2=30.0;
+int    m_R=414904;
+double m_B=1428.0;
+double m_F=1.0;
+double m_O=-493.7;
+
+objSig1 = m_K1 * (double)v1 - m_K2;
+objSig2 = m_K1 * (double)v2 - m_K2;
+T1 = (float)(m_B / log(m_R /(objSig1 - m_O) + m_F))-273.15;
+T2 = (float)(m_B / log(m_R /(objSig2 - m_O) + m_F))-273.15;
+
+ */
+
+float GetTemperature(struct Viewer *pViewer, int x, int y, int maxX, int maxY) {
+
+    double objSig;
+    double m_K1=1.0;
+    double m_K2=30.0;
+    int    m_R=414904;
+    double m_B=1428.0;
+    double m_F=1.0;
+    double m_O=-493.7;
+
+    //objSig = m_K1 * (double)v1 - m_K2;
+
+    pthread_mutex_lock(&pViewer->m_CodecMutex);
+
+    int targetX = ((double)pViewer->cx*((double) x / ((double) maxX)));
+    int targetY = ((double)pViewer->cy*((double) y / ((double) maxY)));
+
+    LOGE(1, "Target(x, y) : ( %d, %d)", targetX, targetY);
+
+    if (targetX > WIDTH || targetY > HEIGHT) {
+        LOGE(1, "(%d, %d, %d, %d, %d, %d )", x, y, maxX, maxY, pViewer->cx, pViewer->cy);
+        HandleError(ERROR_OUT_OF_RANGE);
+        return 0.0;
+    }
+
+
+
+    objSig = m_K1 * (double)pViewer->pData[targetY*pViewer->cx+targetX] - m_K2;
+
+    pthread_mutex_unlock(&pViewer->m_CodecMutex);
+
+    const float alpha = -5.0;
+    return (float)(m_B / log(m_R /(objSig - m_O) + m_F))-273.15 + alpha;
+
+}

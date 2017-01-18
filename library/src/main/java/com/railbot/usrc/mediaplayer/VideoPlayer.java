@@ -134,7 +134,7 @@ public class VideoPlayer {
     private FFListener mpegListener = null;
     private final RenderedFrame mRenderedFrame = new RenderedFrame();
 
-    private int mNativePlayer;
+    private long mNativePlayer;
     private final Activity activity;
 
     private Runnable updateTimeRunnable = new Runnable() {
@@ -188,12 +188,15 @@ public class VideoPlayer {
 
     @Override
     protected void finalize() throws Throwable {
+        /*
         Log.e("dealloc", "deallocating");
         deallocNative();
+        */
         super.finalize();
+
     }
 
-    public int NativePlayer() {
+    public long NativePlayer() {
         return mNativePlayer;
     }
 

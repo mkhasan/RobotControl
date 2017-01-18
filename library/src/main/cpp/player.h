@@ -248,7 +248,7 @@ struct DecoderData {
 
 
 
-static const char player_m_native_player[2][MAX_STRLEN] = {"mNativePlayer", "I"};
+static const char player_m_native_player[2][MAX_STRLEN] = {"mNativePlayer", "J"};
 
 
 

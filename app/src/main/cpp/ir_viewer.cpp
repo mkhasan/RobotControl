@@ -98,12 +98,16 @@ static void DeleteAll(JNIEnv *env, struct Viewer *pViewer) {
 #endif
 
 
+    if(pViewer->pData) {
+        delete[] pViewer->pData;
+        pViewer->pData = NULL;
+    }
     if(pViewer->pOutFrame) {
-        delete pViewer->pOutFrame;
+        delete[] pViewer->pOutFrame;
         pViewer->pOutFrame = NULL;
     }
     if(pViewer->pFrameData) {
-        delete pViewer->pFrameData;
+        delete[] pViewer->pFrameData;
         pViewer->pFrameData = NULL;
     }
     if(pViewer->pCtrlSocket) {
@@ -227,6 +231,12 @@ int jni_ir_viewer_init(JNIEnv *env, jobject thiz) {
         return ERROR_MEM_ALLOCATION;
 
     }
+    pViewer->pData = new (std::nothrow) WORD[WIDTH*HEIGHT];
+    if (pViewer->pData == NULL) {
+        DeleteAll(env, pViewer);
+        return ERROR_MEM_ALLOCATION;
+    }
+
 
     pViewer->bPlay = false;
     pViewer->decThreadID = NULL;

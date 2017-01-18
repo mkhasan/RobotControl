@@ -7,6 +7,7 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+
 /**
  * Created by usrc on 16. 12. 19.
  */
@@ -22,6 +23,7 @@ public class VideoSurfaceView extends SurfaceView implements //VideoDisplay,
 
     //private VideoPlayer player = null;
     private boolean mCreated = false;
+
 
     public VideoSurfaceView(Context context) {
         this(context, null, 0);

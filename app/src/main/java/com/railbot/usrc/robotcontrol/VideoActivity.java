@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.FloatProperty;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -39,7 +40,7 @@ import java.util.HashMap;
 
 import static android.content.RestrictionsManager.RESULT_ERROR;
 
-public class VideoActivity extends Activity implements FFListener {
+public class VideoActivity extends Activity implements FFListener, IR_ViewerListener {
 
     private static final String TAG 	 = "VideoActiveity";
     private VideoPlayer mMpegPlayer;
@@ -222,7 +223,7 @@ public class VideoActivity extends Activity implements FFListener {
             surfaceView.setVisibility(View.VISIBLE);
             mMpegPlayer.setDataSource(url, params, VideoPlayer.UNKNOWN_STREAM, VideoPlayer.NO_STREAM,
                     VideoPlayer.NO_STREAM);
-            String str = Integer.toHexString(mMpegPlayer.NativePlayer()) + " ";
+            String str = Long.toHexString(mMpegPlayer.NativePlayer()) + " ";
             Log.e(TAG, str);
 
 
@@ -236,7 +237,9 @@ public class VideoActivity extends Activity implements FFListener {
         } else
             connected = false;
 
+        if (cameraType == CameraType.thermal)
 
+            irViewer.setListener(this);
 
 
         if (cameraType == CameraType.thermal)
@@ -652,6 +655,9 @@ public class VideoActivity extends Activity implements FFListener {
 
     @Override
     public void onFFStop() {
+
+        Log.e(TAG, "going to de alloc");
+        mMpegPlayer.deallocNative();
     }
 
     @Override
@@ -697,7 +703,7 @@ public class VideoActivity extends Activity implements FFListener {
         // TODO Auto-generated method stub
         super.onPause();
 
-        timerHandler.removeCallbacks(timerRunnable);
+        //timerHandler.removeCallbacks(timerRunnable);
 
         Log.e(TAG, "onPause");
     }
@@ -761,4 +767,9 @@ public class VideoActivity extends Activity implements FFListener {
     }
 
 
+    @Override
+    public void onDataSourceLoaded(int isConnected) {
+        Log.e(TAG, "Connected is " + isConnected);
+    }
 }
+

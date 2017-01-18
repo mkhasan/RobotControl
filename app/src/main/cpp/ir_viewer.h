@@ -50,7 +50,8 @@ enum ViewerErrors {
     ERROR_THREAD_DETATCH_ERROR = -14,
     ERROR_VIEWER_NOT_FOUND = -15,
     ERROR_RENDERING_FAILED = -16,
-    ERROR_COULD_NOT_GET_WINDOW_FORMAT = -17
+    ERROR_COULD_NOT_GET_WINDOW_FORMAT = -17,
+    ERROR_OUT_OF_RANGE = -18
 
 };
 
@@ -111,7 +112,7 @@ void jni_ir_viewer_render_frame_stop(JNIEnv *env, jobject thiz);
 
 int Connect(struct Viewer * pViewer);
 int Play(struct Viewer * pViewer);
-
+float GetTemperature(struct Viewer *pViewer, int x, int y, int maxX, int maxY);
 
 class Socket;
 class CCircularBuffer;
@@ -128,6 +129,7 @@ struct Viewer {
     Socket * pStreamSocket;
     CCircularBuffer * pCtrlBuffer;
     CCircularBuffer * pStreamBuffer;
+    WORD * pData;
 
     bool connected;
 
@@ -147,10 +149,9 @@ struct Viewer {
     pthread_mutex_t m_CodecMutex;
 
 
-
-
 };
 
-
-
 #endif //ROBOTCONTROL_IR_VIEWER_H
+
+
+

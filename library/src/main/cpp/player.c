@@ -81,7 +81,7 @@ struct Player * get_player(JNIEnv *env, jobject thiz) {      // should not be ca
 
     }
 
-    jint number = (*env)->GetIntField(env, thiz, fidNumber);
+    long number = (*env)->GetLongField(env, thiz, fidNumber);
 
     if (fidNumber == NULL) {
         LOGE(1, "PLAYER NOT FOUND");
@@ -133,7 +133,7 @@ int jni_player_init(JNIEnv *env, jobject thiz) {
 
 
 
-    (*env)->SetIntField(env, thiz, fidNumber, (jint) player);
+    (*env)->SetLongField(env, thiz, fidNumber, (jlong) player);
 
     goto end;
 

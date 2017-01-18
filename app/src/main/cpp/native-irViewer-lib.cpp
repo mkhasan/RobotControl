@@ -101,3 +101,18 @@ Java_com_railbot_usrc_robotcontrol_IR_1Viewer_renderFrameStop(
     //thread_func((void *) player);
 
 }
+
+
+extern "C"
+jfloat
+Java_com_railbot_usrc_robotcontrol_IR_1Viewer_getTemperature(
+        JNIEnv *env,
+        jobject thisObj, jint x, jint y, jint maxX, jint maxY) {
+
+
+    LOGE(1, "get temperature");
+    struct Viewer * pViewer = getViewer(env, thisObj);
+
+    return (jfloat) GetTemperature(pViewer, x, y, maxX, maxY);
+
+}

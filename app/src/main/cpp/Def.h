@@ -8,6 +8,7 @@
 typedef unsigned char BYTE;
 typedef bool BOOL;
 typedef unsigned int DWORD;
+typedef unsigned short WORD;
 
 #define FALSE false
 #define TRUST true
