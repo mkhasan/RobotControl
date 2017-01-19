@@ -73,8 +73,10 @@ public class VideoPlayer {
         @Override
         protected void onPostExecute(Void result) {
             if (player.mpegListener != null) {
-                FFError error = new FFError(errorCode);
-                player.mpegListener.onFFError(error);
+                FFError err = null;
+                if (errorCode != 0)
+                    err = new FFError(errorCode);
+                player.mpegListener.onFFError(err);
             }
         }
 

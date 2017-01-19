@@ -557,7 +557,13 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
     public void onFFError(FFError error) {
 
 
-        //callback();
+        if (error == null) {
+            //Toast.makeText(this, "hello", Toast.LENGTH_LONG).show();
+            this.mLoadingView.setVisibility(View.GONE);
+            connected = true;
+
+            return;
+        }
 
         if (error != null) {
             String format = getResources().getString(
@@ -621,8 +627,6 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         //mPlayPauseButton.setEnabled(true);
         //this.mControlsView.setVisibility(View.VISIBLE);
 
-        this.mLoadingView.setVisibility(View.GONE);
-        connected = true;
 
         /*
 
