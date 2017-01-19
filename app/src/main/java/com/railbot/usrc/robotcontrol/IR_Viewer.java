@@ -71,7 +71,7 @@ public class IR_Viewer {
             Log.e(TAG, str);
 
             if (viewer.listener != null)
-                viewer.listener.onDataSourceLoaded(2);
+                viewer.listener.onDataSourceLoaded(result);
 
             //viewer.surfaceView.onGetTemperature((float) 30.0);
         }

@@ -48,7 +48,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
     protected boolean mPlay = false;
     private boolean stopOnRelease;
 
-    Boolean connected;
+    Boolean imageCamConnected, thermalCamConnectted;
 
     private enum CameraType {
         image,
@@ -121,7 +121,8 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         moveForwardBtn = (ImageButton) findViewById(R.id.button_forward);
 
         portraitOrientation = true;
-        connected = false;
+        imageCamConnected = false;
+        thermalCamConnectted = false;
         stopOnRelease = true;
 
         String choice = getIntent().getStringExtra("choice");
@@ -217,7 +218,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
             mLoadingView.setVisibility(View.GONE);
 
-            connected = true;
+
         }
         else if (cameraType == CameraType.image ) {
             surfaceView.setVisibility(View.VISIBLE);
@@ -231,11 +232,11 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         }
         else if (cameraType == CameraType.thermal) {
             irSurfaceView.setVisibility(View.VISIBLE);
-            mLoadingView.setVisibility(View.GONE);
             irViewer = new IR_Viewer(irSurfaceView);
 
-        } else
-            connected = false;
+        } else {
+                    // to be handled later
+        }
 
         if (cameraType == CameraType.thermal)
 
@@ -419,7 +420,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         //setResult(-1);
         //finish();
         Log.e(TAG, cameraType == CameraType.image ? "Image" : (cameraType == CameraType.none ? "none" : "error"));
-        if (!connected) {
+        if (!IsConnected()) {
 
             Toast.makeText(this, getString(R.string.wait_for_connection), Toast.LENGTH_LONG).show();
             return;
@@ -437,7 +438,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
     public void moveBack() {
 
-        if (!connected) {
+        if (!IsConnected()) {
 
             Toast.makeText(this, getString(R.string.wait_for_connection), Toast.LENGTH_LONG).show();
             return;
@@ -463,7 +464,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
     public void moveFront() {
 
-        if (!connected) {
+        if (!IsConnected()) {
 
             Toast.makeText(this, getString(R.string.wait_for_connection), Toast.LENGTH_LONG).show();
             return;
@@ -560,14 +561,14 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         if (error == null) {
             //Toast.makeText(this, "hello", Toast.LENGTH_LONG).show();
             this.mLoadingView.setVisibility(View.GONE);
-            connected = true;
+            imageCamConnected = true;
 
             return;
         }
 
         if (error != null) {
             String format = getResources().getString(
-                    R.string.main_could_not_open_stream);
+                    R.string.main_could_not_open_image_stream);
             String message = String.format(format, error.getMessage());
 
             Log.e(TAG, error.getMessage());
@@ -599,7 +600,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
     public void onFFDataSourceLoaded(FFError err, StreamInfo[] streams) {
         if (err != null) {
             String format = getResources().getString(
-                    R.string.main_could_not_open_stream);
+                    R.string.main_could_not_open_ir_stream);
             String message = String.format(format, err.getMessage());
 
             Log.e(TAG, err.getMessage());
@@ -772,8 +773,53 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
 
     @Override
-    public void onDataSourceLoaded(int isConnected) {
-        Log.e(TAG, "Connected is " + isConnected);
+    public void onDataSourceLoaded(int result) {
+
+        Log.e(TAG, "Connected is " + result);
+
+        if (result != 0) {
+            String message = getResources().getString(
+                    R.string.main_could_not_open_ir_stream);
+            //String message = String.format(format, error.getMessage());
+
+            //Log.e(TAG, error.getMessage());
+            new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK)
+                    .setTitle("Error")
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            VideoActivity.this.finish();
+                        }
+                    })
+                    .setOnCancelListener(
+                            new DialogInterface.OnCancelListener() {
+
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    VideoActivity.this.finish();
+                                }
+                            })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            return;
+        }
+        else {
+            thermalCamConnectted = true;
+            mLoadingView.setVisibility(View.GONE);
+        }
+
     }
+
+    boolean IsConnected() {
+        if (cameraType == CameraType.none)
+            return  true;
+        boolean connected = false;
+        connected = connected || (cameraType == CameraType.image && imageCamConnected == true);
+        connected = connected || (cameraType == CameraType.thermal && thermalCamConnectted == true);
+
+        return connected;
+    }
+
+
 }
 

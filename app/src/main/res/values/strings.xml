@@ -24,7 +24,8 @@
     <string name="image_and_thermal_cam">Image And Thrermal Cameras</string>
     <string name="exit">Exit</string>
 
-    <string name="main_could_not_open_stream">Could not open stream</string>
+    <string name="main_could_not_open_image_stream">Could not open image stream</string>
+    <string name="main_could_not_open_ir_stream">Could not open IR stream</string>
 
     <string name="Speed">Speed</string>
     <string name="Move">Move</string>
