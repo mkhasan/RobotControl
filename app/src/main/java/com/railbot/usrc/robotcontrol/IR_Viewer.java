@@ -46,7 +46,11 @@ public class IR_Viewer {
         @Override
         protected Integer doInBackground(Void... params) {
 
-            return viewer.connectNativeViewer();
+            int ret = viewer.connectNativeViewer();
+
+            Log.e(TAG, "connection done");
+
+            return ret;
 
             /*
             try {
@@ -95,9 +99,10 @@ public class IR_Viewer {
 
 
 
+            Log.e(TAG, "renderFrameStop begins");
 
             viewer.renderFrameStop();
-
+            Log.e(TAG, "renderFrameStop done");
             return null;
 
         }
@@ -199,6 +204,7 @@ public class IR_Viewer {
     }
 
     public void Finalize() {
+        Log.e(TAG, "Finalizing");
         new StopTask(this).execute();
     }
 

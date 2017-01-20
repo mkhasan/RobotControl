@@ -118,11 +118,14 @@ public class VideoPlayer {
                 result.error = null;
                 result.streams = player.getStreamsInfo();
             }
+
+            Log.e(TAG, "SetDataSourceTaskResult done");
             return result;
         }
 
         @Override
         protected void onPostExecute(SetDataSourceTaskResult result) {
+            Log.e(TAG, "sending result to " + (player.mpegListener == null ? "null" : "not null"));
             if (player.mpegListener != null)
                 player.mpegListener.onFFDataSourceLoaded(result.error,
                        result.streams);

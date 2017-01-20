@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,9 @@ import com.railbot.usrc.mediaplayer.VideoDisplay;
 import com.railbot.usrc.mediaplayer.VideoPlayer;
 
 import java.util.HashMap;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static android.content.RestrictionsManager.RESULT_ERROR;
 
@@ -56,6 +60,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         both,
         none
     }
+
 
 
     ////////////////////////// newly added ///////////////////////////////
@@ -92,9 +97,44 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
             state.setText(String.format("%d", count++));
 
             Log.e(TAG, "onTimer");
-            timerHandler.postDelayed(this, 1000);
+            //timerHandler.postDelayed(this, 1000);
         }
+
+
     };
+
+    private static class ConnectionCheckTask extends AsyncTask<Object, Void, Integer> {
+
+        private final VideoActivity activity;
+
+        public ConnectionCheckTask(VideoActivity _activity) {
+            this.activity = _activity;
+
+        }
+
+
+        @Override
+        protected Integer doInBackground(Object... params) {
+
+            //player.stopNative();
+            //return null;
+            try {
+                Thread.sleep(5000);
+            }
+            catch (Exception e) {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            Log.e(TAG, "Connection Task Result is " + result);
+        }
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +204,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
         count = 0;
 
-        //timerHandler.postDelayed(timerRunnable, 0);
+        //timerHandler.postDelayed(timerRunnable, 2000);
 
         Log.e(TAG, "onCreate");
 
@@ -517,11 +557,22 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         super.onDestroy();
 
         if (cameraType == CameraType.image) {
+
+            mMpegPlayer.setListener(null);
             Log.e(TAG, "going to stop");
             this.mMpegPlayer.stop();
 
             setResult(RESULT_OK);
+
+
+
+
         }
+
+        if (cameraType == CameraType.thermal)
+
+            irViewer.setListener(null);
+
 
 
 

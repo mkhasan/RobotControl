@@ -73,7 +73,9 @@ public class VideoSurfaceView extends SurfaceView implements VideoDisplay,
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        player.setListener(null);
         this.player.renderFrameStop();
+        Log.e(TAG, "onDestroy");
         mCreated = false;
     }
 

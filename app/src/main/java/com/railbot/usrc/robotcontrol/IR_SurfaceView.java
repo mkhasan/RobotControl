@@ -90,6 +90,7 @@ public class IR_SurfaceView extends SurfaceView implements View.OnTouchListener,
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         //this.player.renderFrameStop();
+        Log.e(TAG, "onDestrooy");
         viewer.Finalize();
         mCreated = false;
         if (showTemperature != null)

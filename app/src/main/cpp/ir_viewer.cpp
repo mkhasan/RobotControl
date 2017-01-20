@@ -373,10 +373,14 @@ int Connect(struct Viewer * pViewer) {
         pViewer->pCtrlSocket->Close();
     }
 
+    LOGE(1, "Open Begins");
+
     ret = pViewer->pCtrlSocket->Open(SERVER_ADDR, CTRL_PORT);
+    LOGE(1, "Open Done");
     if ( ret < 0) {
         return ret;
     }
+
 
     ret = pViewer->pCtrlSocket->ReceiveAnswer(-1, READY, &Packet);
 
