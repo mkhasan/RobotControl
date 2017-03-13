@@ -169,11 +169,15 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
         Log.e(TAG, "Choice is "+choice);
 
+        String motionStr = getResources().getText(R.string.motion_only).toString();
+        String imageStr = getResources().getText(R.string.image_camera).toString();
+        String thermalStr = getResources().getText(R.string.thermal_camera).toString();
+
         if (choice.equals(getString(R.string.motion_only)))
             cameraType = CameraType.none;
-        else if (choice.equals(getString(R.string.image_camera)))
+        else if (choice.equals(imageStr))
             cameraType = CameraType.image;
-        else if (choice.equals(getString(R.string.thermal_camera)))
+        else if (choice.equals(thermalStr))
             cameraType = CameraType.thermal;
         else
             cameraType = CameraType.none;

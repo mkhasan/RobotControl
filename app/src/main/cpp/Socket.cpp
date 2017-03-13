@@ -138,7 +138,7 @@ void * Socket::ReceiveThread(void *arg) {
     int sockfd = data->sockfd;
     int sockType = data->sockType;
 
-    int written, i;
+    int written, i, length, flags;
 
     const int sleepUs = 10000;
 
@@ -167,10 +167,14 @@ void * Socket::ReceiveThread(void *arg) {
     while (pViewer->stop == false ) {
 
         if (Socket::IsSocketReady(sockfd)) {
-            written = pBuffer->Receive(sockfd);
+            //written = pBuffer->Receive(sockfd);
 
+            flags = fcntl(sockfd, F_GETFL, 0);
+            fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
 
+            length = read(sockfd, (char*)(pViewer->pTempBuffer), 2*1024*1024);
 
+            written = pBuffer->Write(pViewer->pTempBuffer, length);
             if(sockType == SOCK_CTRL)
             {
                 TCP_DATA   Packet;
@@ -229,7 +233,7 @@ int Socket::ReceiveAnswer(int seed, int code, TCP_DATA *pPacket)
 {
     TCP_DATA Block;
     BYTE     data[MHPACKETSIZE+4];
-    DWORD    length, match;
+    int    length, match;
 
     int waitfor = 10;
 
@@ -243,12 +247,17 @@ int Socket::ReceiveAnswer(int seed, int code, TCP_DATA *pPacket)
         fcntl(sockfd, F_SETFL, flags & ~O_NONBLOCK);
 
         length = read(sockfd, (char*)data, 1452);
+
+        //LOGE(1, "READ check %d", length);
         if(length <= 0)
         {
             LOGE(1, "Error in ReceiveAnswer");
+            usleep(300);
 
 
         }
+
+        //LOGE(1, "READ done %d", length);
 
         if(length > 0 )
             Push(data, length);

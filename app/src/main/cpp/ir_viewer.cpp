@@ -106,6 +106,10 @@ static void DeleteAll(JNIEnv *env, struct Viewer *pViewer) {
         delete[] pViewer->pOutFrame;
         pViewer->pOutFrame = NULL;
     }
+    if(pViewer->pTempBuffer) {
+        delete[] pViewer->pTempBuffer;
+        pViewer->pTempBuffer = NULL;
+    }
     if(pViewer->pFrameData) {
         delete[] pViewer->pFrameData;
         pViewer->pFrameData = NULL;
@@ -225,6 +229,12 @@ int jni_ir_viewer_init(JNIEnv *env, jobject thiz) {
 
     }
 
+    pViewer->pTempBuffer = new (std::nothrow) BYTE[2*1024*1024];
+    if (pViewer->pTempBuffer == NULL) {
+        DeleteAll(env, pViewer);
+        return ERROR_MEM_ALLOCATION;
+    }
+
     pViewer->pOutFrame = new (std::nothrow) BYTE[1920*1088*4];
     if(pViewer->pOutFrame == NULL) {
         DeleteAll(env, pViewer);
@@ -255,6 +265,7 @@ int jni_ir_viewer_init(JNIEnv *env, jobject thiz) {
 
 
 #ifndef JNI
+    /*
     ret = Connect(pViewer);
     if (ret < 0) {
 
@@ -266,6 +277,9 @@ int jni_ir_viewer_init(JNIEnv *env, jobject thiz) {
 
     usleep(100000);
 
+
+
+
     ret = Play(pViewer);
 
     if (ret != 0) {
@@ -273,6 +287,7 @@ int jni_ir_viewer_init(JNIEnv *env, jobject thiz) {
         return ret;
 
     }
+    */
 
 #endif
 

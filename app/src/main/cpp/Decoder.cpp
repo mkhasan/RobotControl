@@ -12,6 +12,10 @@
 #define LIVE_MPEG    0
 #define LIVE_JPEG    1
 #define LIVE_H264    2
+#define LIVE_ADPCM   3
+#define LIVE_MOTION  4
+#define LIVE_EVENT   5
+#define LIVE_NONE    6
 
 #define FRAME_PREFIX_SIZE 12
 #define WORD unsigned short
@@ -27,6 +31,9 @@ int DecodeFrame(struct Viewer * pViewer)
     CCircularBuffer * m_pStreamBuffer = pViewer->pStreamBuffer;
     BYTE * m_pFrameData = pViewer->pFrameData;
     BYTE * m_pOutFrame = pViewer->pOutFrame;
+
+    BYTE AudioInData[200*1024];
+    BYTE AudioOutData[200*1024*2] = {0,};
 
 
     // Check how many frames can be read from buffer.
@@ -49,40 +56,88 @@ int DecodeFrame(struct Viewer * pViewer)
             break;
         }
 
+        if (LiveHeader.Type == 0) { // VIDEO
 
-        switch(LiveHeader.Codec)
-        {
-            case 'M' : frameType = LIVE_MPEG; break;
-            case 'J' : frameType = LIVE_JPEG; break;
-            case 'H' : frameType = LIVE_H264; break;
-            default:
-            {
-                int pos = 0, type;
-                retry--;
-                if(retry<=0) return 0;
-                LOGI(5, "Broken header.\nSearching...");
-                // Search Correct Position
-                pos = m_pStreamBuffer->Search2(&type);
-
-                // Move to correct position
-                if(pos>=0)
-                {
-                    int bufsize = m_pStreamBuffer->GetBufferSize();
-                    int movpos;
-                    if(type==0) // AUDIO
-                        movpos = (pos-(sizeof(TCP_LIVE)) + bufsize) % bufsize;
-                    else // VIDEO
-                        movpos = (pos-(sizeof(TCP_LIVE)+4) + bufsize) % bufsize;
-
-                    m_pStreamBuffer->MovePos(movpos);
-                    LOGI(5, "Got it. Move to correct position..");
-                    continue;
-                }
-                else
-                {
-                    LOGI(2, "No header found");
+            switch (LiveHeader.Codec) {
+                case 'M' :
+                    frameType = LIVE_MPEG;
                     break;
+                case 'J' :
+                    frameType = LIVE_JPEG;
+                    break;
+                case 'H' :
+                    frameType = LIVE_H264;
+                    break;
+                default: {
+                    int pos = 0, type;
+                    retry--;
+                    if (retry <= 0) return 0;
+                    LOGI(5, "Broken header.\nSearching...");
+                    // Search Correct Position
+                    pos = m_pStreamBuffer->Search2(&type);
+
+                    // Move to correct position
+                    if (pos >= 0) {
+                        int bufsize = m_pStreamBuffer->GetBufferSize();
+                        int movpos;
+                        if (type == 0) // AUDIO
+                            movpos = (pos - (sizeof(TCP_LIVE)) + bufsize) % bufsize;
+                        else // VIDEO
+                            movpos = (pos - (sizeof(TCP_LIVE) + 4) + bufsize) % bufsize;
+
+                        m_pStreamBuffer->MovePos(movpos);
+                        LOGI(5, "Got it. Move to correct position..");
+                        continue;
+                    }
+                    else {
+                        LOGI(2, "No header found");
+                        break;
+                    }
                 }
+            }
+        }
+        else if(LiveHeader.Type == 1) {     // AUDIO
+            switch (LiveHeader.Codec) {
+                case 'A' :
+                    frameType = LIVE_ADPCM;
+                    break;
+                case 'G' :
+                    frameType = LIVE_ADPCM;
+                    break;
+                case 'U' :
+                    frameType = LIVE_ADPCM;
+                    break;
+                case 'P' :
+                    frameType = LIVE_ADPCM;
+                    break;
+                default:
+                {
+                    int pos=0, type;
+                    retry --;
+                    if(retry <= 0) return 0;
+                    LOGI(5, "Break hearder. \nSearching...");
+                    pos = m_pStreamBuffer->Search2(&type);
+                    if (pos >= 0) {
+                        int bufsize = m_pStreamBuffer->GetBufferSize();
+                        int movpos;
+                        if (type == 0) // AUDIO
+                            movpos = (pos - (sizeof(TCP_LIVE)) + bufsize) % bufsize;
+                        else // VIDEO
+                            movpos = (pos - (sizeof(TCP_LIVE) + 4) + bufsize) % bufsize;
+
+                        m_pStreamBuffer->MovePos(movpos);
+                        LOGI(5, "Got it. Move to correct position..");
+                        continue;
+                    }
+                    else {
+                        LOGI(2, "No header found");
+                        break;
+                    }
+
+                }
+
+
+
             }
         }
         size = LiveHeader.Size;
@@ -92,6 +147,15 @@ int DecodeFrame(struct Viewer * pViewer)
 
         switch(frameType)
         {
+            case LIVE_ADPCM:
+                m_pStreamBuffer->MovePos(sizeof(TCP_LIVE)+8);
+                m_pStreamBuffer->Read(AudioInData, size-8);
+                /**
+                 * to be added later
+                 */
+                break;
+
+
             ///////////// ADD MOTION DETECTION /////////////////
             case LIVE_H264:
             case LIVE_MPEG:

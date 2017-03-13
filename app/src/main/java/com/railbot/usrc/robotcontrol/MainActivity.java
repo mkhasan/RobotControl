@@ -24,6 +24,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     // Used to load the 'native-lib' library on application startup.
+    static {
+        System.loadLibrary("yuv");
+    }
     String TAG = "RobotControl";
 
     TextView tv;
@@ -117,9 +120,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         String str = item.text();
 
-
+        String exitStr = getResources().getText(R.string.exit).toString();
         Log.e(TAG, "Str is "+str.length());
-        if (str.equals("Exit")) {
+        if (str.equals(exitStr)) {
 
             Log.e(TAG, "Str is "+str);
             finish();

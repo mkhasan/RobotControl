@@ -55,6 +55,8 @@ add_library( ffmpeg
              SHARED
              IMPORTED )
 
+set_property(TARGET ffmpeg PROPERTY IMPORTED_NO_SONAME 1)
+
 set_target_properties( # Specifies the target library.
                        ffmpeg
 
@@ -71,6 +73,8 @@ set_target_properties( # Specifies the target library.
 add_library( yuv
              SHARED
              IMPORTED )
+
+set_property(TARGET yuv PROPERTY IMPORTED_NO_SONAME 1)
 
 set_target_properties( # Specifies the target library.
                        yuv

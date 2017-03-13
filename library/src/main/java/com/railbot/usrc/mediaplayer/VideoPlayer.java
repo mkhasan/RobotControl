@@ -15,9 +15,12 @@ import java.util.Map;
 public class VideoPlayer {
 
     static {
+
         System.loadLibrary("yuv");
         System.loadLibrary("ffmpeg");
         System.loadLibrary("native-lib");
+
+
     }
 
 

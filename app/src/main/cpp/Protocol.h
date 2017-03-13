@@ -30,7 +30,7 @@ typedef struct
     DWORD To       :  5;   // destination object (for interprocess communition only)
     DWORD Reserved :  8;   // reserved
     DWORD Pos;             // position of included data
-} TCP_HEADER;
+} __attribute__((packed)) TCP_HEADER ;
 
 
 typedef struct _TCP_DATA
@@ -45,7 +45,7 @@ typedef struct _TCP_DATA
     DWORD Reserved :  8;   // reserved
     DWORD Pos;             // position of included data
     BYTE  Data[BUFSIZE+4]; // data
-} TCP_DATA;
+} __attribute__((packed)) TCP_DATA;
 
 typedef struct _TCP_LIVE
 {
@@ -61,7 +61,7 @@ typedef struct _TCP_LIVE
     DWORD Info1;          // fps*1000 for video, bps for audio, type for event
     DWORD Info2    : 16;  // width for video, channels for audio
     DWORD Info3    : 16;  // height for video, sampling frequency for audio
-} TCP_LIVE;
+} __attribute__((packed)) TCP_LIVE;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -116,8 +116,10 @@ typedef struct _TCP_LIVE
 #define LIVE_RESET_FAILURE       102 + 2000
 #define LIVE_RESET_FAILURE_MSG  "live reset failed.\r\n"
 
-
-
-
+#define QUERYMIC                238
+#define QUERYMIC_SUCCESS        238 + 1000
+#define QUERYMIC_SUCCESS_MSG   "You can use mic %dbps %dhz %dch\r\n"
+#define QUERYMIC_FAIL           238 + 2000
+#define QUERYMIC_FAIL_MSG      "You can't use mic\r\n"
 
 #endif //ROBOTCONTROL_PROTOCOL_H

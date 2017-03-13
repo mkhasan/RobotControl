@@ -24,7 +24,7 @@
 
 
 
-#define LOG_LEVEL 4
+#define LOG_LEVEL 24
 #define LOG_TAG "ir-native"
 #define MAX_STREAMS 3
 #define MAX_STRLEN 50
@@ -135,6 +135,7 @@ struct Viewer {
 
     BYTE * pFrameData;
     BYTE * pOutFrame;
+    BYTE * pTempBuffer;
 
     int liveID;
     int live;
