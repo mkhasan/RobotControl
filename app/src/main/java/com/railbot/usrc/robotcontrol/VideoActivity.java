@@ -562,9 +562,16 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
         if (cameraType == CameraType.image) {
 
+            /*
             mMpegPlayer.setListener(null);
             Log.e(TAG, "going to stop");
             this.mMpegPlayer.stop();
+            */
+
+            if(mMpegPlayer !=  null)
+                mMpegPlayer.DellaocatePlayer();
+
+            Log.e(TAG, "going to deallocate");
 
             setResult(RESULT_OK);
 
@@ -607,6 +614,13 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                     .setCancelable(true).show();
         }
         */
+
+        if (isFinished) {
+            mMpegPlayer.stop();
+
+            Log.e(TAG, "Error: stream should not be finished so earyly");
+
+        }
     }
 
     @Override
@@ -716,8 +730,8 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
     @Override
     public void onFFStop() {
 
-        Log.e(TAG, "going to de alloc");
-        mMpegPlayer.deallocNative();
+        Log.e(TAG, "MpegPlayer stopped");
+        //mMpegPlayer.deallocNative();
     }
 
     @Override

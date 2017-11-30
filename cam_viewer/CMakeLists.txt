@@ -9,8 +9,8 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds it for you.
 # Gradle automatically packages shared libraries with your APK.
 
-include_directories(/home/usrc/external/lib/android/ffmpeg-3.2-android-19)
-include_directories(/home/usrc/external/lib/libyuv-android-master/jni/include)
+include_directories($ENV{HOME}/external/lib/android/ffmpeg-3.2-android-19)
+include_directories($ENV{HOME}/external/lib/libyuv-android-master/jni/include)
 
 add_library( # Sets the name of the library.
              native-lib

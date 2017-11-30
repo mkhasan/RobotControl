@@ -9,7 +9,7 @@
           <set>
             <option value="/media/usrc/external/RailRobot/App/RobotControl" />
             <option value="/media/usrc/external/RailRobot/App/RobotControl/app" />
-            <option value="/media/usrc/external/RailRobot/App/RobotControl/library" />
+            <option value="/media/usrc/external/RailRobot/App/RobotControl/cam_viewer" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

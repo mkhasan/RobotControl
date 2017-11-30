@@ -16,9 +16,8 @@ public class VideoPlayer {
 
     static {
 
-
-        System.loadLibrary("ffmpeg");
         System.loadLibrary("yuv");
+        System.loadLibrary("ffmpeg");
         System.loadLibrary("native-lib");
 
 
@@ -42,14 +41,18 @@ public class VideoPlayer {
         @Override
         protected Void doInBackground(Void... params) {
 
-            player.stopNative();
+            if(player.mNativePlayer != 0)
+                player.stopNative();
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
-            if (player.mpegListener != null)
+
+            if (player.mpegListener != null) {
+                Log.e(TAG, "Stoping almost done");
                 player.mpegListener.onFFStop();
+            }
         }
 
 
@@ -113,8 +116,12 @@ public class VideoPlayer {
             int audioStreamNo = audioStream == null ? -1 : audioStream.intValue();
             int subtitleStreamNo = subtitleStream == null ? -1 : subtitleStream.intValue();
 
+
             int err = player.setDataSourceNative(url);//, map, videoStreamNo, audioStreamNo, subtitleStreamNo);
+
             SetDataSourceTaskResult result = new SetDataSourceTaskResult();
+
+
             if (err < 0) {
                 result.error = new FFError(err);
                 result.streams = null;
@@ -146,6 +153,7 @@ public class VideoPlayer {
     private long mNativePlayer;
     private final Activity activity;
 
+
     private Runnable updateTimeRunnable = new Runnable() {
 
         @Override
@@ -175,12 +183,13 @@ public class VideoPlayer {
 
 
         this.activity = activity;
-        mNativePlayer = -1;
-        Log.e("Init", "Initiating");
+        mNativePlayer = 0;
+
         int error = initNative();
         if (error != 0)
             throw new RuntimeException(String.format(
                     "Could not initialize player: %d", error));
+
         videoView.setMpegPlayer(this);
 
     }
@@ -211,7 +220,7 @@ public class VideoPlayer {
 
 
     public native int initNative();
-    public native int deallocNative();
+    private native int deallocNative();
     public native void render(Surface surface);
     public native int setDataSourceNative(String url);
     private native void stopNative();
@@ -228,6 +237,10 @@ public class VideoPlayer {
 
     public void setListener(FFListener mpegListener) {
         this.mpegListener = mpegListener;
+
+        Log.e(TAG, "mpegListener is "+(mpegListener == null ? "null" : "not null"));
+
+
     }
     private StreamInfo[] mStreamsInfos = null;
     protected StreamInfo[] getStreamsInfo() {
@@ -241,6 +254,20 @@ public class VideoPlayer {
         new CommErrorTask(this, i).execute();
         Log.e(TAG, "From callback: " + Integer.toString(i));
     }
+
+    public void DellaocatePlayer() {
+        deallocNative();
+        mNativePlayer = 0;
+    }
+
+    private void onUpdateTime(long currentUs, long maxUs, boolean isFinished) {
+
+        this.mCurrentTimeUs = currentUs;
+        this.mVideoDurationUs = maxUs;
+        this.mIsFinished  = isFinished;
+        activity.runOnUiThread(updateTimeRunnable);
+    }
+
 
 }
 

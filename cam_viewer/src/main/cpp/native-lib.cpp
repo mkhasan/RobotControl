@@ -50,6 +50,7 @@ Java_com_railbot_usrc_mediaplayer_VideoPlayer_initNative(
     (*env)->CallVoidMethod(env, player->thiz, midCallBack);
 
     */
+    LOGE(1, "Init player");
     return jni_player_init(env, thisObj);
 
 
@@ -63,8 +64,9 @@ Java_com_railbot_usrc_mediaplayer_VideoPlayer_deallocNative(
         jobject thisObj) {
 
 
-    jni_player_dealloc(env, thisObj);
     LOGE(1, "deallocating");
+    jni_player_dealloc(env, thisObj);
+
 
 }
 
@@ -75,8 +77,9 @@ Java_com_railbot_usrc_mediaplayer_VideoPlayer_stopNative(
         jobject thisObj) {
     std::string hello = "Hello from stop";
 
-    jni_player_stop(env, thisObj);
     LOGE(1, "Stopping...");
+    jni_player_stop(env, thisObj);
+
 
 
 
@@ -123,8 +126,9 @@ Java_com_railbot_usrc_mediaplayer_VideoPlayer_renderFrameStop(
         JNIEnv *env,
         jobject thisObj) {
 
-    jni_player_render_frame_stop(env, thisObj);
     LOGE(1, "renderFrameStopping");
+    jni_player_render_frame_stop(env, thisObj);
+
     //thread_func((void *) player);
 
 }

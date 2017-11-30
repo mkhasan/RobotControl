@@ -26,12 +26,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     sourceSets {
         main {
             // let gradle pack the shared library into apk
             jniLibs.srcDirs = ['./src/main/jniLibs']
+
         }
     }
+
+
+
 
     externalNativeBuild {
         cmake {
@@ -47,4 +52,5 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
+
 }

@@ -557,7 +557,7 @@ enum WaitFuncRet player_wait_for_frame(struct Player *player, int64_t stream_tim
         if (sleep_time < -300000ll || player->Test == 1 ) {     // Test had been added to reduce delay...we just trying to remove the few beginning frames.
             // 300 ms late                                      // Since we are only interested on what is going on now, we do not need those frames. In this
             //if (Test)                                         // way we can get better realtime camera view. We are doing this by skipping first few frames.
-                LOGE(1, "player_wait test captured ");          // head = 100 does this trick. What we are doing here is to make the timestamp of the first frame
+            //    LOGE(1, "player_wait test captured ");          // head = 100 does this trick. What we are doing here is to make the timestamp of the first frame
             player->Test = 0;                                   // as the start time.
             int64_t new_value = player->start_time - sleep_time;
 
@@ -639,8 +639,9 @@ void * player_read_from_stream(void *data) {
         goto end;
     }
 
-    int head = 100;         // we are removeing first 100 frames to get better realtime camera view...
+    int head = 0;         // we are removeing first 100 frames to get better realtime camera view...
 
+    LOGE(1, "skipping %d frames", head);
     player->Test = 1;
     for (;;) {
         int ret = av_read_frame(player->input_format_ctx, pkt);
@@ -651,7 +652,7 @@ void * player_read_from_stream(void *data) {
 
         if (player->Test == 1) {
             player->error = 0;
-            callback(player, env);
+            //callback(player, env);
         }
 
 
@@ -712,7 +713,7 @@ void * player_read_from_stream(void *data) {
         }
 
         if (queue == NULL) {
-            LOGI(3, "player_read_from_stream stream not found");
+            LOGI(3, "player_read_from_stream stream not found (%d %d %d)", packet.stream_index, player->input_stream_numbers[0], caputre_streams_no);
             goto skip_loop;
         }
 

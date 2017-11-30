@@ -48,9 +48,10 @@ void callback(struct Player * player, JNIEnv *env);
 
 
 #define LOG_LEVEL 10
-#define LOG_TAG "native-player"
+#define LOG_TAG "pi-dr-native-player"
 #define MAX_STREAMS 3
-#define MAX_STRLEN 50
+#define MAX_STRLEN 100
+
 
 #define LOG(...) {__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__);}
 #define LOGI(level, ...) if (level <= LOG_LEVEL) {__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__);}
@@ -127,7 +128,9 @@ enum PlayerErrors {
     ERROR_COULD_NOT_CREATE_PTHREAD,
     ERROR_COULD_NOT_DESTROY_PTHREAD_ATTR,
     ERROR_COULD_NOT_ALLOCATE_MEMORY,
-    ERROR_PTS_IS_ZERO
+    ERROR_PTS_IS_ZERO,
+    MAX_STRLEN_LIMIT_EXCEEDED,
+    ON_UPDATE_TIME_METHOD_NOT_FOUND
 };
 
 #define MIN_SLEEP_TIME_US 1000ll
@@ -221,6 +224,8 @@ struct Player {
     int Test;
 
     int error;
+
+    char file_path[MAX_STRLEN];
     //AVCodecContext    *pCodecCtx;
 
 };

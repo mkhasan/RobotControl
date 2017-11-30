@@ -208,25 +208,37 @@ int player_set_data_source(struct State *state, const char *file_path) {
         goto end;
 
 
+
     // initial setup
     player->pause = TRUE;
     player->start_time = 0;
     player->pause_time = 0;
 
     // trying decode video
-    if ((err = player_create_context(player)) < 0)
+    if ((err = player_create_context(player)) < 0) {
+
         goto error;
+
+    }
+
+
+
+
 
 
     if ((err = player_create_interrupt_callback(player)) < 0)
         goto error;
 
 
+
     if ((err = player_open_input(player, file_path)) < 0)
         goto error;
 
+
+
     if ((err = player_find_stream_info(player)) < 0)
         goto error;
+
 
 
 
@@ -270,6 +282,7 @@ int player_set_data_source(struct State *state, const char *file_path) {
 		if (err < 0)
 			goto error;
 	}
+
 #endif // SUBTITLES
      */
     if ((err = player_alloc_video_frames(player)) < 0) {
@@ -415,11 +428,13 @@ int player_create_context(struct Player *player) {
 
 
 
+
     player->input_format_ctx = avformat_alloc_context();        // as the examples showed...we do not need to allocate context
     if (player->input_format_ctx == NULL) {
         LOGE(1, "Could not create AVContext\n");
         return -ERROR_COULD_NOT_CREATE_AVCONTEXT;
     }
+
 
 
     return 0;
@@ -453,20 +468,43 @@ int player_ctx_interrupt_callback(void *p) {
 
 int player_open_input(struct Player *player, const char *file_path) {
     int ret;
-    if ((ret = avformat_open_input(&(player->input_format_ctx), file_path, NULL,
+
+
+    int len = strlen(file_path);
+    if (len >= MAX_STRLEN)
+        return -MAX_STRLEN_LIMIT_EXCEEDED;
+
+
+    int i=0;
+
+    for (i=0; i<len; i++) {
+        player->file_path[i] = file_path[i];
+        if (player->file_path[i] == '\n' || player->file_path[i] == ' ') {              // search for white character ......
+            player->file_path[i] = 0;
+            break;
+        }
+
+    }
+
+
+
+
+    if ((ret = avformat_open_input(&(player->input_format_ctx), player->file_path, NULL,
                                    NULL)) < 0) {
         char errbuf[128];
         const char *errbuf_ptr = errbuf;
+
 
         if (av_strerror(ret, errbuf, sizeof(errbuf)) < 0)
             errbuf_ptr = strerror(AVUNERROR(ret));
 
         LOGE(1,
              "player_set_data_source Could not open video file: %s (%d: %s)\n",
-             file_path, ret, errbuf_ptr);
+             player->file_path, ret, errbuf_ptr);
         return -ERROR_COULD_NOT_OPEN_VIDEO_FILE;
     }
     player->input_inited = TRUE;
+
 
     return ERROR_NO_ERROR;
 }
@@ -869,6 +907,20 @@ void player_update_time(struct State *state, int is_finished) {
     }
 }
 
+
+/*      Just to see the a sample
+ *  jclass thisClass = (*env)->GetObjectClass(env, player->thiz);
+    jmethodID midCallBack = (*env)->GetMethodID(env, thisClass, "callbackError", "(I)V");
+
+    if (NULL == midCallBack) {
+        LOGE(0, "callback error");
+        return;
+    }
+    jint error = player->error;
+    LOGE(1, "calling callback with %d", error);
+    (*env)->CallVoidMethod(env, player->thiz, midCallBack, error);
+
+ */
 void player_update_current_time(struct State *state,
                                 int64_t current_time,
                                 int64_t video_duration,
@@ -883,6 +935,20 @@ void player_update_current_time(struct State *state,
                                   player->player_on_update_time_method, current_time,
                                   video_duration, jis_finished);
                                   */
+
+    jclass thisClass = (*(state->env))->GetObjectClass(state->env, player->thiz);
+    jmethodID onUpdateTimeMethod = (*(state->env))->GetMethodID(state->env, thisClass, "onUpdateTime", "(JJZ)V");
+
+    if (NULL == onUpdateTimeMethod) {
+        player->error = ON_UPDATE_TIME_METHOD_NOT_FOUND;
+        callback(player, state->env);
+
+    } else {
+        (*(state->env))->CallVoidMethod(state->env, player->thiz, onUpdateTimeMethod, current_time,
+                                        video_duration, jis_finished);
+    }
+
+
 
 
 }
@@ -962,7 +1028,15 @@ void jni_player_resume(JNIEnv *env, jobject thiz) {
 }
 
 void jni_player_dealloc(JNIEnv *env, jobject thiz) {
+
+
     struct Player *player = get_player(env, thiz);
+
+    if(player == NULL) {
+        LOGE(1, "player already deallocated");
+        return;
+    }
+
     if (player->thiz != NULL) {
         (*env)->DeleteGlobalRef(env, player->thiz);
     }
@@ -972,6 +1046,7 @@ void jni_player_dealloc(JNIEnv *env, jobject thiz) {
     }
      */
     free(player);
+
 }
 
 void jni_player_stop(JNIEnv *env, jobject thiz) {
@@ -991,7 +1066,9 @@ void player_stop(struct State * state) {
     pthread_mutex_unlock(&player->mutex_interrupt);
 
     pthread_mutex_lock(&player->mutex_operation);
-    player_stop_without_lock(state);
+    if(state->player->playing == TRUE)
+        player_stop_without_lock(state);
+
     pthread_mutex_unlock(&player->mutex_operation);
 }
 
@@ -1048,5 +1125,6 @@ void callback(struct Player *player, JNIEnv *env) {
         return;
     }
     jint error = player->error;
+    LOGE(1, "calling callback with %d", error);
     (*env)->CallVoidMethod(env, player->thiz, midCallBack, error);
 }
