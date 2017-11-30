@@ -25,6 +25,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     // Used to load the 'native-lib' library on application startup.
 
+    /*
+        libyuv.so has to be created by checkig the target SDK otherwise it will not work
+        I loaded library yuv here to test if it works well with our app.
+        Actually we do not need to use yuv in the activity I just load it to check at the
+        beginning of the app
+     */
     static {
         System.loadLibrary("yuv");
     }
@@ -36,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //static public String serverAddr = "1"
 
-    static public String url = "rtsp://admin:admin@192.168.0.101:554/stream1";
+    static public String url = "rtsp://admin:admin@192.168.0.101:554/stream1";      // choose stream0 or stream1 depending to the required stream resolution.
     //static public String url = "rtsp://admin:admin@192.168.1.100:554/12";
 
     private ItemsAdapter adapter;
