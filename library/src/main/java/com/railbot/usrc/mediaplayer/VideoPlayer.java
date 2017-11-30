@@ -16,8 +16,9 @@ public class VideoPlayer {
 
     static {
 
-        System.loadLibrary("yuv");
+
         System.loadLibrary("ffmpeg");
+        System.loadLibrary("yuv");
         System.loadLibrary("native-lib");
 
 

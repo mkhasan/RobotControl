@@ -71,7 +71,7 @@ public class MsgSender {
 
                     byte[] message = msg.getBytes();
 
-                    // Get the internet address of the specified host
+                    // Get the interSnet address of the specified host
                     InetAddress address = InetAddress.getByName(host);
 
                     // Initialize a datagram packet with data and address

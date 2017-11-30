@@ -29,7 +29,7 @@ android {
     sourceSets {
         main {
             // let gradle pack the shared library into apk
-            jniLibs.srcDirs = ['/home/usrc/jniLibs']
+            jniLibs.srcDirs = ['./src/main/jniLibs']
         }
     }
 
