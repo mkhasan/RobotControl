@@ -7,10 +7,9 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="/media/usrc/external/RailRobot/App/RobotControl" />
-            <option value="/media/usrc/external/RailRobot/App/RobotControl/app" />
-            <option value="/media/usrc/external/RailRobot/App/RobotControl/bugstick" />
-            <option value="/media/usrc/external/RailRobot/App/RobotControl/cam_viewer" />
+            <option value="/media/usrc/external/UnMannedDrone/Bugstick-master" />
+            <option value="/media/usrc/external/UnMannedDrone/Bugstick-master/bugstick" />
+            <option value="/media/usrc/external/UnMannedDrone/Bugstick-master/sample" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

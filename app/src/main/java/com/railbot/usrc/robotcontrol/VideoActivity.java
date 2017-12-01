@@ -41,16 +41,24 @@ import java.util.HashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import com.jmedeisis.bugstick.Joystick;
 
 import static android.content.RestrictionsManager.RESULT_ERROR;
+
 
 public class VideoActivity extends Activity implements FFListener, IR_ViewerListener {
 
     private static final String TAG 	 = "VideoActiveity";
+    public static int panAngle = 0;
+    public static int tiltAngle = 0;
+
+
     private VideoPlayer mMpegPlayer;
     boolean portraitOrientation;
     protected boolean mPlay = false;
     private boolean stopOnRelease;
+
+
 
     Boolean imageCamConnected, thermalCamConnectted;
 
@@ -62,10 +70,13 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
     }
 
 
+    Joystick panStick;
+
 
     ////////////////////////// newly added ///////////////////////////////
     private SeekBar speedBar;
     public RailController railController;
+    private ControlStickListener panStickListener = null;
     private MsgSender msgSender;
     TextView speedView;
     private TextView state;
@@ -360,6 +371,21 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
 
 
+        panStick = (Joystick) findViewById(R.id.pan_stick);
+        panStickListener= new ControlStickListener(ControlStickListener.ControlType.PAN);
+        panStickListener.SetRailController(railController);
+        panStick.setJoystickListener(panStickListener);
+
+        final Button calibrateBtn = (Button) findViewById(R.id.calibrate);
+        calibrateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(railController != null) {
+                    railController.Calibrate();
+
+                }
+            }
+        });
 
     }
 

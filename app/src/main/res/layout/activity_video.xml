@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/black"
     tools:context="com.railbot.usrc.robotcontrol.VideoActivity">
@@ -55,13 +56,136 @@
 
     </RelativeLayout>
     <RelativeLayout
-        android:id="@+id/control_set"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:visibility="visible">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/control_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:visibility="visible">
+            <ImageButton
+                android:id="@+id/stop"
+                android:layout_width="@dimen/img_btn_width"
+                android:layout_height="@dimen/img_btn_height"
+                android:padding="0dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/stop"
+                android:background="@color/black"
+                android:scaleType="fitXY"
+                android:onClick="moveStop"/>
+            <TextView
+                android:id="@+id/speed_label"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:textSize="18sp"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:layout_height="wrap_content"
+                android:textColor="@color/off_white"
+                android:text="Speed (0.0~4.0)"/>
+            <TextView
+                android:id="@+id/state"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="0dp"
+                android:textSize="18sp"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content"
+                android:textColor="@color/off_white"
+                android:text="@string/state"/>
+
+            <SeekBar
+                android:id="@+id/speed_bar"
+                android:layout_width="@dimen/seeker_width"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:paddingTop="@dimen/seekbar_padding"
+                android:paddingBottom="@dimen/seekbar_padding"
+                android:layout_below="@id/speed_label"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:background="@color/blue" />
+            <TextView
+                android:id="@+id/speed_text"
+                android:layout_width="105dp"
+                android:layout_marginLeft="0dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textColor="@color/off_white"
+                android:layout_toRightOf="@id/speed_bar"
+                android:layout_below="@id/speed_label"
+                android:textSize="20sp"
+                android:text="0.0 m/s"/>
+
+
+            <LinearLayout
+                android:id="@+id/relative_grp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_below="@id/speed_bar"
+                android:visibility="visible"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/off_white"
+                    android:textSize="20sp"
+                    android:text="@string/stop_on_release"
+                    android:paddingRight="10dp"
+                    android:gravity="center"/>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+                <com.jmedeisis.bugstick.Joystick
+                    android:id="@+id/pan_stick"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/stick_size"
+                    android:layout_margin="@dimen/default_margin"
+                    android:background="@drawable/bg_base"
+                    android:layout_centerVertical="true"
+                    app:start_on_first_touch="false"
+                    app:force_square="false"
+                    app:motion_constraint="Horizontal">
+
+                    <Button
+                        android:layout_width="@dimen/stick_size"
+                        android:layout_height="@dimen/stick_size"
+                        android:background="@drawable/bg_stick" />
+
+                </com.jmedeisis.bugstick.Joystick>
+
+                <Button
+                    android:id="@+id/calibrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calibrate"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/control_set1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
-        android:visibility="visible">
+        android:visibility="gone">
         <ImageButton
-            android:id="@+id/stop"
+            android:id="@+id/stop1"
             android:layout_width="@dimen/img_btn_width"
             android:layout_height="@dimen/img_btn_height"
             android:padding="0dp"
@@ -71,7 +195,7 @@
             android:scaleType="fitXY"
             android:onClick="moveStop"/>
         <TextView
-            android:id="@+id/speed_label"
+            android:id="@+id/speed_label1"
             android:layout_width="wrap_content"
             android:layout_marginLeft="0dp"
             android:textSize="18sp"
@@ -80,7 +204,7 @@
             android:textColor="@color/off_white"
             android:text="Speed (0.0~4.0)"/>
         <TextView
-            android:id="@+id/state"
+            android:id="@+id/state1"
             android:layout_width="wrap_content"
             android:layout_marginRight="0dp"
             android:textSize="18sp"
@@ -91,35 +215,35 @@
             android:text="@string/state"/>
 
         <SeekBar
-            android:id="@+id/speed_bar"
+            android:id="@+id/speed_bar1"
             android:layout_width="@dimen/seeker_width"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:paddingTop="@dimen/seekbar_padding"
             android:paddingBottom="@dimen/seekbar_padding"
-            android:layout_below="@id/speed_label"
+            android:layout_below="@id/speed_label1"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:background="@color/blue" />
         <TextView
-            android:id="@+id/speed_text"
+            android:id="@+id/speed_text1"
             android:layout_width="105dp"
             android:layout_marginLeft="0dp"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:textColor="@color/off_white"
-            android:layout_toRightOf="@id/speed_bar"
-            android:layout_below="@id/speed_label"
+            android:layout_toRightOf="@id/speed_bar1"
+            android:layout_below="@id/speed_label1"
             android:textSize="20sp"
             android:text="0.0 m/s"/>
 
 
         <LinearLayout
-            android:id="@+id/relative_grp"
+            android:id="@+id/relative_grp1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:layout_below="@id/speed_bar"
+            android:layout_below="@id/speed_bar1"
             android:visibility="visible"
             android:orientation="horizontal"
             android:layout_centerHorizontal="true">
@@ -160,7 +284,7 @@
             android:layout_width="@dimen/img_btn_width"
             android:layout_height="@dimen/img_btn_height"
             android:padding="0dp"
-            android:layout_below="@id/relative_grp"
+            android:layout_below="@id/relative_grp1"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/move_btn_horizontal_margin"
             android:src="@drawable/backward"
@@ -170,7 +294,7 @@
             android:id="@+id/move_text"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/img_btn_height"
-            android:layout_below="@id/relative_grp"
+            android:layout_below="@id/relative_grp1"
             android:text="@string/Move"
             android:textSize="20sp"
             android:textColor="@color/off_white"
@@ -182,7 +306,7 @@
             android:layout_width="@dimen/img_btn_width"
             android:layout_height="@dimen/img_btn_height"
             android:padding="0dp"
-            android:layout_below="@id/relative_grp"
+            android:layout_below="@id/relative_grp1"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/move_btn_horizontal_margin"
             android:src="@drawable/forward"

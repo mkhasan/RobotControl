@@ -1,1 +1,1 @@
-include ':app', ':cam_viewer'
+include ':app', ':cam_viewer', ':bugstick'

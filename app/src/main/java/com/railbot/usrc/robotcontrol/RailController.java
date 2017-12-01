@@ -204,6 +204,7 @@ public class RailController extends DeviceController {
         Log.e(TAG, "curUpangle: " + curSideAngle + " msg: " + msg);
     }
 
+
     void CameraRight() {
 
         Log.e(TAG, "Sending msg");
@@ -226,6 +227,84 @@ public class RailController extends DeviceController {
         Log.e(TAG, "curUpangle: " + curSideAngle + " msg: " + msg);
     }
 
+
+    void Calibrate() {
+
+        Log.e(TAG, "Sending msg");
+
+
+        String angleStr = "0000";
+
+        String msg;
+        msg = "" + frameHead;
+        msg += '3';  // type for camera mode
+        msg += '1';  // cmd for up/down movement
+        msg += angleStr; // continous move
+        msg += checkSum;
+        msg += frameTail;
+
+        msgSender.SendMsg(msg, true);
+
+        angleStr = "0000";
+        msg = "" + frameHead;
+        msg += '3';  // type for camera mode
+        msg += '2';  // cmd for left/right movement
+        msg += angleStr; // continous move
+        msg += checkSum;
+        msg += frameTail;
+
+        msgSender.SendMsg(msg, true);
+
+        VideoActivity.panAngle = 0;
+        VideoActivity.tiltAngle = 0;
+
+    }
+
+    void CameraPan(int angle) {
+
+        Log.e(TAG, "Sending msg");
+
+
+        String angleStr = String.format("%04d", angle*4);
+
+        String msg;
+        msg = "" + frameHead;
+        msg += '3';  // type for camera mode
+        msg += '2';  // cmd for up/down movement
+        msg += angleStr; // continous move
+        msg += checkSum;
+        msg += frameTail;
+
+        msgSender.SendMsg(msg, true);
+
+        VideoActivity.panAngle = angle;
+
+
+        Log.e(TAG, "angle str: " + angleStr + " msg: " + msg);
+    }
+
+
+    void CameraTilt(int angle) {
+
+        Log.e(TAG, "Sending msg");
+
+
+        String angleStr = String.format("%04d", angle);
+
+        String msg;
+        msg = "" + frameHead;
+        msg += '3';  // type for camera mode
+        msg += '1';  // cmd for up/down movement
+        msg += angleStr; // continous move
+        msg += checkSum;
+        msg += frameTail;
+
+        msgSender.SendMsg(msg, true);
+
+        VideoActivity.tiltAngle = angle;
+
+        Log.e(TAG, "angle str: " + angleStr + " msg: " + msg);
+    }
 
 
 

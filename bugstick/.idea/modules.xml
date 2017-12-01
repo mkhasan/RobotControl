@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file:///media/usrc/external/UnMannedDrone/Bugstick-master/Bugstick-master.iml" filepath="/media/usrc/external/UnMannedDrone/Bugstick-master/Bugstick-master.iml" />
+      <module fileurl="file:///media/usrc/external/UnMannedDrone/Bugstick-master/bugstick/bugstick.iml" filepath="/media/usrc/external/UnMannedDrone/Bugstick-master/bugstick/bugstick.iml" />
+      <module fileurl="file:///media/usrc/external/UnMannedDrone/Bugstick-master/sample/sample.iml" filepath="/media/usrc/external/UnMannedDrone/Bugstick-master/sample/sample.iml" />
+    </modules>
+  </component>
+</project>
