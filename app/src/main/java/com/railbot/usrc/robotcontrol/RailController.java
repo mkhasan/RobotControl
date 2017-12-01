@@ -8,14 +8,26 @@ import android.util.Log;
 
 public class RailController extends DeviceController {
 
+
+    final int ANGLE_STEP = 20;
+
     public enum CurMove {
         stop,
         forward,
-        backward
+        backward,
+        up,
+        down,
+        left,
+        right
 
     }
 
-    private static final String TAG = "RailController";
+    int curSideAngle = 0;
+    int curUpAngle = -30;
+
+
+
+    private static final String TAG = RailController.class.getName();
 
     float minSpeed;
     float maxSpeed;
@@ -95,6 +107,7 @@ public class RailController extends DeviceController {
     }
 
 
+
     void StopMoving(int nCout) {
 
         curMove = CurMove.stop;
@@ -122,6 +135,98 @@ public class RailController extends DeviceController {
 
         StopMoving(1);
     }
+
+
+    void CameraUp() {
+
+        Log.e(TAG, "Sending msg");
+
+        curUpAngle += ANGLE_STEP;
+        String angleStr = String.format("%04d", curUpAngle);
+
+        String msg;
+        msg = "" + frameHead;
+        msg += '3';  // type for camera mode
+        msg += '1';  // cmd for up/down movement
+        msg += angleStr; // continous move
+        msg += checkSum;
+        msg += frameTail;
+
+        msgSender.SendMsg(msg, true);
+
+        curMove = CurMove.up;
+
+        Log.e(TAG, "curUpangle: " + curUpAngle + " msg: " + msg);
+    }
+
+    void CameraDown() {
+
+        Log.e(TAG, "Sending msg");
+
+        curUpAngle -= ANGLE_STEP;
+        String angleStr = String.format("%04d", curUpAngle);
+
+        String msg;
+        msg = "" + frameHead;
+        msg += '3';  // type for camera mode
+        msg += '1';  // cmd for up/down movement
+        msg += angleStr; // continous move
+        msg += checkSum;
+        msg += frameTail;
+
+        msgSender.SendMsg(msg, true);
+
+        curMove = CurMove.down;
+
+        Log.e(TAG, "curUpangle: " + curUpAngle + " msg: " + msg);
+    }
+
+
+    void CameraLeft() {
+
+        Log.e(TAG, "Sending msg");
+
+        curSideAngle += ANGLE_STEP;
+        String angleStr = String.format("%04d", curSideAngle);
+
+        String msg;
+        msg = "" + frameHead;
+        msg += '3';  // type for camera mode
+        msg += '2';  // cmd for up/down movement
+        msg += angleStr; // continous move
+        msg += checkSum;
+        msg += frameTail;
+
+        msgSender.SendMsg(msg, true);
+
+        curMove = CurMove.left;
+
+        Log.e(TAG, "curUpangle: " + curSideAngle + " msg: " + msg);
+    }
+
+    void CameraRight() {
+
+        Log.e(TAG, "Sending msg");
+
+        curSideAngle -= ANGLE_STEP;
+        String angleStr = String.format("%04d", curSideAngle);
+
+        String msg;
+        msg = "" + frameHead;
+        msg += '3';  // type for camera mode
+        msg += '2';  // cmd for up/down movement
+        msg += angleStr; // continous move
+        msg += checkSum;
+        msg += frameTail;
+
+        msgSender.SendMsg(msg, true);
+
+        curMove = CurMove.down;
+
+        Log.e(TAG, "curUpangle: " + curSideAngle + " msg: " + msg);
+    }
+
+
 
 
     private void SetRailSpeed() {

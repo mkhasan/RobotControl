@@ -473,6 +473,20 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
     }
 
 
+    public void cameraUp() {
+
+        if (!IsConnected()) {
+
+            Toast.makeText(this, getString(R.string.wait_for_connection), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        railController.CameraUp();
+        state.setText(getString(R.string.state)+getString(R.string.forward));
+        Log.e(TAG, "camera up");
+    }
+
+
     public void moveFrontRelease() {
 
 
@@ -485,18 +499,22 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
 
     public void camDown(View view) {
+        railController.CameraDown();
         Log.e(TAG, "camera down");
     }
 
     public void camUp(View view) {
+        railController.CameraUp();
         Log.e(TAG, "camera up");
     }
 
     public void camLeft(View view) {
+        railController.CameraLeft();
         Log.e(TAG, "camera left");
     }
 
     public void camRight(View view) {
+        railController.CameraRight();
         Log.e(TAG, "camera right");
     }
 
