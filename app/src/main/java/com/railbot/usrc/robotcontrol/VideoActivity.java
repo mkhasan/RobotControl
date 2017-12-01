@@ -230,28 +230,6 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         if (parts.length == 4 && parts[2].equals("1"))
             url = "rtsp://admin:admin@"+getString(R.string.image_camera_ip)+":554/12";
         //String url = "rtsp://admin:admin@192.168.1.100:554/12";
-        /*
-        videoView.setVideoURI(Uri.parse("rtsp://admin:admin@192.168.0.101:554/stream1"));
-
-
-        //videoView.setVideoURI(Uri.parse(url));
-        videoView.requestFocus();
-
-
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            public void onPrepared(MediaPlayer mp) {
-                videoView.start();
-                mLoadingView.setVisibility(View.GONE);
-
-                Toast.makeText(getApplicationContext(), getString(R.string.connected),
-                        Toast.LENGTH_LONG).show();
-
-                connected = true;
-            }
-        });
-
-
-*/
 
         HashMap<String, String> params = new HashMap<String, String>();
         mPlay = false;
@@ -379,22 +357,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                 return true;
             }
         });
-        /*
 
-        final ImageButton ib = (ImageButton) findViewById(R.id.button_back);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ib.getLayoutParams();
-
-        // Set the height of this ImageButton
-        params.height = 400;
-
-        // Set the width of that ImageButton
-        params.width = 450;
-
-        // Apply the updated layout parameters to last ImageButton
-        ib.setLayoutParams(params);
-        */
-
-        /////////////////////////////  newly added ///////////////////////
 
 
 
@@ -410,19 +373,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
             //irViewer.Connect();
         }
 
-        /*
 
-
-        if (portraitOrientation) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        }
-        */
     }
 
     @Override
@@ -432,7 +383,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         Log.e(TAG, "onChagne");
 
 
-
+        /*
         RelativeLayout contorlSet = (RelativeLayout) findViewById(R.id.control_set);
 
         // Checks the orientation of the screen
@@ -456,6 +407,8 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
             portraitOrientation = true;
 
         }
+
+        */
     }
 
     public void moveStop(View view) {
@@ -619,8 +572,11 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
             mMpegPlayer.stop();
 
             Log.e(TAG, "Error: stream should not be finished so earyly");
+            finish();
 
         }
+
+        Log.e(TAG, "current time " + currentTimeUs + " duration " + videoDurationUs );
     }
 
     @Override
@@ -693,6 +649,10 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                     .show();
             return;
         }
+
+        this.mLoadingView.setVisibility(View.GONE);
+        imageCamConnected = true;
+        Log.e(TAG, "Image Camera connected");
         //mPlayPauseButton.setBackgroundResource(android.R.drawable.ic_media_play);
         //mPlayPauseButton.setEnabled(true);
         //this.mControlsView.setVisibility(View.VISIBLE);

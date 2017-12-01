@@ -5,13 +5,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -73,6 +77,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Log.e(TAG, stringFromJNI());
 
 
+        /*
+        filters[0] = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (end > start) {
+                    String destTxt = dest.toString();
+                    String resultingTxt = destTxt.substring(0, dstart) + source.subSequence(start, end) + destTxt.substring(dend);
+                    if (!resultingTxt.matches ("^\\d{1,3}(\\.(\\d{1,3}(\\.(\\d{1,3}(\\.(\\d{1,3})?)?)?)?)?)?")) {
+                        return "";
+                    } else {
+                        String[] splits = resultingTxt.split("\\.");
+                        for (int i=0; i<splits.length; i++) {
+                            if (Integer.valueOf(splits[i]) > 255) {
+                                return "";
+                            }
+                        }
+                    }
+                }
+                return null;
+            }
+        };
+        text.setFilters(filters);
+        */
+
+
 
 
 
@@ -99,9 +127,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 true));
         items.add(new ListItem(
                 items.size(),
-                getResources().getText(R.string.image_and_thermal_cam).toString(),
+                getResources().getText(R.string.wifi_settings).toString(),
                 null,
                 true));
+
+        items.add(new ListItem(
+                items.size(),
+                getResources().getText(R.string.server_settings).toString(),
+                null,
+                true));
+
         items.add(new ListItem(
                 items.size(),
                 getResources().getText(R.string.exit).toString(),
@@ -136,14 +171,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Log.e(TAG, "Str is "+str);
             finish();
         }
+        // com.usrc.railbot.voicechat
+        else if (str.equals(getResources().getText(R.string.wifi_settings))) {
 
-        else
-        {
+            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+        }
+        else if (str.equals(getResources().getText(R.string.server_settings))) {
+            Intent intent = new Intent(this, ServerSettingsActivity.class);
+            this.startActivity(intent);
+        }
+        else {
             Intent intent = new Intent(this, VideoActivity.class);
             intent.putExtra("choice", str);
             this.startActivityForResult(intent, 0);
-
         }
+
+
+
         // text_view.setText(str);
     }
 
@@ -162,6 +206,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.e(TAG, Integer.toString(requestCode)+ " " + (resultCode == 0 ? "OK" : "ERROR"));
     }
 
+
+//    EditText text = new EditText(this);
+//    InputFilter[] filters = new InputFilter[1];
 
  //   public native String stringFromJNI();
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context="com.railbot.usrc.robotcontrol.ServerSettingsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Server Address"
+                android:textSize="20sp"
+                android:textColor="#acffffff"/>
+            <EditText
+                android:id="@+id/ip_address"
+                android:inputType="number|numberDecimal"
+                android:digits="0123456789."
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:hint="IP Address"
+                android:textColor="#acffffff"
+                android:textSize="20sp"
+                android:background="#80808080"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>
