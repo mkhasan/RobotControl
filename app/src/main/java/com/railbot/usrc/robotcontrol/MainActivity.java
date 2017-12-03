@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -40,7 +41,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-    String TAG = "RobotControl";
+
+    public static final String PREF_TITLE = "ServerInfo";
+
+    public static final String SERVER_ADDR = "serverAddr";
+    public static final String VOID_PORT = "voipPort";
+    public static final int SERVER_SETTING_RESULT = 1;
+
+    public static final String EXTRA_IP = "com.railbot.usrc.robotcontrol.IP";
+    public static final String EXTRA_PORT = "com.railbot.usrc.robotcontrol.Port";
+
+
+    private String serverIP;
+    private int voipPort;
+
+    String TAG = MainActivity.class.getCanonicalName();
 
     TextView tv;
 
@@ -52,11 +67,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ItemsAdapter adapter;
     TextView textView = null;
 
+    SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        preferences = getSharedPreferences(PREF_TITLE, MODE_PRIVATE);
+
+        serverIP = preferences.getString(SERVER_ADDR, "143.248.204.35");
+        voipPort = preferences.getInt(VOID_PORT, 1049);
+
+
 
         // Example of a call to a native method
         final ListView listView = (ListView) findViewById(R.id.main_list);
@@ -68,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+
+
 
 
         //VideoActivity.ShowAllertTest(this);
@@ -178,7 +204,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         else if (str.equals(getResources().getText(R.string.server_settings))) {
             Intent intent = new Intent(this, ServerSettingsActivity.class);
-            this.startActivity(intent);
+            intent.putExtra(EXTRA_IP, serverIP);
+            intent.putExtra(EXTRA_PORT, voipPort);
+            startActivityForResult(intent, SERVER_SETTING_RESULT);
         }
         else {
             Intent intent = new Intent(this, VideoActivity.class);
@@ -193,6 +221,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
+
+
         if (requestCode == 0) {
             if (resultCode == 0) {
                 // A contact was picked.  Here we will just display it
@@ -203,7 +233,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
               //  Log.e(TAG, "100");
         }
 
-        Log.e(TAG, Integer.toString(requestCode)+ " " + (resultCode == 0 ? "OK" : "ERROR"));
+        else if(requestCode == SERVER_SETTING_RESULT) {
+
+            if(resultCode == RESULT_OK) {
+
+                serverIP = data.getStringExtra("server_ip");
+                voipPort = Integer.parseInt(data.getStringExtra("voip_port"));
+
+                Log.e(TAG, "Server ip " + serverIP + " port " + voipPort);
+
+                preferences = getSharedPreferences(PREF_TITLE, MODE_PRIVATE);
+                SharedPreferences.Editor edit= preferences.edit();
+                edit.putString(SERVER_ADDR, serverIP);
+                edit.putInt(VOID_PORT, voipPort);
+                edit.commit();
+
+
+            }
+
+        }
+
+
     }
 
 

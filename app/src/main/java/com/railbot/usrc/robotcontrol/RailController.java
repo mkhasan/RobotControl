@@ -192,7 +192,7 @@ public class RailController extends DeviceController {
         String msg;
         msg = "" + frameHead;
         msg += '3';  // type for camera mode
-        msg += '2';  // cmd for up/down movement
+        msg += '2';  // cmd for left/right movement
         msg += angleStr; // continous move
         msg += checkSum;
         msg += frameTail;
@@ -205,7 +205,7 @@ public class RailController extends DeviceController {
     }
 
 
-    void CameraRight() {
+     void CameraRight() {
 
         Log.e(TAG, "Sending msg");
 
@@ -215,7 +215,7 @@ public class RailController extends DeviceController {
         String msg;
         msg = "" + frameHead;
         msg += '3';  // type for camera mode
-        msg += '2';  // cmd for up/down movement
+        msg += '2';  // cmd for left/right movement
         msg += angleStr; // continous move
         msg += checkSum;
         msg += frameTail;
@@ -233,7 +233,7 @@ public class RailController extends DeviceController {
         Log.e(TAG, "Sending msg");
 
 
-        String angleStr = "0000";
+        String angleStr = "-040";
 
         String msg;
         msg = "" + frameHead;
@@ -256,7 +256,7 @@ public class RailController extends DeviceController {
         msgSender.SendMsg(msg, true);
 
         VideoActivity.panAngle = 0;
-        VideoActivity.tiltAngle = 0;
+        VideoActivity.tiltAngle = -40;
 
     }
 
@@ -289,7 +289,7 @@ public class RailController extends DeviceController {
         Log.e(TAG, "Sending msg");
 
 
-        String angleStr = String.format("%04d", angle);
+        String angleStr = String.format("%04d", angle*4);
 
         String msg;
         msg = "" + frameHead;
@@ -301,9 +301,13 @@ public class RailController extends DeviceController {
 
         msgSender.SendMsg(msg, true);
 
+
+
         VideoActivity.tiltAngle = angle;
 
         Log.e(TAG, "angle str: " + angleStr + " msg: " + msg);
+
+
     }
 
 

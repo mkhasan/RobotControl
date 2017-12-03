@@ -23,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -50,8 +51,9 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
     private static final String TAG 	 = "VideoActiveity";
     public static int panAngle = 0;
-    public static int tiltAngle = 0;
+    public static int tiltAngle = -40;
 
+    private final int ANGLE_STEP = 10;
 
     private VideoPlayer mMpegPlayer;
     boolean portraitOrientation;
@@ -71,12 +73,15 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
 
     Joystick panStick;
+    Joystick tiltStick;
 
 
     ////////////////////////// newly added ///////////////////////////////
     private SeekBar speedBar;
     public RailController railController;
+    private ControlStickListener moveStickListener = null;
     private ControlStickListener panStickListener = null;
+    private ControlStickListener tiltStickListener = null;
     private MsgSender msgSender;
     TextView speedView;
     private TextView state;
@@ -376,7 +381,13 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         panStickListener.SetRailController(railController);
         panStick.setJoystickListener(panStickListener);
 
-        final Button calibrateBtn = (Button) findViewById(R.id.calibrate);
+        tiltStick = (Joystick) findViewById(R.id.tilt_stick);
+        tiltStickListener = new ControlStickListener(ControlStickListener.ControlType.TILT);
+        tiltStickListener.SetRailController(railController);
+        tiltStick.setJoystickListener(tiltStickListener);
+
+
+        final ImageButton calibrateBtn = (ImageButton) findViewById(R.id.calibrate);
         calibrateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -386,6 +397,64 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                 }
             }
         });
+
+        final ImageButton panRightBtn = (ImageButton) findViewById(R.id.pan_front);
+        panRightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int angle = panAngle+ANGLE_STEP;
+                if (angle > ControlStickListener.MAX_PAN)
+                    angle = ControlStickListener.MAX_PAN;
+                Log.e(TAG, "pan angle " + angle);
+                railController.CameraPan(angle);
+
+            }
+        });
+
+        final ImageButton panLeftBtn = (ImageButton) findViewById(R.id.pan_back);
+        panLeftBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int angle = panAngle-ANGLE_STEP;
+                if (angle < ControlStickListener.MIN_PAN)
+                    angle = ControlStickListener.MIN_PAN;
+                Log.e(TAG, "pan angle " + angle);
+                railController.CameraPan(angle);
+
+            }
+        });
+
+
+        final ImageButton tiltUpBtn = (ImageButton) findViewById(R.id.tilt_up);
+        tiltUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int angle = tiltAngle+ANGLE_STEP;
+                if (angle > ControlStickListener.MAX_TILT)
+                    angle = ControlStickListener.MAX_TILT;
+
+                railController.CameraTilt(angle);
+                Log.e(TAG, "ANGLE is " + angle);
+
+            }
+        });
+
+        final ImageButton tiltDownBtn = (ImageButton) findViewById(R.id.tilt_down);
+        tiltDownBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int angle = tiltAngle-ANGLE_STEP;
+                if (angle < ControlStickListener.MIN_TILT)
+                    angle = ControlStickListener.MIN_TILT;
+                railController.CameraTilt(angle);
+                Log.e(TAG, "ANGLE is " + angle);
+
+            }
+        });
+
+
+
+
 
     }
 
@@ -620,7 +689,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
         }
 
-        Log.e(TAG, "current time " + currentTimeUs + " duration " + videoDurationUs );
+        //Log.e(TAG, "current time " + currentTimeUs + " duration " + videoDurationUs );
     }
 
     @Override
