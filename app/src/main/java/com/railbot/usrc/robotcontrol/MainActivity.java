@@ -1,13 +1,17 @@
 package com.railbot.usrc.robotcontrol;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -20,12 +24,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Thread.sleep;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -69,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String serverIP;
     private int voipPort;
 
+    private ConnTask connTask = null;
+
     String TAG = MainActivity.class.getCanonicalName();
 
     TextView tv;
@@ -107,43 +117,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 
+        startCallListener();
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_MICROPHONE);
+
+        }
 
 
-
-        //VideoActivity.ShowAllertTest(this);
-
-        //String str = stringFromJNI();
-
-        //Log.e(TAG, stringFromJNI());
-
-
-        /*
-        filters[0] = new InputFilter() {
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                if (end > start) {
-                    String destTxt = dest.toString();
-                    String resultingTxt = destTxt.substring(0, dstart) + source.subSequence(start, end) + destTxt.substring(dend);
-                    if (!resultingTxt.matches ("^\\d{1,3}(\\.(\\d{1,3}(\\.(\\d{1,3}(\\.(\\d{1,3})?)?)?)?)?)?")) {
-                        return "";
-                    } else {
-                        String[] splits = resultingTxt.split("\\.");
-                        for (int i=0; i<splits.length; i++) {
-                            if (Integer.valueOf(splits[i]) > 255) {
-                                return "";
-                            }
-                        }
-                    }
-                }
-                return null;
-            }
-        };
-        text.setFilters(filters);
-        */
-
-
-
-
-
+        connTask = new ConnTask();
+        connTask.execute();
     }
 
     @NonNull
@@ -334,5 +320,128 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
 
+        switch (requestCode) {
+            case REQUEST_MICROPHONE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Log.e(TAG, "permission granted");
+                }
+                else {
+                    Log.e(TAG, "permission not granted");
+                    finish();
+                }
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
+        if(STARTED) {
+
+            //STARTED = false;
+        }
+        stopCallListener();
+        Log.i(TAG, "App paused!");
+
+        if(connTask != null) {
+            connTask.finished = true;
+            connTask = null;
+        }
+
+    }
+
+    @Override
+    public void onStop() {
+
+        super.onStop();
+        Log.i(TAG, "App stopped!");
+        stopCallListener();
+        if(!IN_CALL) {
+
+            finish();
+        }
+    }
+
+    @Override
+    public void onRestart() {
+
+        super.onRestart();
+        Log.e(TAG, "App restarted!");
+        IN_CALL = false;
+        STARTED = true;
+
+        startCallListener();
+        connTask = new ConnTask();
+        connTask.execute();
+    }
+
+    private class ConnTask extends AsyncTask<Void, Integer, Long> {
+        final String message = MainActivity.HELO_MSG;
+        public boolean finished = false;
+
+        protected Long doInBackground(Void... voids) {
+
+            long totalSize = 0;
+
+            try {
+
+
+                while(finished == false) {
+
+                    InetAddress address = InetAddress.getByName(serverIP);
+                    byte[] data = message.getBytes();
+                    DatagramSocket socket = new DatagramSocket();
+                    DatagramPacket packet = new DatagramPacket(data, data.length, address, LISTENER_PORT);
+                    socket.send(packet);
+                    Log.e(TAG, "Sent message( " + message + " ) to " + serverIP + ":" + LISTENER_PORT);
+                    socket.disconnect();
+                    socket.close();
+
+                    try {
+                        sleep(2000);
+                    }
+                    catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+
+
+
+            }
+
+            catch(UnknownHostException e) {
+
+                Log.e(TAG, "Failure. UnknownHostException in sendMessage: " + serverIP);
+            }
+            catch(SocketException e) {
+
+                Log.e(TAG, "Failure. SocketException in sendMessage: " + e);
+            }
+            catch(IOException e) {
+
+                Log.e(TAG, "Failure. IOException in sendMessage: " + e);
+            }
+
+            return totalSize;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+
+        protected void onPostExecute(Long result) {
+            Log.e(TAG, "Conn finished");
+        }
+    }
 }
