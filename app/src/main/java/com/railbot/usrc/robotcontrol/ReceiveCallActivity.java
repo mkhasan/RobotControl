@@ -25,10 +25,11 @@ public class ReceiveCallActivity extends Activity {
     private static final int BROADCAST_PORT = 50002;
     private static final int BUF_SIZE = 1024;
     private String contactIp;
+    private int port;
     private String contactName;
     private boolean LISTEN = true;
     private boolean IN_CALL = false;
-    private AudioCall call;
+
 
     private Client client = null;
 
@@ -43,9 +44,9 @@ public class ReceiveCallActivity extends Activity {
         Log.e(TAG, "Started");
 
         Intent intent = getIntent();
-        contactName = intent.getStringExtra(MainActivity.EXTRA_CONTACT);
-        contactIp = intent.getStringExtra(MainActivity.EXTRA_IP);
 
+        contactIp = intent.getStringExtra(MainActivity.EXTRA_IP);
+        port = Integer.parseInt(intent.getStringExtra(MainActivity.EXTRA_PORT));
 
         final Button endButton = (Button) findViewById(R.id.buttonEndCall);
         endButton.setVisibility(View.INVISIBLE);
@@ -259,7 +260,7 @@ public class ReceiveCallActivity extends Activity {
                 Log.e(TAG, "Connecting");
                 //Socket socket = new Socket(ip, port);
 
-                client = new Client(MainActivity.ip, MainActivity.port);
+                client = new Client(contactIp, port);
                 client.start();
 
                 //audioCall = new AudioCall();

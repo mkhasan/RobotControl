@@ -15,6 +15,8 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.zip.GZIPOutputStream;
 
+import static com.railbot.usrc.robotcontrol.Def.SAMPLE_RATE;
+
 /**
  * Created by usrc on 17. 12. 4.
  */

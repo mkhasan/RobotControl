@@ -2,13 +2,24 @@ package com.railbot.usrc.robotcontrol;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+
+import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+
+
 
 public class MakeCallActivity extends Activity {
 
@@ -18,9 +29,10 @@ public class MakeCallActivity extends Activity {
     private String displayName;
     private String contactName;
     private String contactIp;
+    private int port;
     private boolean LISTEN = true;
     private boolean IN_CALL = false;
-    private AudioCall call;
+
 
     private Client client = null;
 
@@ -38,9 +50,8 @@ public class MakeCallActivity extends Activity {
 
 
         Intent intent = getIntent();
-        displayName = intent.getStringExtra(MainActivity.EXTRA_DISPLAYNAME);
-        contactName = intent.getStringExtra(MainActivity.EXTRA_CONTACT);
         contactIp = intent.getStringExtra(MainActivity.EXTRA_IP);
+        port = Integer.parseInt(intent.getStringExtra(MainActivity.EXTRA_PORT));
 
 
 
@@ -242,7 +253,7 @@ public class MakeCallActivity extends Activity {
                 Log.e(LOG_TAG, "Connecting");
                 //Socket socket = new Socket(ip, port);
 
-                client = new Client(MainActivity.ip, MainActivity.port);
+                client = new Client(contactIp, port);
                 client.start();
 
                 //audioCall = new AudioCall();

@@ -1,4 +1,4 @@
-package com;
+package com.railbot.usrc.robotcontrol;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -11,6 +11,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
+
+import static com.railbot.usrc.robotcontrol.Def.SAMPLE_RATE;
+import static com.railbot.usrc.robotcontrol.Def.VOL;
 
 /**
  * Created by usrc on 17. 12. 4.
