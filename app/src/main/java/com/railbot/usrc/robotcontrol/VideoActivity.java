@@ -47,7 +47,7 @@ import com.jmedeisis.bugstick.Joystick;
 import static android.content.RestrictionsManager.RESULT_ERROR;
 
 
-public class VideoActivity extends Activity implements FFListener, IR_ViewerListener {
+public class VideoActivity extends Activity implements FFListener, IR_ViewerListener, SpeedUpdateListener {
 
     private static final String TAG 	 = "VideoActiveity";
     public static int panAngle = 0;
@@ -71,7 +71,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         none
     }
 
-
+    Joystick moveStick;
     Joystick panStick;
     Joystick tiltStick;
 
@@ -214,7 +214,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
 
         TextView speedLabel = (TextView) findViewById(R.id.speed_label);
-        speedLabel.setText(speedStr);
+        //speedLabel.setText(speedStr);
 
         videoView = (VideoView) findViewById(R.id.video_view);
 
@@ -374,7 +374,22 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
             }
         });
 
+        final ImageButton stopBtn = (ImageButton) findViewById(R.id.stop);
+        stopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(railController != null)
+                    railController.StopMoving(3);
 
+            }
+        });
+
+
+        moveStick = (Joystick) findViewById(R.id.move_stick);
+        moveStickListener = new ControlStickListener(ControlStickListener.ControlType.MOTION);
+        moveStickListener.SetRailController(railController);
+        moveStickListener.SetListener(this);
+        moveStick.setJoystickListener(moveStickListener);
 
         panStick = (Joystick) findViewById(R.id.pan_stick);
         panStickListener= new ControlStickListener(ControlStickListener.ControlType.PAN);
@@ -852,6 +867,8 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
         //timerHandler.removeCallbacks(timerRunnable);
 
+        if(moveStickListener != null)
+            moveStickListener.TerminateConnTask();
         Log.e(TAG, "onPause");
     }
 
@@ -960,6 +977,20 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         connected = connected || (cameraType == CameraType.thermal && thermalCamConnectted == true);
 
         return connected;
+    }
+
+
+    public void OnUpdateSpeed(float speed) {
+
+        final TextView speedLabel = (TextView) findViewById(R.id.speed_label);
+
+        String str = String.format("Speed: %.2f m/s", speed);
+        //speedLabel.setText("Speed: " + Float.toString(speed)+" m/s");
+        speedLabel.setText(str);
+        railController.SetCurSpeed(speed);
+
+        Log.e(TAG, "Speed is " + speed);
+
     }
 
 

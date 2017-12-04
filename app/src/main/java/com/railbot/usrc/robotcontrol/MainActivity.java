@@ -23,6 +23,7 @@ import android.widget.TextView;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public static final String EXTRA_IP = "com.railbot.usrc.robotcontrol.IP";
     public static final String EXTRA_PORT = "com.railbot.usrc.robotcontrol.Port";
+
+
+    private static final int LISTENER_PORT = 50003;
+    private static final int BUF_SIZE = 1024;
+    private boolean STARTED = false;
+    private boolean IN_CALL = false;
+    private boolean LISTEN = false;
+    private static final String HELO_MSG = "HELO:";
+
+
+    public static final int REQUEST_MICROPHONE = 1;
+    public static final int CALL_RECEIVED = 2;
+    public static final String CALL_RECEIVED_NOTFICATION="com.usrc.railbot.voicechat.NOTIFICATION";
 
 
     private String serverIP;
@@ -256,9 +270,69 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    private void startCallListener() {
+        // Creates the listener thread
+        LISTEN = true;
+        Thread listener = new Thread(new Runnable() {
 
-//    EditText text = new EditText(this);
-//    InputFilter[] filters = new InputFilter[1];
+            @Override
+            public void run() {
 
- //   public native String stringFromJNI();
+                try {
+                    // Set up the socket and packet to receive
+                    Log.i(TAG, "Incoming call listener started");
+                    DatagramSocket socket = new DatagramSocket(LISTENER_PORT);
+                    socket.setSoTimeout(1000);
+                    byte[] buffer = new byte[BUF_SIZE];
+                    DatagramPacket packet = new DatagramPacket(buffer, BUF_SIZE);
+                    while(LISTEN) {
+                        // Listen for incoming call requests
+                        //Log.e(TAG, "Listening");
+                        try {
+                            Log.i(TAG, "Listening for incoming calls");
+                            socket.receive(packet);
+                            String data = new String(buffer, 0, packet.getLength());
+                            Log.e(TAG, "Packet received from "+ packet.getAddress() +" with contents: " + data);
+                            String action = data.substring(0, 4);
+                            if(action.equals("CAL:")) {
+                                // Received a call request. Start the ReceiveCallActivity
+                                String address = packet.getAddress().toString();
+                                String name = data.substring(4, packet.getLength());
+
+                                Intent intent = new Intent(MainActivity.this, ReceiveCallActivity.class);
+                                intent.putExtra(EXTRA_IP, address.substring(1, address.length()));
+                                IN_CALL = true;
+                                //LISTEN = false;
+                                //stopCallListener();
+                                startActivity(intent);
+                            }
+                            else {
+                                // Received an invalid request
+                                Log.w(TAG, packet.getAddress() + " sent invalid message: " + data);
+                            }
+                        }
+                        catch(Exception e) {
+
+                        }
+                    }
+                    Log.i(TAG, "Call Listener ending");
+                    socket.disconnect();
+                    socket.close();
+                }
+                catch(SocketException e) {
+
+                    Log.e(TAG, "SocketException in listener " + e);
+                }
+            }
+        });
+        listener.start();
+    }
+
+    private void stopCallListener() {
+        // Ends the listener thread
+        LISTEN = false;
+    }
+
+
+
 }

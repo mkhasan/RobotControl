@@ -1,9 +1,19 @@
 package com.railbot.usrc.robotcontrol;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jmedeisis.bugstick.Joystick;
 import com.jmedeisis.bugstick.JoystickListener;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Created by usrc on 17. 12. 1.
@@ -17,12 +27,20 @@ public class ControlStickListener implements JoystickListener {
         TILT
     }
 
+    private enum MotionDir {
+        NONE,
+        FORWARD,
+        BACKWARD
+    }
+
     private class Angle{
         int startAngle;
         int requiredAngle;
         int setAngle;
 
     }
+
+    ConnTask connTask = null;
 
     Angle pan, tilt;
 
@@ -43,7 +61,7 @@ public class ControlStickListener implements JoystickListener {
     public static final int MIN_TILT = -90;
 
 
-
+    private MotionDir motionDir = MotionDir.NONE;
 
     private ControlType controlType;
 
@@ -58,11 +76,17 @@ public class ControlStickListener implements JoystickListener {
         else if(controlType == ControlType.TILT) {
             tilt = new Angle();
         }
+        else if(controlType == ControlType.MOTION) {
+            //connTask = new ConnTask();
+            //connTask.execute();
+        }
 
 
 
 
     }
+
+    private SpeedUpdateListener speedUpdateListener = null;
 
 
     @Override
@@ -131,6 +155,26 @@ public class ControlStickListener implements JoystickListener {
                     railController.CameraTilt(target);
                 }
             }
+            else if(controlType == ControlType.MOTION) {
+
+                if(Math.abs(degrees) > FR_BK_THRESH)
+                    motionDir = MotionDir.BACKWARD;
+                else
+                    motionDir =MotionDir.FORWARD;
+
+                float speed = offset*(float) 4.0;
+                if(speedUpdateListener != null)
+                    speedUpdateListener.OnUpdateSpeed(speed);
+                if(railController != null) {
+                    if(motionDir == MotionDir.FORWARD)
+                        railController.MoveBackward();
+                    else if(motionDir == MotionDir.BACKWARD)
+                        railController.MoveBackward();
+                }
+
+
+            }
+
 
         }
 
@@ -142,11 +186,81 @@ public class ControlStickListener implements JoystickListener {
     public void onUp() {
         Log.e(TAG, "onUp()");
 
+        if(controlType == ControlType.MOTION) {
+            motionDir = MotionDir.NONE;
+            speedUpdateListener.OnUpdateSpeed((float) 0.0);
+            railController.StopMoving();
+        }
+
+
     }
 
-    void SetRailController (RailController _railController) {
+    public void SetRailController (RailController _railController) {
         railController = _railController;
     }
+
+    public void SetListener(SpeedUpdateListener _speedUpdateListener) {
+        speedUpdateListener = _speedUpdateListener;
+    }
+
+
+    void TerminateConnTask() {
+        if(connTask != null)
+            connTask.finished = true;
+    }
+
+    private class ConnTask extends AsyncTask<Void, Integer, Long> {
+
+        public boolean finished = false;
+
+        protected Long doInBackground(Void... voids) {
+
+
+
+
+            while(finished == false) {
+
+
+                try {
+                    sleep(500);
+
+                    if(motionDir == MotionDir.NONE) {
+
+
+                        Log.e(TAG, "in Conn task Stop");
+                    }
+                    else if(motionDir == MotionDir.FORWARD) {
+                        railController.MoveForward();
+                        Log.e(TAG, "in Conn task Forward");
+                    }
+                    else {
+                        railController.MoveBackward();
+                        Log.e(TAG, "in Conn task Backward");
+                    }
+                }
+                catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+
+
+
+
+
+
+            return (long)0;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+
+        protected void onPostExecute(Long result) {
+            Log.e(TAG, "Conn finished");
+        }
+    }
+
+
 
 
 }
