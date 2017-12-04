@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.PortUnreachableException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
@@ -21,6 +22,7 @@ import static java.lang.Thread.sleep;
 
 public class ControlStickListener implements JoystickListener {
 
+    public static final float INITIAL_MAX_SPEED = (float) 0.5;
     public enum ControlType {
         MOTION,
         PAN,
@@ -66,6 +68,9 @@ public class ControlStickListener implements JoystickListener {
     private ControlType controlType;
 
     private RailController railController = null;
+
+    private float maxSpeed = INITIAL_MAX_SPEED;
+
     ControlStickListener(ControlType _controlType ) {
         controlType = _controlType;
 
@@ -157,17 +162,19 @@ public class ControlStickListener implements JoystickListener {
             }
             else if(controlType == ControlType.MOTION) {
 
+                Log.e(TAG, "deg " + degrees);
+
                 if(Math.abs(degrees) > FR_BK_THRESH)
                     motionDir = MotionDir.BACKWARD;
                 else
-                    motionDir =MotionDir.FORWARD;
+                    motionDir = MotionDir.FORWARD;
 
-                float speed = offset*(float) 4.0;
+                float speed = offset*maxSpeed;
                 if(speedUpdateListener != null)
                     speedUpdateListener.OnUpdateSpeed(speed);
                 if(railController != null) {
                     if(motionDir == MotionDir.FORWARD)
-                        railController.MoveBackward();
+                        railController.MoveForward();
                     else if(motionDir == MotionDir.BACKWARD)
                         railController.MoveBackward();
                 }
@@ -204,6 +211,9 @@ public class ControlStickListener implements JoystickListener {
     }
 
 
+    public void SetMaxSpeed(float _maxSpeed) {
+        maxSpeed = _maxSpeed;
+    }
     void TerminateConnTask() {
         if(connTask != null)
             connTask.finished = true;

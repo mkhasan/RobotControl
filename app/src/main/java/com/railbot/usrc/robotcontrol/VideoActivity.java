@@ -83,7 +83,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
     private ControlStickListener panStickListener = null;
     private ControlStickListener tiltStickListener = null;
     private MsgSender msgSender;
-    TextView speedView;
+    TextView maxSpeedView;
     private TextView state;
 
     ImageButton moveBackwardBtn;
@@ -173,6 +173,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
         /////////////////////////////  newly added ///////////////////////
         speedBar = (SeekBar) findViewById(R.id.speed_bar);
+        speedBar.setProgress((int)(ControlStickListener.INITIAL_MAX_SPEED*100.0/RailController.MAX_SPEED));
         moveBackwardBtn = (ImageButton) findViewById(R.id.button_backward);
         moveForwardBtn = (ImageButton) findViewById(R.id.button_forward);
 
@@ -296,8 +297,10 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         //tv = (TextView) findViewById(R.id.max_val);
         //tv.setText(Float.toString(railController.GetMaxSpeed()));
 
-        speedView = (TextView) findViewById(R.id.speed_text);
-        speedView.setText(Float.toString(railController.GetCurSpeed())+" m/s");
+        maxSpeedView = (TextView) findViewById(R.id.max_speed_text);
+        //speedView.setText(Float.toString(railController.GetCurSpeed())+" m/s");
+        maxSpeedView.setText("Max Speed: " + Float.toString(ControlStickListener.INITIAL_MAX_SPEED) +" m/s");
+
 
 
         speedBar.setOnSeekBarChangeListener(
@@ -312,9 +315,11 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                     public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                         progress = progresValue;
                         //speedView.setText();
-                        curSpeed = (float) ((double) minSpeed +  ((maxSpeed-minSpeed)*(float) progress/(100.0)));
-                        speedView.setText(Float.toString(curSpeed)+" m/s");
-                        railController.SetCurSpeed(curSpeed);
+                        final float maxSpeed = (float) ((double)progress*(RailController.MAX_SPEED)/100.0);
+                        maxSpeedView.setText("Max Speed: " + String.format("%.1f", maxSpeed) +" m/s");
+                        if(moveStickListener != null)
+                            moveStickListener.SetMaxSpeed(maxSpeed);
+
 
                         /*
                         if (railController.GetCurMove() == RailController.CurMove.forward)
@@ -323,7 +328,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                             railController.MoveBackward();
                         */
 
-                        Log.e(TAG, Float.toString(curSpeed));
+
                     }
 
                     @Override

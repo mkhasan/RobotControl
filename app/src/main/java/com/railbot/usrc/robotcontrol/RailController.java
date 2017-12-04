@@ -11,6 +11,9 @@ public class RailController extends DeviceController {
 
     final int ANGLE_STEP = 20;
 
+    final static float MAX_SPEED = (float) 4.0;
+
+
     public enum CurMove {
         stop,
         forward,
