@@ -268,6 +268,8 @@ public class ReceiveCallActivity extends Activity {
                 //client = new Client(ip.toString(), port);
                 //s = new Socket("58.224.86.126", 80);
 
+                Log.e(TAG, "client created with ip " + contactIp + " port " + port);
+
 
 
             }

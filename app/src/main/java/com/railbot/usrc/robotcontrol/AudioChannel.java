@@ -6,6 +6,7 @@ import android.media.AudioTrack;
 import android.util.Log;
 
 import com.usrc.railbot.voicechat.Message;
+import com.usrc.railbot.voicechat.SoundPacket;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -70,7 +71,7 @@ public class AudioChannel extends Thread {
             */
 
             AudioTrack track = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO,
-                    AudioFormat.ENCODING_PCM_16BIT,SoundPacket.defaultDataLenght, AudioTrack.MODE_STREAM);
+                    AudioFormat.ENCODING_PCM_16BIT, SoundPacket.defaultDataLenght, AudioTrack.MODE_STREAM);
             track.setStereoVolume(adjustVol, adjustVol);
             Log.e(TAG, "Volume is " + Float.toString(adjustVol));
             track.play();

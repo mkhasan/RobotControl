@@ -22,6 +22,7 @@
     <string name="image_camera">Image Camera</string>
     <string name="thermal_camera">Thermal Camera</string>
     <string name="image_and_thermal_cam">Image And Thrermal Cameras</string>
+    <string name="voip_call">VoIP Call</string>
     <string name="wifi_settings"> Wifi Settings</string>
     <string name="server_settings"> Server Settings</string>
     <string name="exit">Exit</string>

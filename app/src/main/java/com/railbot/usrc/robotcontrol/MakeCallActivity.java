@@ -1,6 +1,8 @@
 package com.railbot.usrc.robotcontrol;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -38,7 +40,123 @@ public class MakeCallActivity extends Activity {
 
     private DatagramSocket socket = null;
 
-    private boolean callReceived = false;
+
+    private Runnable updateTextRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+
+            final TextView textView = (TextView) findViewById(R.id.textViewCalling);
+            textView.setText("Server Received Call");
+
+        }
+
+    };
+
+    private Runnable serverNoReplyDlg = new Runnable() {
+        @Override
+        public void run() {
+            String message = "No reply fron the Server ";
+            Log.i(LOG_TAG, "No reply from contact. Ending call");
+            new AlertDialog.Builder(MakeCallActivity.this, AlertDialog.THEME_HOLO_DARK)
+                    .setTitle("Notification")
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            endCall();
+                        }
+                    })
+                    .setOnCancelListener(
+                            new DialogInterface.OnCancelListener() {
+
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    endCall();
+                                }
+                            })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+    };
+
+
+    private class ListenThread extends Thread {
+        Activity activity;
+        ListenThread(Activity _activity) {
+            activity = _activity;
+        }
+
+        @Override
+        public void run() {
+
+            try {
+
+                Log.i(LOG_TAG, "Listener started!");
+                socket = new DatagramSocket(BROADCAST_PORT);
+                socket.setSoTimeout(15000);
+                byte[] buffer = new byte[BUF_SIZE];
+                DatagramPacket packet = new DatagramPacket(buffer, BUF_SIZE);
+                while(LISTEN) {
+
+                    try {
+
+                        Log.i(LOG_TAG, "Listening for packets");
+                        socket.receive(packet);
+                        String data = new String(buffer, 0, packet.getLength());
+                        Log.i(LOG_TAG, "Packet received from "+ packet.getAddress() +" with contents: " + data);
+                        String action = data.substring(0, 4);
+                        if(action.equals("ACC:")) {
+                            // Accept notification received. Start call
+                            //call = new AudioCall(packet.getAddress());
+                            //call.startCall();
+                            new ConnTask().execute();
+                            IN_CALL = true;
+
+                            activity.runOnUiThread(updateTextRunnable);
+                            //final TextView textViewCalling = (TextView) findViewById(R.id.textViewCalling);
+                            //textViewCalling.setText("Server Received Call");
+
+                        }
+                        else if(action.equals("REJ:")) {
+                            // Reject notification received. End call
+                            endCall();
+                        }
+                        else if(action.equals("END:")) {
+                            // End call notification received. End call
+                            endCall();
+                        }
+                        else {
+                            // Invalid notification received
+                            Log.w(LOG_TAG, packet.getAddress() + " sent invalid message: " + data);
+                        }
+                    }
+                    catch(SocketTimeoutException e) {
+                        if(!IN_CALL) {
+
+
+                            activity.runOnUiThread(serverNoReplyDlg);
+                            //endCall();
+                            return;
+                        }
+
+                    }
+                    catch(IOException e) {
+
+                        Log.i(LOG_TAG, "No response");
+                    }
+                }
+                Log.i(LOG_TAG, "Listener ending");
+                socket.disconnect();
+                socket.close();
+                return;
+            }
+            catch(SocketException e) {
+
+                Log.e(LOG_TAG, "SocketException in Listener");
+                endCall();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +174,7 @@ public class MakeCallActivity extends Activity {
 
 
         TextView textView = (TextView) findViewById(R.id.textViewCalling);
-        textView.setText("Calling: " + contactName);
+        textView.setText("Calling: " + "Server");
 
 
         startListener();
@@ -97,82 +215,14 @@ public class MakeCallActivity extends Activity {
         }
         sendMessage("END:", BROADCAST_PORT);
         Log.e(LOG_TAG, "endCall");
-        setResult(12);
         finish();
     }
 
     private void startListener() {
         // Create listener thread
         LISTEN = true;
-        Thread listenThread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-
-                try {
-
-                    Log.i(LOG_TAG, "Listener started!");
-                    socket = new DatagramSocket(BROADCAST_PORT);
-                    socket.setSoTimeout(15000);
-                    byte[] buffer = new byte[BUF_SIZE];
-                    DatagramPacket packet = new DatagramPacket(buffer, BUF_SIZE);
-                    while(LISTEN) {
-
-                        try {
-
-                            Log.i(LOG_TAG, "Listening for packets");
-                            socket.receive(packet);
-                            String data = new String(buffer, 0, packet.getLength());
-                            Log.i(LOG_TAG, "Packet received from "+ packet.getAddress() +" with contents: " + data);
-                            String action = data.substring(0, 4);
-                            if(action.equals("ACC:")) {
-                                // Accept notification received. Start call
-                                //call = new AudioCall(packet.getAddress());
-                                //call.startCall();
-                                new ConnTask().execute();
-                                IN_CALL = true;
-                                callReceived = true;
-                            }
-                            else if(action.equals("REJ:")) {
-                                // Reject notification received. End call
-                                endCall();
-                            }
-                            else if(action.equals("END:")) {
-                                // End call notification received. End call
-                                endCall();
-                            }
-                            else {
-                                // Invalid notification received
-                                Log.w(LOG_TAG, packet.getAddress() + " sent invalid message: " + data);
-                            }
-                        }
-                        catch(SocketTimeoutException e) {
-                            if(!IN_CALL) {
-
-                                Log.i(LOG_TAG, "No reply from contact. Ending call");
-                                endCall();
-                                return;
-                            }
-
-                        }
-                        catch(IOException e) {
-
-                            Log.i(LOG_TAG, "No response");
-                        }
-                    }
-                    Log.i(LOG_TAG, "Listener ending");
-                    socket.disconnect();
-                    socket.close();
-                    return;
-                }
-                catch(SocketException e) {
-
-                    Log.e(LOG_TAG, "SocketException in Listener");
-                    endCall();
-                }
-            }
-        });
-        listenThread.start();
+        new ListenThread(MakeCallActivity.this).start();
+        //listenThread.start();
     }
 
     private void stopListener() {
@@ -284,12 +334,5 @@ public class MakeCallActivity extends Activity {
     }
 
 
-    @Override
-    public void finish() {
-        Intent data = new Intent();
-        data.putExtra(MainActivity.CALL_RECEIVED_NOTFICATION, (callReceived ? 1 : 0));
-        setResult(RESULT_OK, data);
 
-        super.finish();
-    }
 }

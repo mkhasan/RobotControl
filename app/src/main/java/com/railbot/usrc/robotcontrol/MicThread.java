@@ -6,6 +6,7 @@ import android.media.MediaRecorder;
 import android.util.Log;
 
 import com.usrc.railbot.voicechat.Message;
+import com.usrc.railbot.voicechat.SoundPacket;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

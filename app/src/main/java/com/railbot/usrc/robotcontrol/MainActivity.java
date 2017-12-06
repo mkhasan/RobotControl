@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         preferences = getSharedPreferences(PREF_TITLE, MODE_PRIVATE);
 
-        serverIP = preferences.getString(SERVER_ADDR, "143.248.204.35");
+        serverIP = preferences.getString(SERVER_ADDR, "210.107.139.87");
         voipPort = preferences.getInt(VOID_PORT, 1049);
 
 
@@ -117,15 +118,53 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 
+
+
+        final int permission = PermissionChecker.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+
+        if(permission == PermissionChecker.PERMISSION_GRANTED) {
+            Log.e(TAG, "got permission");
+        } else {
+            Log.e(TAG, "did not get  permission");
+
+            final String message = "Please turn on RECORD_AUDIO permission";
+            new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK)
+                    .setTitle("Notification")
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setOnCancelListener(
+                            new DialogInterface.OnCancelListener() {
+
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    finish();
+                                }
+                            })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            return;
+        }
+
         startCallListener();
 
+        /*
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_MICROPHONE);
+            Log.e(TAG, "looking for permission");
 
         }
+        else
+            Log.e(TAG, "did not get  permission");
+
+            */
+
 
 
         connTask = new ConnTask();
@@ -149,6 +188,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         items.add(new ListItem(
                 items.size(),
                 getResources().getText(R.string.thermal_camera).toString(),
+                null,
+                true));
+        items.add(new ListItem(
+                items.size(),
+                getResources().getText(R.string.voip_call).toString(),
                 null,
                 true));
         items.add(new ListItem(
@@ -191,10 +235,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         String str = item.text();
 
         String exitStr = getResources().getText(R.string.exit).toString();
-        Log.e(TAG, "Str is "+str.length());
+        Log.e(TAG, "Str is "+str);
         if (str.equals(exitStr)) {
 
-            Log.e(TAG, "Str is "+str);
+            Log.e(TAG, "Str is X"+str);
             finish();
         }
         // com.usrc.railbot.voicechat
@@ -207,6 +251,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             intent.putExtra(EXTRA_IP, serverIP);
             intent.putExtra(EXTRA_PORT, voipPort);
             startActivityForResult(intent, SERVER_SETTING_RESULT);
+        }
+        else if(str.equals(getResources().getText(R.string.voip_call))) {
+
+            IN_CALL = true;
+            Intent intent = new Intent(MainActivity.this, MakeCallActivity.class);
+            intent.putExtra(EXTRA_IP, serverIP);
+            intent.putExtra(EXTRA_PORT, Integer.toString(voipPort));
+            startActivity(intent);
+
+
         }
         else {
             Intent intent = new Intent(this, VideoActivity.class);
@@ -223,6 +277,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                     Intent data) {
 
 
+
+        Log.e(TAG, "Req code is " + requestCode);
         if (requestCode == 0) {
             if (resultCode == 0) {
                 // A contact was picked.  Here we will just display it
@@ -286,7 +342,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 String name = data.substring(4, packet.getLength());
 
                                 Intent intent = new Intent(MainActivity.this, ReceiveCallActivity.class);
-                                intent.putExtra(EXTRA_IP, address.substring(1, address.length()));
+                                intent.putExtra(EXTRA_IP, serverIP);
+                                intent.putExtra(EXTRA_PORT, Integer.toString(voipPort));
                                 IN_CALL = true;
                                 //LISTEN = false;
                                 //stopCallListener();
@@ -365,12 +422,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onStop() {
 
         super.onStop();
-        Log.i(TAG, "App stopped!");
+        Log.e(TAG, "App stopped!");
         stopCallListener();
-        if(!IN_CALL) {
 
-            finish();
-        }
     }
 
     @Override

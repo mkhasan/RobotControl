@@ -1,37 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.railbot.usrc.robotcontrol.MakeCallActivity"
-    android:orientation="vertical">
+    android:background="@color/black">
 
 
-    <TextView
-        android:id="@+id/textViewCalling"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Calling"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal" >
-
-        <Button
-            android:id="@+id/buttonEndCall"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+        <TextView
+            android:id="@+id/textViewCalling"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Call ended" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:text="Calling"
+            android:textColor="#acffffff"
+            android:textSize="20sp"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/buttonEndCall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:background="@drawable/button_set"
+                android:textColor="#acffffff"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="Hang up" />
 
 
 
-</LinearLayout>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
 
 
 

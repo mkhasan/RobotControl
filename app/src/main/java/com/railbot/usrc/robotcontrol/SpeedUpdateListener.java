@@ -6,4 +6,5 @@ package com.railbot.usrc.robotcontrol;
 
 public interface SpeedUpdateListener {
     public void OnUpdateSpeed(float speed);
+    public void OnDirChanged(ControlStickListener.MotionDir motionDir);
 }

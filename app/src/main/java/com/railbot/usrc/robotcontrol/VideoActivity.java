@@ -165,7 +165,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
 
 
-
+        final ImageView wallPaper = (ImageView) findViewById(R.id.wall_paper);
 
         mLoadingView = this.findViewById(R.id.loading_view);
 
@@ -256,6 +256,8 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         if (cameraType == CameraType.none) {
 
             mLoadingView.setVisibility(View.GONE);
+            wallPaper.setVisibility(View.VISIBLE);
+
 
 
         }
@@ -264,6 +266,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
             mMpegPlayer.setDataSource(url, params, VideoPlayer.UNKNOWN_STREAM, VideoPlayer.NO_STREAM,
                     VideoPlayer.NO_STREAM);
             String str = Long.toHexString(mMpegPlayer.NativePlayer()) + " ";
+            wallPaper.setVisibility(View.GONE);
             Log.e(TAG, str);
 
 
@@ -272,6 +275,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         else if (cameraType == CameraType.thermal) {
             irSurfaceView.setVisibility(View.VISIBLE);
             irViewer = new IR_Viewer(irSurfaceView);
+            wallPaper.setVisibility(View.GONE);
 
         } else {
                     // to be handled later
@@ -995,6 +999,17 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         railController.SetCurSpeed(speed);
 
         Log.e(TAG, "Speed is " + speed);
+
+    }
+
+    public void OnDirChanged(ControlStickListener.MotionDir motionDir) {
+        if(motionDir == ControlStickListener.MotionDir.FORWARD)
+            state.setText(getString(R.string.state)+getString(R.string.forward));
+        else if(motionDir == ControlStickListener.MotionDir.BACKWARD)
+            state.setText(getString(R.string.state)+getString(R.string.backward));
+        else
+            state.setText(getString(R.string.state)+getString(R.string.stop));
+
 
     }
 
