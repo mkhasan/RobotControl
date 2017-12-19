@@ -255,7 +255,7 @@ public class VideoPlayer {
         Log.e(TAG, "From callback: " + Integer.toString(i));
     }
 
-    public void DellaocatePlayer() {
+    public void DeallocatePlayer() {
         deallocNative();
         mNativePlayer = 0;
     }

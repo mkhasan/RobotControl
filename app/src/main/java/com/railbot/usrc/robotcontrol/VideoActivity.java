@@ -658,8 +658,9 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
             this.mMpegPlayer.stop();
             */
 
+            Log.e(TAG, "onDestroy()");
             if(mMpegPlayer !=  null)
-                mMpegPlayer.DellaocatePlayer();
+                mMpegPlayer.DeallocatePlayer();
 
             Log.e(TAG, "going to deallocate");
 
@@ -765,7 +766,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                     R.string.main_could_not_open_ir_stream);
             String message = String.format(format, err.getMessage());
 
-            Log.e(TAG, err.getMessage());
+            Log.e(TAG, "Error: " + err.getMessage() + " " + mMpegPlayer.NativePlayer());
             new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK)
                     .setTitle("Error")
                     .setMessage(message)
@@ -878,6 +879,12 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
         if(moveStickListener != null)
             moveStickListener.TerminateConnTask();
+
+        if(irViewer != null)
+            irViewer.setListener(null);
+
+        if(mMpegPlayer != null)
+            mMpegPlayer.setListener(null);
         Log.e(TAG, "onPause");
     }
 
