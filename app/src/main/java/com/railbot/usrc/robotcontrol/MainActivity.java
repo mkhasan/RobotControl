@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         items.add(new ListItem(
                 items.size(),
-                getResources().getText(R.string.server_settings).toString(),
+                getResources().getText(R.string.settings).toString(),
                 null,
                 true));
 
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         }
-        else if (str.equals(getResources().getText(R.string.server_settings))) {
+        else if (str.equals(getResources().getText(R.string.settings))) {
             Intent intent = new Intent(this, ServerSettingsActivity.class);
             intent.putExtra(EXTRA_IP, serverIP);
             intent.putExtra(EXTRA_PORT, voipPort);
