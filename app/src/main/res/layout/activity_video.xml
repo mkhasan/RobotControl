@@ -171,14 +171,80 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="200dp"
-            android:background="@color/blue">
+            android:layout_marginTop="100dp">
+
+            <RelativeLayout
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dist_sel_panel_height">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/travel_limit"
+                    android:textColor="@color/off_white"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/dec_dist_btn"
+                android:layout_marginLeft="200dp"
+                android:layout_alignParentLeft="true"
+                android:layout_width="@dimen/triangle_btn_width"
+                android:layout_height="@dimen/triangle_btn_height"
+                android:rotation="-90"
+                android:layout_centerVertical="true"
+                android:background="@drawable/triangle_button" />
+
+            <Button
+                android:id="@+id/inc_dist_btn"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="100dp"
+                android:layout_width="@dimen/triangle_btn_width"
+                android:layout_height="@dimen/triangle_btn_height"
+                android:rotation="90"
+                android:layout_centerVertical="true"
+                android:background="@drawable/triangle_button" />
+
+            <TextView
+                android:id="@+id/dist_text"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="100dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/off_white"
+                android:gravity="center"
+                android:text="1 m" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/travel_limit"
-                android:textColor="@color/off_white"/>
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/off_white"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:text="@string/travel_max_limit" />
 
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/blue"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true">
+            <Button
+                android:layout_alignParentLeft="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/move_button" />
 
         </RelativeLayout>
 

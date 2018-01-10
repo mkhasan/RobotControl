@@ -497,6 +497,9 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
             public void onGlobalLayout() {
                 RelativeLayout.LayoutParams relParams;
 
+                final double width = content.getWidth();
+                final double height = content.getHeight();
+
                 final int w = speedSlider.getWidthWithPadding();
                 final int rangeCount = speedSlider.getRangeCount();
                 final int spacing = w / rangeCount;
@@ -526,6 +529,28 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                     relParams.leftMargin = slotPositions[i]-relParams.width/2;
                     speedText[i].setLayoutParams(relParams);
                 }
+
+                int gap = 170;
+
+                final Button decBtn = (Button) findViewById(R.id.dec_dist_btn);
+                final Button incBtn = (Button) findViewById(R.id.inc_dist_btn);
+
+                relParams = (RelativeLayout.LayoutParams) decBtn.getLayoutParams();
+                relParams.leftMargin = (int)(width/2.0)-gap;
+                decBtn.setLayoutParams(relParams);
+
+                relParams = (RelativeLayout.LayoutParams) incBtn.getLayoutParams();
+                relParams.rightMargin = (int)(width/2.0)-gap;
+                incBtn.setLayoutParams(relParams);
+
+                final TextView distText = (TextView) findViewById(R.id.dist_text);
+
+                relParams = (RelativeLayout.LayoutParams) distText.getLayoutParams();
+                relParams.width = 100;
+                relParams.leftMargin = (int)(width/2.0)-gap/2-relParams.width;
+                distText.setLayoutParams(relParams);
+
+
 
 
 
