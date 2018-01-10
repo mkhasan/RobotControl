@@ -96,6 +96,8 @@ int Socket::Open(const char *hostName, int portNo) {
 
 
     ////////////////////////
+
+    LOGE(1, "Host name is %s", hostName);
     return ERROR_NO_ERROR;
 
 }

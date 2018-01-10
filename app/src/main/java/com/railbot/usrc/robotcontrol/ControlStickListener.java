@@ -62,9 +62,12 @@ public class ControlStickListener implements JoystickListener {
     public static final int MAX_TILT = 10;
     public static final int MIN_TILT = -90;
 
+    private static final float DELTA_SPD = (float) 0.2;
 
     private MotionDir motionDir = MotionDir.NONE;
     private MotionDir prevDir = MotionDir.NONE;
+
+    private float prevSpdOffset = (float) 0.0;
 
     private ControlType controlType;
 
@@ -170,23 +173,26 @@ public class ControlStickListener implements JoystickListener {
                 else
                     motionDir = MotionDir.FORWARD;
 
-                float speed = offset*maxSpeed;
-                if(speedUpdateListener != null) {
-                    speedUpdateListener.OnUpdateSpeed(speed);
-                    if(prevDir != motionDir) {
-                        speedUpdateListener.OnDirChanged(motionDir);
-                        prevDir = motionDir;
-                    }
-
-                }
-                if(railController != null) {
-                    if(motionDir == MotionDir.FORWARD) {
-                        railController.MoveForward();
+                if(Math.abs(offset-prevSpdOffset) > DELTA_SPD ) {
+                    float speed = offset * maxSpeed;
+                    if (speedUpdateListener != null) {
+                        speedUpdateListener.OnUpdateSpeed(speed);
+                        if (prevDir != motionDir) {
+                            speedUpdateListener.OnDirChanged(motionDir);
+                            prevDir = motionDir;
+                        }
 
                     }
-                    else if(motionDir == MotionDir.BACKWARD) {
-                        railController.MoveBackward();
+                    if (railController != null) {
+                        if (motionDir == MotionDir.FORWARD) {
+                            railController.MoveForward();
+
+                        } else if (motionDir == MotionDir.BACKWARD) {
+                            railController.MoveBackward();
+                        }
                     }
+
+                    prevSpdOffset = offset;
                 }
 
 
@@ -210,6 +216,7 @@ public class ControlStickListener implements JoystickListener {
                 speedUpdateListener.OnDirChanged(motionDir);
             }
             railController.StopMoving();
+            prevSpdOffset = (float) 0.0;
         }
 
 

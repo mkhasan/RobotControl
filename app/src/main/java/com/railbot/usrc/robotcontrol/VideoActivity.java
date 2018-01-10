@@ -204,7 +204,8 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         //msgSe = new DeviceController("172.24.1.1", 8000, 8081);
         //msgSender = new MsgSender("172.24.1.1", 8000, MsgSender.protocoletype.udp);
         //msgSender = new MsgSender("192.168.0.254", 8899, MsgSender.protocoletype.udp);
-        msgSender = new MsgSender(getString(R.string.rail_server_ip), Integer.parseInt(getString(R.string.rail_server_port)), MsgSender.protocoletype.udp);
+        msgSender = new MsgSender(MainActivity.railRobotIP, Integer.parseInt(getString(R.string.rail_server_port)), MsgSender.protocoletype.udp);
+
 
         float minSpeed = Float.parseFloat(getString(R.string.min_speed));
         float maxSpeed = Float.parseFloat(getString(R.string.max_speed));
@@ -228,14 +229,20 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         //timerHandler.postDelayed(timerRunnable, 2000);
 
         Log.e(TAG, "onCreate");
+        String image_camera_ip = MainActivity.imageIP;
+        String thermal_camera_ip = MainActivity.thermalIP;
 
         //String url = "rtsp://admin:admin@"+getString(R.string.rail_server_ip)+":554/stream1";
 
-        String url = "rtsp://admin:admin@"+getString(R.string.image_camera_ip)+":554/stream1";
+        String url = "rtsp://admin:admin@"+image_camera_ip+":554/stream1";
 
-        if (cameraType == CameraType.thermal)
-            url = "rtsp://admin:admin@"+getString(R.string.thermal_camera_ip)+":554/stream0";
+        if (cameraType == CameraType.thermal) {
+            url = "rtsp://admin:admin@" + thermal_camera_ip + ":554/stream0";
 
+            Log.e(TAG, "Thermal url is " + url);
+        }
+
+        /*
 
         String testStr = getString(R.string.image_camera_ip);
 
@@ -244,9 +251,11 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         String[] parts = testStr.split("\\.");
 
 
+
         if (parts.length == 4 && parts[2].equals("1"))
             url = "rtsp://admin:admin@"+getString(R.string.image_camera_ip)+":554/12";
         //String url = "rtsp://admin:admin@192.168.1.100:554/12";
+        */
 
         HashMap<String, String> params = new HashMap<String, String>();
         mPlay = false;
@@ -274,7 +283,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         }
         else if (cameraType == CameraType.thermal) {
             irSurfaceView.setVisibility(View.VISIBLE);
-            irViewer = new IR_Viewer(irSurfaceView);
+            irViewer = new IR_Viewer(irSurfaceView, MainActivity.thermalIP);
             wallPaper.setVisibility(View.GONE);
 
         } else {
@@ -763,7 +772,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
     public void onFFDataSourceLoaded(FFError err, StreamInfo[] streams) {
         if (err != null) {
             String format = getResources().getString(
-                    R.string.main_could_not_open_ir_stream);
+                    R.string.main_could_not_open_image_stream);
             String message = String.format(format, err.getMessage());
 
             Log.e(TAG, "Error: " + err.getMessage() + " " + mMpegPlayer.NativePlayer());
@@ -885,6 +894,9 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
         if(mMpegPlayer != null)
             mMpegPlayer.setListener(null);
+
+        if(irSurfaceView != null)
+            irSurfaceView.setVisibility(View.GONE);
         Log.e(TAG, "onPause");
     }
 

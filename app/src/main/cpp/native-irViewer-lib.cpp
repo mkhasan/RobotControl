@@ -28,10 +28,22 @@ extern "C"
 jint
 Java_com_railbot_usrc_robotcontrol_IR_1Viewer_initNative(
         JNIEnv *env,
-        jobject thiz/* this */) {
+        jobject thiz,/* this */
+        jstring _hostname ) {
 
     LOGE(1, "Going to init native ...")
-    return jni_ir_viewer_init(env, thiz);
+
+    const char *hostname = env->GetStringUTFChars(_hostname, NULL);
+    if (NULL == hostname)
+        return ERROR_HOSTNAME_INIT_ERROR;
+
+    int ret = jni_ir_viewer_init(env, thiz, hostname);
+    // Step 2: Perform its intended operations
+
+    env->ReleaseStringUTFChars(_hostname, hostname);  // release resources
+
+
+    return ret;
 }
 
 

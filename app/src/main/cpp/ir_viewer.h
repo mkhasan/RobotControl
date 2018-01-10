@@ -51,11 +51,12 @@ enum ViewerErrors {
     ERROR_VIEWER_NOT_FOUND = -15,
     ERROR_RENDERING_FAILED = -16,
     ERROR_COULD_NOT_GET_WINDOW_FORMAT = -17,
-    ERROR_OUT_OF_RANGE = -18
+    ERROR_OUT_OF_RANGE = -18,
+    ERROR_HOSTNAME_INIT_ERROR = -19
 
 };
 
-#define SERVER_ADDR "192.168.0.100"
+//#define SERVER_ADDR "192.168.0.100"
 #define CTRL_PORT 2004
 #define DATA_PORT 2005
 #define USER "admin"
@@ -103,7 +104,7 @@ void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
 
 
 
-int jni_ir_viewer_init(JNIEnv *env, jobject thiz);
+int jni_ir_viewer_init(JNIEnv *env, jobject thiz, const char* hostname);
 struct Viewer * getViewer(JNIEnv *env, jobject thiz);
 void jni_ir_viewer_dealloc(JNIEnv *env, jobject thiz);
 void jni_ir_viewer_render(JNIEnv *env, jobject thiz, jobject surface);
@@ -125,6 +126,7 @@ struct Viewer {
     ANativeWindow * window;
 #endif
 
+    char hostname[MAX_STRLEN];
     Socket * pCtrlSocket;
     Socket * pStreamSocket;
     CCircularBuffer * pCtrlBuffer;

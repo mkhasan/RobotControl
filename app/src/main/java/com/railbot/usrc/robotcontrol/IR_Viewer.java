@@ -24,6 +24,7 @@ public class IR_Viewer {
     private IR_SurfaceView surfaceView;
     private long mNativeViewer;
     private boolean connected;
+    private String hostname;
 
     private IR_ViewerListener listener = null;
     static {
@@ -154,14 +155,14 @@ public class IR_Viewer {
     }
 
 
-    IR_Viewer(IR_SurfaceView _surfaceView) {
+    IR_Viewer(IR_SurfaceView _surfaceView, String _hostname) {
         surfaceView = _surfaceView;
-
+        hostname = _hostname;
 
         connected = false;
 
         //Log.e(TAG, "Ggoing to init native ...");
-        int error = initNative();
+        int error = initNative(hostname);
         if (error != 0) {
             Log.e(TAG, "Error " + error);
             throw new RuntimeException(String.format(
@@ -189,7 +190,7 @@ public class IR_Viewer {
     }
 
 
-    private native int initNative();
+    private native int initNative(String hostname);
     public native int connectNativeViewer();
     public native void renderViewer(Surface surface);
     public native void renderFrameStop();

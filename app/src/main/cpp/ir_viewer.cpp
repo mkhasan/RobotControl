@@ -143,7 +143,7 @@ static void DeleteAll(JNIEnv *env, struct Viewer *pViewer) {
 
 
 
-int jni_ir_viewer_init(JNIEnv *env, jobject thiz) {
+int jni_ir_viewer_init(JNIEnv *env, jobject thiz, const char* _hostname) {
 
 
     int ret;
@@ -156,6 +156,8 @@ int jni_ir_viewer_init(JNIEnv *env, jobject thiz) {
 
     LOGE(1, "pViewer is %lx", pViewer);
     memset(pViewer, 0, sizeof(*pViewer));
+
+    strcpy(pViewer->hostname, _hostname);
 
 #ifdef JNI
     ret = env->GetJavaVM(&pViewer->get_javavm);
@@ -388,9 +390,9 @@ int Connect(struct Viewer * pViewer) {
         pViewer->pCtrlSocket->Close();
     }
 
-    LOGE(1, "Open Begins");
+    LOGE(1, "Open Begins %s", pViewer->hostname);
 
-    ret = pViewer->pCtrlSocket->Open(SERVER_ADDR, CTRL_PORT);
+    ret = pViewer->pCtrlSocket->Open(pViewer->hostname, CTRL_PORT);
     LOGE(1, "Open Done");
     if ( ret < 0) {
         return ret;
@@ -415,7 +417,7 @@ int Connect(struct Viewer * pViewer) {
     LOGI(5, "LOGIN success");
 
 
-    ret = NotifyPorts(pViewer, SERVER_ADDR, DATA_PORT);
+    ret = NotifyPorts(pViewer, pViewer->hostname, DATA_PORT);
     if (ret == 0)
         return ERROR_INVALID_DATA;
 

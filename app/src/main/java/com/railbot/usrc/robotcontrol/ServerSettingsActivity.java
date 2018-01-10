@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.nio.charset.MalformedInputException;
+
 public class ServerSettingsActivity extends Activity {
 
     final static String TAG = ServerSettingsActivity.class.getName();
@@ -25,10 +27,18 @@ public class ServerSettingsActivity extends Activity {
         Intent intent = getIntent();
         final String ipAddress = intent.getStringExtra(MainActivity.EXTRA_IP);
         final int voidPort = intent.getIntExtra(MainActivity.EXTRA_PORT, 1049);
+        final String imageIP = intent.getStringExtra(MainActivity.EXTRA_IMAGE_IP);
+        final String thermalIP = intent.getStringExtra(MainActivity.EXTRA_THERMAL_IP);
+        final String railRobotIP = intent.getStringExtra(MainActivity.EXTRA_RAIL_ROBOT_IP);
 //        String test = ;
 
         final EditText ipAddressEdit = (EditText) findViewById(R.id.ip_address);
         final EditText voipPortEdit = (EditText) findViewById(R.id.voip_port);
+
+        final EditText imageIPEdit = (EditText) findViewById(R.id.image_ip);
+        final EditText thermalIPEdit = (EditText) findViewById(R.id.thermal_ip);
+        final EditText railRobotIPEdit = (EditText) findViewById(R.id.railbot_ip);
+
 
 
         final InputFilter[] filters = new InputFilter[1];
@@ -57,9 +67,15 @@ public class ServerSettingsActivity extends Activity {
             }
         };
         ipAddressEdit.setFilters(filters);
+        imageIPEdit.setFilters(filters);
+        thermalIPEdit.setFilters(filters);
+        railRobotIPEdit.setFilters(filters);
 
         ipAddressEdit.setText(ipAddress);
         voipPortEdit.setText(Integer.toString(voidPort));
+        imageIPEdit.setText(imageIP);
+        thermalIPEdit.setText(thermalIP);
+        railRobotIPEdit.setText(railRobotIP);
 
 
 
@@ -69,8 +85,12 @@ public class ServerSettingsActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent data = new Intent();
-                data.putExtra("server_ip", ((EditText) findViewById(R.id.ip_address)).getText().toString());
-                data.putExtra("voip_port", voipPortEdit.getText().toString());
+                data.putExtra(MainActivity.SERVER_ADDR, ((EditText) findViewById(R.id.ip_address)).getText().toString());
+                data.putExtra(MainActivity.IMAGE_IP, ((EditText) findViewById(R.id.image_ip)).getText().toString());
+                data.putExtra(MainActivity.THERMAL_IP, ((EditText) findViewById(R.id.thermal_ip)).getText().toString());
+                data.putExtra(MainActivity.RAIL_ROBOT_IP, ((EditText) findViewById(R.id.railbot_ip)).getText().toString());
+                data.putExtra(MainActivity.VOIP_PORT, voipPortEdit.getText().toString());
+
                 setResult(RESULT_OK, data);
 
                 Log.e(TAG, "In settings " + ((EditText) findViewById(R.id.ip_address)).getText());

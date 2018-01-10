@@ -55,11 +55,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final String PREF_TITLE = "ServerInfo";
 
     public static final String SERVER_ADDR = "serverAddr";
-    public static final String VOID_PORT = "voipPort";
+    public static final String IMAGE_IP = "imageIP";
+    public static final String THERMAL_IP = "thermalIP";
+    public static final String RAIL_ROBOT_IP = "railRobotIP";
+    public static final String VOIP_PORT = "voipPort";
+    public static final String RAIL_ROBOT_PORT = "railRobotPort";
+
     public static final int SERVER_SETTING_RESULT = 1;
 
     public static final String EXTRA_IP = "com.railbot.usrc.robotcontrol.IP";
     public static final String EXTRA_PORT = "com.railbot.usrc.robotcontrol.Port";
+    public static final String EXTRA_IMAGE_IP = "com.railbol.usrc.robotcontrol.image_ip";
+    public static final String EXTRA_THERMAL_IP = "com.railbol.usrc.robotcontrol.thermal_ip";
+    public static final String EXTRA_RAIL_ROBOT_IP = "com.railbol.usrc.robotcontrol.rail_robot_ip";
 
 
     private static final int LISTENER_PORT = 50003;
@@ -75,8 +83,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final String CALL_RECEIVED_NOTFICATION="com.usrc.railbot.voicechat.NOTIFICATION";
 
 
-    private String serverIP;
-    private int voipPort;
+    private static String serverIP;
+    public static String imageIP;
+    public static String thermalIP;
+    public static String railRobotIP;
+    private static int voipPort;
+    private static int railRobotPort;
 
     private ConnTask connTask = null;
 
@@ -103,7 +115,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         preferences = getSharedPreferences(PREF_TITLE, MODE_PRIVATE);
 
         serverIP = preferences.getString(SERVER_ADDR, "210.107.139.87");
-        voipPort = preferences.getInt(VOID_PORT, 1049);
+        imageIP = preferences.getString(IMAGE_IP, "192.168.0.101");
+        thermalIP = preferences.getString(THERMAL_IP, "192.168.0.100");
+        railRobotIP = preferences.getString(RAIL_ROBOT_IP, "192.168.0.254");
+        voipPort = preferences.getInt(VOIP_PORT, 1049);
+        //railRobotPort = preferences.getInt(RAIL_ROBOT_PORT, 8899);
+
 
 
 
@@ -250,6 +267,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Intent intent = new Intent(this, ServerSettingsActivity.class);
             intent.putExtra(EXTRA_IP, serverIP);
             intent.putExtra(EXTRA_PORT, voipPort);
+            intent.putExtra(EXTRA_IMAGE_IP, imageIP);
+            intent.putExtra(EXTRA_THERMAL_IP, thermalIP);
+            intent.putExtra(EXTRA_RAIL_ROBOT_IP, railRobotIP);
+
             startActivityForResult(intent, SERVER_SETTING_RESULT);
         }
         else if(str.equals(getResources().getText(R.string.voip_call))) {
@@ -293,15 +314,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             if(resultCode == RESULT_OK) {
 
-                serverIP = data.getStringExtra("server_ip");
-                voipPort = Integer.parseInt(data.getStringExtra("voip_port"));
+                serverIP = data.getStringExtra(SERVER_ADDR);
+                imageIP = data.getStringExtra(IMAGE_IP);
+                thermalIP = data.getStringExtra(THERMAL_IP);
+                railRobotIP = data.getStringExtra(RAIL_ROBOT_IP);
+                voipPort = Integer.parseInt(data.getStringExtra(VOIP_PORT));
+
 
                 Log.e(TAG, "Server ip " + serverIP + " port " + voipPort);
 
                 preferences = getSharedPreferences(PREF_TITLE, MODE_PRIVATE);
                 SharedPreferences.Editor edit= preferences.edit();
                 edit.putString(SERVER_ADDR, serverIP);
-                edit.putInt(VOID_PORT, voipPort);
+                edit.putString(IMAGE_IP, imageIP);
+                edit.putString(THERMAL_IP, thermalIP);
+                edit.putString(RAIL_ROBOT_IP, railRobotIP);
+                edit.putInt(VOIP_PORT, voipPort);
                 edit.commit();
 
 
