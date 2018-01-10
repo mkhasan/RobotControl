@@ -24,4 +24,8 @@
     <dimen name="tilt_stick_length">100dp</dimen>
     <dimen name="tilt_stick_width">35dp</dimen>
     <dimen name="pan_btn_horizontal_margin">40dp</dimen>
+    <dimen name="speed_slider_width">240dp</dimen>
+    <dimen name="speed_slider_height">50dp</dimen>
+    <dimen name="speed_text_height">25dp</dimen>
+
 </resources>

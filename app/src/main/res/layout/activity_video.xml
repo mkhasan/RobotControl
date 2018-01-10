@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/black"
+    xmlns:rsv="http://schemas.android.com/apk/res-auto"
     tools:context="com.railbot.usrc.robotcontrol.VideoActivity">
 
     <RelativeLayout
@@ -64,6 +65,129 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/control_height"
         android:visibility="visible">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="75dp"
+                android:layout_marginLeft="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/off_white"
+                    android:text="@string/travel_speed"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp">
+                <com.railbot.usrc.robotcontrol.rvs.RangeSliderView
+                    android:id="@+id/speed_slider"
+                    android:layout_width="@dimen/speed_slider_width"
+                    android:layout_height="@dimen/speed_slider_height"
+                    rsv:filledColor="#1A5F77"
+                    rsv:emptyColor="#1A5F77"
+                    android:layout_marginLeft="0dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/speed_text_height"
+                    android:orientation="horizontal">
+                    <RelativeLayout
+                        android:id="@+id/speed_text_layout"
+                        android:layout_width="@dimen/speed_slider_width"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/speed_text_0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:text="10"
+                            android:gravity="center"
+                            android:textColor="@color/off_white"/>
+
+                        <TextView
+                            android:id="@+id/speed_text_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="15"
+                            android:gravity="center"
+                            android:textColor="@color/off_white"/>
+
+
+                        <TextView
+                            android:id="@+id/speed_text_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:text="20"
+                            android:gravity="center"
+                            android:textColor="@color/off_white"/>
+
+
+                        <TextView
+                            android:id="@+id/speed_text_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="70dp"
+                            android:text="25"
+                            android:gravity="center"
+                            android:textColor="@color/off_white"/>
+
+                        <TextView
+                            android:id="@+id/speed_text_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="100dp"
+                            android:text="30"
+                            android:gravity="center"
+                            android:textColor="@color/off_white"/>
+
+
+
+                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:text="cm/s"
+                        android:textColor="@color/off_white"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="200dp"
+            android:background="@color/blue">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/travel_limit"
+                android:textColor="@color/off_white"/>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/control_height"
+        android:visibility="gone">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

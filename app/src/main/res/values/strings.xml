@@ -47,4 +47,7 @@
 
     <string name="error">Error</string>
     <string name="comm_err_msg">Communication Error Occured</string>
+    
+    <string name="travel_speed">주행 속도</string>
+    <string name="travel_limit">주행 거리</string>
 </resources>

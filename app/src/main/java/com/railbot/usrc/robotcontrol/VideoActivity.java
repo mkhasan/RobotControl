@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -43,6 +44,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import com.jmedeisis.bugstick.Joystick;
+import com.railbot.usrc.robotcontrol.rvs.RangeSliderView;
 
 import static android.content.RestrictionsManager.RESULT_ERROR;
 
@@ -487,6 +489,48 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
 
 
+        final RangeSliderView speedSlider = (RangeSliderView) findViewById(R.id.speed_slider);
+
+        final View content = findViewById(android.R.id.content);
+        content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                RelativeLayout.LayoutParams relParams;
+
+                final int w = speedSlider.getWidthWithPadding();
+                final int rangeCount = speedSlider.getRangeCount();
+                final int spacing = w / rangeCount;
+
+                int slotPositions[] = new int[rangeCount];
+
+                int x = speedSlider.getPaddingLeft() + (spacing / 2);
+                for (int i = 0; i < rangeCount; ++i) {
+                    slotPositions[i] = x;
+                    x += spacing;
+                }
+
+
+
+                TextView speedText[] = new TextView[] {(TextView) findViewById(R.id.speed_text_0)
+                                                        , (TextView) findViewById(R.id.speed_text_1)
+                                                        , (TextView) findViewById(R.id.speed_text_2)
+                                                        , (TextView) findViewById(R.id.speed_text_3)
+                                                        , (TextView) findViewById(R.id.speed_text_4)};
+
+
+
+                for(int i=0;i<5; i++) {
+                    relParams = (RelativeLayout.LayoutParams) speedText[i].getLayoutParams();
+                    relParams.width = 60;
+                    //Log.e(TAG, "Width " + i + " is " + relParams.width);
+                    relParams.leftMargin = slotPositions[i]-relParams.width/2;
+                    speedText[i].setLayoutParams(relParams);
+                }
+
+
+
+            }
+        });
 
 
     }
