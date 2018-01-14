@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
@@ -13,8 +14,11 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.FloatProperty;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -22,9 +26,12 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -175,7 +182,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
         /////////////////////////////  newly added ///////////////////////
         speedBar = (SeekBar) findViewById(R.id.speed_bar);
-        speedBar.setProgress((int)(ControlStickListener.INITIAL_MAX_SPEED*100.0/RailController.MAX_SPEED));
+        speedBar.setProgress((int)(ControlStickListener.INITIAL_MAX_SPEED*100.0/4.0));
         moveBackwardBtn = (ImageButton) findViewById(R.id.button_backward);
         moveForwardBtn = (ImageButton) findViewById(R.id.button_forward);
 
@@ -208,9 +215,9 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         //msgSender = new MsgSender("192.168.0.254", 8899, MsgSender.protocoletype.udp);
         msgSender = new MsgSender(MainActivity.railRobotIP, Integer.parseInt(getString(R.string.rail_server_port)), MsgSender.protocoletype.udp);
 
-
-        float minSpeed = Float.parseFloat(getString(R.string.min_speed));
-        float maxSpeed = Float.parseFloat(getString(R.string.max_speed));
+        Log.e(TAG, "IP IS: " + MainActivity.railRobotIP + " port is: " + Integer.parseInt(getString(R.string.rail_server_port)));
+        int minSpeed = RailController.MIN_SPEED_IN_CM;
+        int maxSpeed = RailController.MAX_SPEED_IN_CM;
         railController = new RailController(msgSender, minSpeed, maxSpeed);
 
         String speedStr = getString(R.string.speed) + " (" + minSpeed + "~" + maxSpeed + ")";
@@ -330,11 +337,12 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                     public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                         progress = progresValue;
                         //speedView.setText();
+                        /*
                         final float maxSpeed = (float) ((double)progress*(RailController.MAX_SPEED)/100.0);
                         maxSpeedView.setText("Max Speed: " + String.format("%.1f", maxSpeed) +" m/s");
                         if(moveStickListener != null)
                             moveStickListener.SetMaxSpeed(maxSpeed);
-
+                        */
 
                         /*
                         if (railController.GetCurMove() == RailController.CurMove.forward)
@@ -489,13 +497,19 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
 
 
+        ///////////////////// from here starts modification for recent GUI update on 10/01/2018  ///////////////////
+
         final RangeSliderView speedSlider = (RangeSliderView) findViewById(R.id.speed_slider);
+
+
 
         final View content = findViewById(android.R.id.content);
         content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+
                 RelativeLayout.LayoutParams relParams;
+                LinearLayout.LayoutParams linParams;
 
                 final double width = content.getWidth();
                 final double height = content.getHeight();
@@ -530,7 +544,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                     speedText[i].setLayoutParams(relParams);
                 }
 
-                int gap = 170;
+                int gap = (int)(getResources().getDimension(R.dimen.dist_btn_gap));
 
                 final Button decBtn = (Button) findViewById(R.id.dec_dist_btn);
                 final Button incBtn = (Button) findViewById(R.id.inc_dist_btn);
@@ -547,10 +561,57 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
                 relParams = (RelativeLayout.LayoutParams) distText.getLayoutParams();
                 relParams.width = 100;
-                relParams.leftMargin = (int)(width/2.0)-gap/2-relParams.width;
+                relParams.leftMargin = (int)(width/2.0)-2*gap/3-relParams.width;
                 distText.setLayoutParams(relParams);
 
 
+
+                final LinearLayout mainCtrlLayout = (LinearLayout) findViewById(R.id.main_ctrl_layout);
+
+                relParams = (RelativeLayout.LayoutParams) mainCtrlLayout.getLayoutParams();
+                relParams.topMargin = (int) (getResources().getDimension(R.dimen.control_height)-getResources().getDimension(R.dimen.cam_control_height));
+                relParams.height = (int)(getResources().getDimension(R.dimen.cam_control_height));
+                mainCtrlLayout.setLayoutParams(relParams);
+                //Log.e(TAG, "control height " + controlHeight + " cam cotrl height " + camCtrlHeight);
+
+                final RelativeLayout camCtrlLayout = (RelativeLayout) findViewById(R.id.cam_ctrl_layout);
+
+                linParams = (LinearLayout.LayoutParams) camCtrlLayout.getLayoutParams();
+                linParams.height = (int)(getResources().getDimension(R.dimen.cam_control_height));
+                linParams.width = linParams.height;
+                camCtrlLayout.setLayoutParams(linParams);
+
+                final RelativeLayout motionCtrlLayout = (RelativeLayout) findViewById(R.id.motion_ctrl_layout);
+
+                linParams = (LinearLayout.LayoutParams) motionCtrlLayout.getLayoutParams();
+                linParams.height = (int)(getResources().getDimension(R.dimen.cam_control_height));
+                linParams.width = (int)(width-getResources().getDimension(R.dimen.cam_control_height));
+                motionCtrlLayout.setLayoutParams(linParams);
+
+
+                /*
+                    forward.png -> 600 x 457
+                    stop.png ->900 x 860
+                 */
+
+                final Button fwdBtn = (Button) findViewById(R.id.move_fwd_btn);
+                final Button bwdBtn = (Button) findViewById(R.id.move_bwd_btn);
+                final Button moveStopBtn = (Button) findViewById(R.id.move_stop_btn);
+
+                relParams = (RelativeLayout.LayoutParams) fwdBtn.getLayoutParams();
+                relParams.height = (int)(getResources().getDimension(R.dimen.move_btn_height));
+                relParams.width = (int)(getResources().getDimension(R.dimen.move_btn_height) * 600.0f/457.0f);
+                fwdBtn.setLayoutParams(relParams);
+
+                relParams = (RelativeLayout.LayoutParams) bwdBtn.getLayoutParams();
+                relParams.height = (int)(getResources().getDimension(R.dimen.move_btn_height));
+                relParams.width = (int)(getResources().getDimension(R.dimen.move_btn_height) * 600.0f/457.0f);
+                bwdBtn.setLayoutParams(relParams);
+
+                relParams = (RelativeLayout.LayoutParams) moveStopBtn.getLayoutParams();
+                relParams.height = (int)(getResources().getDimension(R.dimen.stop_height));
+                relParams.width = (int)(getResources().getDimension(R.dimen.stop_height) * 900.0f/860.0f);
+                moveStopBtn.setLayoutParams(relParams);
 
 
 
@@ -558,7 +619,198 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         });
 
 
+        final Button decBtn = (Button) findViewById(R.id.dec_dist_btn);
+        final Button incBtn = (Button) findViewById(R.id.inc_dist_btn);
+
+        final TextView distText = (TextView) findViewById(R.id.dist_text);
+
+        decBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(railController != null) {
+                    final int dist = railController.getDistance();
+                    if(dist == 1)
+                        return;
+
+                    railController.setDistance(dist-1);
+                    final String str = dist-1 + " m";
+                    distText.setText(str);
+                }
+            }
+        });
+
+        incBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(railController != null) {
+                    final int dist = railController.getDistance();
+                    if(dist == RailController.MAX_DISTANCE)
+                        return;
+
+                    railController.setDistance(dist+1);
+                    final String str = dist+1 + " m";
+                    distText.setText(str);
+                }
+            }
+        });
+
+        final Button calBtn = (Button) findViewById(R.id.calibrate_btn);
+        calBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(railController != null) {
+                    railController.Calibrate();
+
+                }
+            }
+        });
+
+        final Button moveUpBtn = (Button) findViewById(R.id.move_up_btn);
+        moveUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int angle = tiltAngle+ANGLE_STEP;
+                if (angle > ControlStickListener.MAX_TILT)
+                    angle = ControlStickListener.MAX_TILT;
+
+                railController.CameraTilt(angle);
+                Log.e(TAG, "ANGLE is " + angle);
+
+            }
+        });
+
+        final Button moveDownBtn = (Button) findViewById(R.id.move_down_btn);
+        moveDownBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int angle = tiltAngle-ANGLE_STEP;
+                if (angle < ControlStickListener.MIN_TILT)
+                    angle = ControlStickListener.MIN_TILT;
+                railController.CameraTilt(angle);
+                Log.e(TAG, "ANGLE is " + angle);
+
+            }
+        });
+
+        final Button moveBackBtn = (Button) findViewById(R.id.move_back_btn);
+        moveBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int angle = panAngle-ANGLE_STEP;
+                if (angle < ControlStickListener.MIN_PAN)
+                    angle = ControlStickListener.MIN_PAN;
+                Log.e(TAG, "pan angle " + angle);
+                railController.CameraPan(angle);
+
+            }
+        });
+
+        final Button moveFrontBtn = (Button) findViewById(R.id.move_front_btn);
+        moveFrontBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int angle = panAngle+ANGLE_STEP;
+                if (angle > ControlStickListener.MAX_PAN)
+                    angle = ControlStickListener.MAX_PAN;
+                Log.e(TAG, "pan angle " + angle);
+                railController.CameraPan(angle);
+
+            }
+        });
+
+
+
+
+        final RangeSliderView.OnSlideListener listener = new RangeSliderView.OnSlideListener() {
+            @Override
+            public void onSlide(int index) {
+
+                //Log.e(TAG, "current index " + index);
+                if(railController != null)
+                    railController.SetCurSpeed(RailController.MIN_SPEED_IN_CM+index*5);
+            }
+        };
+
+        speedSlider.setOnSlideListener(listener);
+
+        final Button moveFwdBtn = (Button) findViewById(R.id.move_fwd_btn);
+        moveFwdBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    //Log.e(TAG, "action down " + speedSlider.getcu);
+                    moveFront();
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Log.e(TAG, "action up");
+                    //moveFrontRelease();
+                }
+
+                return true;
+            }
+        });
+
+        final Button moveBwdBtn = (Button) findViewById(R.id.move_bwd_btn);
+        moveBwdBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.e(TAG, "action down");
+                    moveBack();
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Log.e(TAG, "action up");
+                    //moveFrontRelease();
+                }
+
+                return true;
+            }
+        });
+
+
+        final Button moveStopBtn = (Button) findViewById(R.id.move_stop_btn);
+        moveStopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(railController != null)
+                    railController.StopMoving(3);
+
+            }
+        });
+
+
+        final LockEditText editText = (LockEditText) findViewById(R.id.dist_input);
+
+
+
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // do your stuff here
+
+                    //if()
+                    final int val = Integer.parseInt(editText.getText().toString());
+
+                    Log.e(TAG, "value is " + val);
+                    return true;
+                }
+
+                Log.e(TAG, "came here");
+                return false;
+            }
+        });
+
+        ///////////////////// from here finishes modification for recent GUI update on 10/01/2018  ///////////////////
+
+
+
     }
+
+
+
+
+
 
 
     public void sendMessage(View view) {
@@ -639,7 +891,12 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         }
 
 
-        railController.MoveBackward();
+        if(railController != null) {
+            railController.MoveBackward(railController.getDistance()*100);
+            state.setText(getString(R.string.state) + getString(R.string.backward));
+            Log.e(TAG, "move back " + railController.getDistance()*100);
+        }
+
         //Toast.makeText(this, getString(R.string.backward), Toast.LENGTH_LONG).show();
         state.setText(getString(R.string.state)+getString(R.string.backward));
         Log.e(TAG, "move back");
@@ -664,9 +921,11 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
             return;
         }
 
-        railController.MoveForward();
-        state.setText(getString(R.string.state)+getString(R.string.forward));
-        Log.e(TAG, "move front");
+        if(railController != null) {
+            railController.MoveForward(railController.getDistance()*100);
+            state.setText(getString(R.string.state) + getString(R.string.forward));
+            Log.e(TAG, "move front " + railController.getDistance()*100);
+        }
     }
 
 
@@ -1084,7 +1343,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         String str = String.format("Speed: %.2f m/s", speed);
         //speedLabel.setText("Speed: " + Float.toString(speed)+" m/s");
         speedLabel.setText(str);
-        railController.SetCurSpeed(speed);
+        //railController.SetCurSpeed(speed);
 
         Log.e(TAG, "Speed is " + speed);
 

@@ -90,13 +90,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="10dp">
-                <com.railbot.usrc.robotcontrol.rvs.RangeSliderView
-                    android:id="@+id/speed_slider"
-                    android:layout_width="@dimen/speed_slider_width"
-                    android:layout_height="@dimen/speed_slider_height"
-                    rsv:filledColor="#1A5F77"
-                    rsv:emptyColor="#1A5F77"
-                    android:layout_marginLeft="0dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.railbot.usrc.robotcontrol.rvs.RangeSliderView
+                        android:id="@+id/speed_slider"
+                        android:layout_width="@dimen/speed_slider_width"
+                        android:layout_height="@dimen/speed_slider_height"
+                        rsv:filledColor="#5A86E0"
+                        rsv:emptyColor="#5A86E0"
+                        android:layout_marginLeft="0dp"/>
+                    <com.railbot.usrc.robotcontrol.LockEditText
+                        android:id="@+id/dist_input"
+                        android:layout_width="40dp"
+                        android:layout_height="30dp"
+                        android:background="@color/blue"
+                        android:inputType="number"
+                        android:maxLength="3"/>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -233,20 +245,104 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/main_ctrl_layout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/blue"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true">
-            <Button
-                android:layout_alignParentLeft="true"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/move_button" />
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="185dp"
+            android:orientation="horizontal">
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/cam_ctrl_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp">
+                <Button
+                    android:id="@+id/calibrate_btn"
+                    android:layout_width="@dimen/calib_btn_width"
+                    android:layout_height="@dimen/calib_btn_width"
+                    android:background="@drawable/calibrate"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
+                <Button
+                    android:id="@+id/move_back_btn"
+                    android:layout_width="@dimen/cam_ctrl_btn_width"
+                    android:layout_height="@dimen/cam_ctrl_btn_width"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/cam_ctrl_margin"
+                    android:background="@drawable/move_back"/>
+                <Button
+                    android:id="@+id/move_up_btn"
+                    android:layout_width="@dimen/cam_ctrl_btn_width"
+                    android:layout_height="@dimen/cam_ctrl_btn_width"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/cam_ctrl_margin"
+                    android:background="@drawable/move_up"/>
+                <Button
+                    android:id="@+id/move_front_btn"
+                    android:layout_width="@dimen/cam_ctrl_btn_width"
+                    android:layout_height="@dimen/cam_ctrl_btn_width"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/cam_ctrl_margin"
+                    android:background="@drawable/move_front"/>
+                <Button
+                    android:id="@+id/move_down_btn"
+                    android:layout_width="@dimen/cam_ctrl_btn_width"
+                    android:layout_height="@dimen/cam_ctrl_btn_width"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/cam_ctrl_margin"
+                    android:background="@drawable/move_down"/>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/motion_ctrl_layout"
+                android:layout_width="100dp"
+                android:layout_height="100dp">
+                <Button
+                    android:id="@+id/move_bwd_btn"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="65dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="@dimen/move_btn_side_margin"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/move_btn_bottom_margin"
+                    android:background="@drawable/move_bwd"
+                    android:textColor="@color/off_white"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:text="@string/move_bwd"/>
+                <Button
+                    android:id="@+id/move_fwd_btn"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="65dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="@dimen/move_btn_side_margin"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/move_btn_bottom_margin"
+                    android:background="@drawable/move_fwd"
+                    android:textColor="@color/off_white"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:text="@string/move_fwd"/>
+
+                <Button
+                    android:id="@+id/move_stop_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/stop_margin"
+                    android:background="@drawable/move_stop"/>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

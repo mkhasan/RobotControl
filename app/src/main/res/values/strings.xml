@@ -50,5 +50,8 @@
     
     <string name="travel_speed">주행 속도</string>
     <string name="travel_limit">주행 거리</string>
-    <string name="travel_max_limit">쵀대 10 m</string>
+    <string name="travel_max_limit">최대 10 m</string>
+
+    <string name="move_bwd">후진</string>
+    <string name="move_fwd">전진</string>
 </resources>

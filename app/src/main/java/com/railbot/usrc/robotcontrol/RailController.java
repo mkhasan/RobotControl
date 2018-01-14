@@ -11,7 +11,10 @@ public class RailController extends DeviceController {
 
     final int ANGLE_STEP = 20;
 
-    final static float MAX_SPEED = (float) 4.0;
+    final static int MIN_SPEED_IN_CM = 10;
+    final static int MAX_SPEED_IN_CM = 30;
+
+    public static final int MAX_DISTANCE = 10;
 
 
     public enum CurMove {
@@ -28,6 +31,8 @@ public class RailController extends DeviceController {
     int curSideAngle = 0;
     int curUpAngle = -30;
 
+    private int distance = 1;
+
 
 
     private static final String TAG = RailController.class.getName();
@@ -36,11 +41,16 @@ public class RailController extends DeviceController {
     float maxSpeed;
     float currSpeed;
 
+    int maxSpeedInCm;
+    int minSpeedInCm;
+    int currSpeedInCm;
+
     private final char frameHead, frameTail;
     private final char checkSum;
 
     private CurMove curMove;
 
+    /*
     RailController(MsgSender _msgSender, float _minSpeed, float _maxSpeed) {
         super(_msgSender);
         minSpeed = _minSpeed;
@@ -53,22 +63,45 @@ public class RailController extends DeviceController {
         checkSum = '0';     // arbitrary
 
     }
+
+
+
+    */
+
+    RailController(MsgSender _msgSender, int _minSpeedInCm, int _maxSpeedInCm) {
+        super(_msgSender);
+        minSpeedInCm = _minSpeedInCm;
+        maxSpeedInCm = _maxSpeedInCm;
+        SetCurSpeed(_minSpeedInCm);
+        curMove = CurMove.stop;
+
+        frameHead = 0x02;
+        frameTail = 0x03;
+        checkSum = '0';     // arbitrary
+
+    }
+
     // stx(0x02) | type (1byte) | cmd (1 byte) | value (4 byte) | checksum (1 byte) | ext(0x03)
 
-    public void SetCurSpeed(float _currSpeed) {
-        currSpeed = _currSpeed;
+    public void SetCurSpeed(int _currSpeedInCm) {
+
+        if(currSpeedInCm > MAX_SPEED_IN_CM)
+            return;
+
+        currSpeedInCm = _currSpeedInCm;
+        Log.e(TAG, "current speeed is " + currSpeedInCm);
     }
 
-    public float GetCurSpeed() {
-        return currSpeed;
+    public int GetCurSpeed() {
+        return currSpeedInCm;
     }
 
-    public float GetMaxSpeed() {
-        return maxSpeed;
+    public int GetMaxSpeed() {
+        return maxSpeedInCm;
     }
 
-    public float GetMinSpeed() {
-        return minSpeed;
+    public int GetMinSpeed() {
+        return minSpeedInCm;
     }
 
     void MoveForward() {
@@ -79,6 +112,26 @@ public class RailController extends DeviceController {
         msg += '1';  // type
         msg += '3';  // cmd for continuous move forward
         msg += "0000"; // continous move
+        msg += checkSum;
+        msg += frameTail;
+
+        msgSender.SendMsg(msg, true);
+
+        curMove = CurMove.forward;
+
+        Log.e(TAG, msg);
+    }
+
+    void MoveForward(int distInCm) {
+        SetRailSpeed();
+
+        String dist = String.format("%04d", distInCm/10);
+
+        String msg;
+        msg = "" + frameHead;
+        msg += '1';  // type
+        msg += '1';  // cmd for continuous move forward
+        msg += dist; // continous move
         msg += checkSum;
         msg += frameTail;
 
@@ -108,6 +161,29 @@ public class RailController extends DeviceController {
         Log.e(TAG, msg);
 
     }
+
+    void MoveBackward(int distInCm) {
+
+        SetRailSpeed();
+
+        String dist = String.format("%04d", distInCm/10);
+
+        String msg;
+        msg = "" + frameHead;
+        msg += '1';  // type
+        msg += '2';  // cmd for continuous move forward
+        msg += dist; // continous move
+        msg += checkSum;
+        msg += frameTail;
+
+        msgSender.SendMsg(msg, true);
+
+        curMove = CurMove.backward;
+
+        Log.e(TAG, msg);
+
+    }
+
 
 
 
@@ -236,7 +312,7 @@ public class RailController extends DeviceController {
         Log.e(TAG, "Sending msg");
 
 
-        String angleStr = "-040";
+        String angleStr = "0000";
 
         String msg;
         msg = "" + frameHead;
@@ -259,7 +335,7 @@ public class RailController extends DeviceController {
         msgSender.SendMsg(msg, true);
 
         VideoActivity.panAngle = 0;
-        VideoActivity.tiltAngle = -40;
+        VideoActivity.tiltAngle = 0;
 
     }
 
@@ -316,7 +392,7 @@ public class RailController extends DeviceController {
 
 
     private void SetRailSpeed() {
-        int value = Math.round(currSpeed*100);    // in 0.1m/sec
+        int value = currSpeedInCm;
 
 
 
@@ -336,7 +412,16 @@ public class RailController extends DeviceController {
     }
 
 
+
     CurMove GetCurMove() {
         return curMove;
+    }
+
+    int getDistance() {
+        return distance;
+    }
+
+    void setDistance(int _distance) {
+        distance = _distance;
     }
 }

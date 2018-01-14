@@ -64,14 +64,31 @@ public class MsgSender {
 
                 try {
 
-                    if (sleepBeforeSending)
-                        Thread.sleep(100);
+                    //if (sleepBeforeSending)
+                      //  Thread.sleep(100);
+
                     String host = msgSender.destAddr;
                     int port = msgSender.port; //Random Port
 
-                    byte[] message = msg.getBytes();
+
+                    byte[] message = new byte[18];
+
+                            //msg.getBytes();
 
                     // Get the interSnet address of the specified host
+
+                    if(msg.length() != 9)
+                        return false;
+
+                    if(message.length != 18)
+                        return false;
+
+                    for(int i=0; i<9; i++)
+                        message[i] = (byte) msg.charAt(i);
+
+                    for(int i=9; i<18; i++)
+                        message[i] = 0;
+
                     InetAddress address = InetAddress.getByName(host);
 
                     // Initialize a datagram packet with data and address
@@ -80,8 +97,11 @@ public class MsgSender {
 
                     // Create a datagram socket, send the packet through it, close it.
                     DatagramSocket dsocket = new DatagramSocket();
+
                     dsocket.send(packet);
                     dsocket.close();
+
+                    Log.e(TAG, "Done");
 
 
                 } catch (Exception e) {
@@ -96,6 +116,7 @@ public class MsgSender {
 
     }
 
+    SendMsgTask sendMsgTask = null;
 
     public MsgSender(String _destAddr, int _port, protocoletype _protocol) {
 
@@ -111,15 +132,18 @@ public class MsgSender {
 
 
 
-        new SendMsgTask(this, msg).execute();
 
-        //return true;
+        sendMsgTask = new SendMsgTask(this, msg);
+        sendMsgTask.execute();
+
 
     }
 
     public void SendMsg(String msg, Boolean sleepBeforeSending) {
-        new SendMsgTask(this, msg, sleepBeforeSending).execute();
 
+
+        sendMsgTask = new SendMsgTask(this, msg, sleepBeforeSending);
+        sendMsgTask.execute();
     }
 
 
