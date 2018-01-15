@@ -107,7 +107,8 @@
                         android:layout_height="30dp"
                         android:background="@color/blue"
                         android:inputType="number"
-                        android:maxLength="3"/>
+                        android:maxLength="3"
+                        android:visibility="gone"/>
                 </LinearLayout>
 
                 <LinearLayout

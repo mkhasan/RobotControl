@@ -15,6 +15,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.FloatProperty;
 import android.util.Log;
 import android.util.TypedValue;
@@ -800,6 +802,28 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                 return false;
             }
         });
+
+        final InputFilter[] filters = new InputFilter[1];
+        filters[0] = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start,
+                                       int end, Spanned dest, int dstart, int dend) {
+                if (end > start) {
+                    String destTxt = dest.toString();
+                    String resultingTxt = destTxt.substring(0, dstart) +
+                            source.subSequence(start, end) +
+                            destTxt.substring(dend);
+                    if (Integer.valueOf(resultingTxt) > 40 || resultingTxt.charAt(0) == '0') {
+                        return "";
+                    }
+
+
+                }
+                return null;
+            }
+        };
+
+        editText.setFilters(filters);
 
         ///////////////////// from here finishes modification for recent GUI update on 10/01/2018  ///////////////////
 
