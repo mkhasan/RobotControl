@@ -46,9 +46,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Actually we do not need to use yuv in the activity I just load it to check at the
         beginning of the app
      */
+
+
     static {
-        System.loadLibrary("yuv");
+        //System.loadLibrary("yuv");
+        System.loadLibrary("ffmpeg");
     }
+
+
 
 
 
