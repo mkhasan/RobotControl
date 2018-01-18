@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RobotControl.iml" filepath="$PROJECT_DIR$/RobotControl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bugstick/bugstick.iml" filepath="$PROJECT_DIR$/bugstick/bugstick.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cam_viewer/cam_viewer.iml" filepath="$PROJECT_DIR$/cam_viewer/cam_viewer.iml" />
+      <module fileurl="file:///media/usrc/external/RailRobot/App/RobotControl/RobotControl.iml" filepath="/media/usrc/external/RailRobot/App/RobotControl/RobotControl.iml" />
+      <module fileurl="file:///media/usrc/external/RailRobot/App/RobotControl/app/app.iml" filepath="/media/usrc/external/RailRobot/App/RobotControl/app/app.iml" />
+      <module fileurl="file:///media/usrc/external/RailRobot/App/RobotControl/bugstick/bugstick.iml" filepath="/media/usrc/external/RailRobot/App/RobotControl/bugstick/bugstick.iml" />
+      <module fileurl="file:///media/usrc/external/RailRobot/App/RobotControl/cam_viewer/cam_viewer.iml" filepath="/media/usrc/external/RailRobot/App/RobotControl/cam_viewer/cam_viewer.iml" />
     </modules>
   </component>
 </project>
