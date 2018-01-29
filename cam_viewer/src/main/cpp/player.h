@@ -8,7 +8,7 @@
 #include <jni.h>
 #include <android/native_window.h>
 
-#include <pthread.h>
+
 
 
 

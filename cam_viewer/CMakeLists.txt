@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds it for you.
 # Gradle automatically packages shared libraries with your APK.
 
-include_directories($ENV{HOME}/external/lib/android/ffmpeg-3.2-android-19)
+include_directories($ENV{HOME}/external/RailRobot/FFmpeg/FFmpeg-Development-Kit-master/ffmpeg)
 include_directories($ENV{HOME}/external/lib/android/libyuv-android-master/jni/include)
 
 set (TEST_T "$ENV{HOME}/external/lib/libyuv-android-master/jni/include")
@@ -31,17 +31,6 @@ add_library( # Sets the name of the library.
 # you want to add. CMake verifies that the library exists before
 # completing its build.
 
-SET(COPY_TO_PATH ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI})
-ADD_CUSTOM_COMMAND(TARGET native-lib POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy
-                        $<TARGET_FILE:native-lib>
-                        ${COPY_TO_PATH}
-                   COMMENT "Copying1 'test' library to '${COPY_TO_PATH}'"
-
-)
-
-
-message( "Copying ${CMAKE_LIBRARY_TARGET_DIRECTORY}")
 
 
 
@@ -53,14 +42,16 @@ find_library( # Sets the name of the path variable.
               log )
 
 
-add_library( ffmpeg
+
+
+
+add_library( avutil
              SHARED
              IMPORTED )
 
-set_property(TARGET ffmpeg PROPERTY IMPORTED_NO_SONAME 1)
 
 set_target_properties( # Specifies the target library.
-                       ffmpeg
+                       avutil
 
 
                        # Specifies the parameter you want to define.
@@ -68,15 +59,115 @@ set_target_properties( # Specifies the target library.
 
                        # Provides the path to the library you want to import.
                        #imported-lib/src/${ANDROID_ABI}/libimported-lib.so
-                      ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libffmpeg.so)
+                      ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavutil.so)
 
+add_library( swresample
+             SHARED
+             IMPORTED )
+
+
+set_target_properties( # Specifies the target library.
+                       swresample
+
+
+                       # Specifies the parameter you want to define.
+                       PROPERTIES IMPORTED_LOCATION
+
+                       # Provides the path to the library you want to import.
+                       #imported-lib/src/${ANDROID_ABI}/libimported-lib.so
+                      ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libswresample.so)
+
+
+
+add_library( avcodec
+             SHARED
+             IMPORTED )
+
+
+set_target_properties( # Specifies the target library.
+                       avcodec
+
+
+                       # Specifies the parameter you want to define.
+                       PROPERTIES IMPORTED_LOCATION
+
+                       # Provides the path to the library you want to import.
+                       #imported-lib/src/${ANDROID_ABI}/libimported-lib.so
+                      ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavcodec.so)
+
+
+add_library( avformat
+             SHARED
+             IMPORTED )
+
+
+set_target_properties( # Specifies the target library.
+                       avformat
+
+
+                       # Specifies the parameter you want to define.
+                       PROPERTIES IMPORTED_LOCATION
+
+                       # Provides the path to the library you want to import.
+                       #imported-lib/src/${ANDROID_ABI}/libimported-lib.so
+                      ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavformat.so)
+
+
+
+add_library( swscale
+             SHARED
+             IMPORTED )
+
+
+set_target_properties( # Specifies the target library.
+                       swscale
+
+
+                       # Specifies the parameter you want to define.
+                       PROPERTIES IMPORTED_LOCATION
+
+                       # Provides the path to the library you want to import.
+                       #imported-lib/src/${ANDROID_ABI}/libimported-lib.so
+                      ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libswscale.so)
+
+
+add_library( avfilter
+             SHARED
+             IMPORTED )
+
+
+set_target_properties( # Specifies the target library.
+                       avfilter
+
+
+                       # Specifies the parameter you want to define.
+                       PROPERTIES IMPORTED_LOCATION
+
+                       # Provides the path to the library you want to import.
+                       #imported-lib/src/${ANDROID_ABI}/libimported-lib.so
+                      ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavfilter.so)
+
+
+add_library( avdevice
+             SHARED
+             IMPORTED )
+
+
+set_target_properties( # Specifies the target library.
+                       avdevice
+
+
+                       # Specifies the parameter you want to define.
+                       PROPERTIES IMPORTED_LOCATION
+
+                       # Provides the path to the library you want to import.
+                       #imported-lib/src/${ANDROID_ABI}/libimported-lib.so
+                      ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libavdevice.so)
 
 
 add_library( yuv
              SHARED
              IMPORTED )
-
-set_property(TARGET yuv PROPERTY IMPORTED_NO_SONAME 1)
 
 set_target_properties( # Specifies the target library.
                        yuv
@@ -99,16 +190,28 @@ target_link_libraries( # Specifies the target library.
 
 
 
-                       ffmpeg
+                       avutil
+
+                       swresample
+
+                       avcodec
+
+                       avformat
+
+                       swscale
+
+                       avfilter
+
+                       avdevice
 
                        android
 
                        yuv
+
 
                        # Links the target library to the log library
                        # included in the NDK.
 
                        ${log-lib} )
 
-#message("hellows123 ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 

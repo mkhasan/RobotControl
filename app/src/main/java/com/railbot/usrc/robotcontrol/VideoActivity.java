@@ -247,6 +247,8 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
 
         String url = "rtsp://admin:admin@"+image_camera_ip+":554/stream1";
 
+        //String url = "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
+
         if (cameraType == CameraType.thermal) {
             url = "rtsp://admin:admin@" + thermal_camera_ip + ":554/stream0";
 

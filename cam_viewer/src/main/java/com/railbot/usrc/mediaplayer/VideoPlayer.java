@@ -17,7 +17,16 @@ public class VideoPlayer {
     static {
 
         System.loadLibrary("yuv");
-        System.loadLibrary("ffmpeg");
+//        System.loadLibrary("ffmpeg");
+
+        System.loadLibrary("avutil");
+        System.loadLibrary("swresample");
+        System.loadLibrary("avcodec");
+        System.loadLibrary("avformat");
+        System.loadLibrary("swscale");
+        System.loadLibrary("avfilter");
+        System.loadLibrary("avdevice");
+
         System.loadLibrary("native-lib");
 
 

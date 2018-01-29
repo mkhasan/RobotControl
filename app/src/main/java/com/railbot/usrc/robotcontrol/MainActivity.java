@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     static {
-        //System.loadLibrary("yuv");
-        System.loadLibrary("ffmpeg");
+        System.loadLibrary("yuv");
+        //System.loadLibrary("ffmpeg");
     }
 
 

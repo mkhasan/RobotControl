@@ -8,6 +8,7 @@
 #include "sync.h"
 #include "convert.h"
 
+
 void player_update_time(struct State *state, int is_finished);
 void player_assign_to_no_boolean_array(struct Player *player, int* array, int value);
 int player_if_all_no_array_elements_has_value(struct Player *player, int *array, int value);
@@ -29,6 +30,8 @@ void player_decode_video_flush(struct DecoderData * decoder_data, JNIEnv * env);
 void * player_read_from_stream(void *data);
 enum WaitFuncRet player_wait_for_frame(struct Player *player, int64_t stream_time, int stream_no);
 QueueCheckFuncRet player_read_from_stream_check_func(Queue *queue, struct Player *player, int *ret);
+static void ms2ts(struct timespec *ts, unsigned long ms);
+
 
 int player_start_decoding_threads(struct Player *player) {
 
@@ -582,13 +585,47 @@ enum WaitFuncRet player_wait_for_frame(struct Player *player, int64_t stream_tim
             sleep_time = 500000ll;
         }
 
+
+
+        /*
         int timeout_ret = pthread_cond_timeout_np(&player->cond_queue,
                                                   &player->mutex_queue, sleep_time/1000ll);
-        if (timeout_ret == ETIMEDOUT) {
-            // nothing special probably it is time ready to display
-            // but for sure check everything again
-            LOGI(9, "player_wait_for_frame[%d] timeout", stream_no);
+
+                                                  */
+        struct timespec ts;
+
+        unsigned long time_in_ms = sleep_time/1000ll;
+
+        unsigned long max_val = 1000000000ll;
+        unsigned long ns;
+
+        ms2ts(&ts, time_in_ms);
+
+        struct timespec now;
+        if(clock_gettime(CLOCK_REALTIME, &now) == 0) {
+
+            ns = now.tv_nsec + (sleep_time * 1000)%max_val;
+            ts.tv_sec = now.tv_sec;
+            if (ns >= max_val) {
+                ts.tv_sec++;
+                ns = ns % max_val;
+            }
+
+            ts.tv_nsec = ns;
+
+            int timeout_ret = pthread_cond_timedwait(&player->cond_queue,
+                                                     &player->mutex_queue, &ts);
+
+
+            if (timeout_ret == ETIMEDOUT) {
+                // nothing special probably it is time ready to display
+                // but for sure check everything again
+                LOGI(9, "player_wait_for_frame[%d] timeout", stream_no);
+            }
+
         }
+        else
+            LOGE(1, "error in getting current time");
     }
 
     // just go further
@@ -866,4 +903,11 @@ QueueCheckFuncRet player_read_from_stream_check_func(Queue *queue,
     }
      */
     return QUEUE_CHECK_FUNC_RET_TEST;
+}
+
+
+static void ms2ts(struct timespec *ts, unsigned long ms)
+{
+    ts->tv_sec = ms / 1000;
+    ts->tv_nsec = (ms % 1000) * 1000000;
 }
