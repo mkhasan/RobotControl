@@ -27,6 +27,7 @@ public class ServerSettingsActivity extends Activity {
         Intent intent = getIntent();
         final String ipAddress = intent.getStringExtra(MainActivity.EXTRA_IP);
         final int voidPort = intent.getIntExtra(MainActivity.EXTRA_PORT, 1049);
+        final int railRobotPort = intent.getIntExtra(MainActivity.EXTRA_RAIL_ROBOT_PORT, 8081);
         final String imageIP = intent.getStringExtra(MainActivity.EXTRA_IMAGE_IP);
         final String thermalIP = intent.getStringExtra(MainActivity.EXTRA_THERMAL_IP);
         final String railRobotIP = intent.getStringExtra(MainActivity.EXTRA_RAIL_ROBOT_IP);
@@ -34,6 +35,7 @@ public class ServerSettingsActivity extends Activity {
 
         final EditText ipAddressEdit = (EditText) findViewById(R.id.ip_address);
         final EditText voipPortEdit = (EditText) findViewById(R.id.voip_port);
+        final EditText railRobotPortEdit = (EditText) findViewById(R.id.rail_robot_port);
 
         final EditText imageIPEdit = (EditText) findViewById(R.id.image_ip);
         final EditText thermalIPEdit = (EditText) findViewById(R.id.thermal_ip);
@@ -73,6 +75,7 @@ public class ServerSettingsActivity extends Activity {
 
         ipAddressEdit.setText(ipAddress);
         voipPortEdit.setText(Integer.toString(voidPort));
+        railRobotPortEdit.setText(Integer.toString(railRobotPort));
         imageIPEdit.setText(imageIP);
         thermalIPEdit.setText(thermalIP);
         railRobotIPEdit.setText(railRobotIP);
@@ -90,6 +93,7 @@ public class ServerSettingsActivity extends Activity {
                 data.putExtra(MainActivity.THERMAL_IP, ((EditText) findViewById(R.id.thermal_ip)).getText().toString());
                 data.putExtra(MainActivity.RAIL_ROBOT_IP, ((EditText) findViewById(R.id.railbot_ip)).getText().toString());
                 data.putExtra(MainActivity.VOIP_PORT, voipPortEdit.getText().toString());
+                data.putExtra(MainActivity.RAIL_ROBOT_PORT, railRobotPortEdit.getText().toString());
 
                 setResult(RESULT_OK, data);
 

@@ -123,7 +123,7 @@ public class MsgSender {
         destAddr = _destAddr;
         port = _port;
         protocol = _protocol;
-        Log.e(TAG, "dest addr is " + destAddr);
+        Log.e(TAG, "dest addr is " + destAddr + " port " + port);
 
 
     }

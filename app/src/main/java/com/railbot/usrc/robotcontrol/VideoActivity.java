@@ -215,9 +215,11 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
         //msgSe = new DeviceController("172.24.1.1", 8000, 8081);
         //msgSender = new MsgSender("172.24.1.1", 8000, MsgSender.protocoletype.udp);
         //msgSender = new MsgSender("192.168.0.254", 8899, MsgSender.protocoletype.udp);
-        msgSender = new MsgSender(MainActivity.railRobotIP, Integer.parseInt(getString(R.string.rail_server_port)), MsgSender.protocoletype.udp);
+        //msgSender = new MsgSender(MainActivity.railRobotIP, Integer.parseInt(getString(R.string.rail_server_port)), MsgSender.protocoletype.udp);
 
-        Log.e(TAG, "IP IS: " + MainActivity.railRobotIP + " port is: " + Integer.parseInt(getString(R.string.rail_server_port)));
+        msgSender = new MsgSender(MainActivity.railRobotIP, MainActivity.railRobotPort, MsgSender.protocoletype.udp);
+
+        //Log.e(TAG, "IP IS: " + MainActivity.railRobotIP + " port is: " + Integer.parseInt(getString(R.string.rail_server_port)));
         int minSpeed = RailController.MIN_SPEED_IN_CM;
         int maxSpeed = RailController.MAX_SPEED_IN_CM;
         railController = new RailController(msgSender, minSpeed, maxSpeed);

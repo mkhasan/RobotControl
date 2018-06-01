@@ -73,7 +73,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final String EXTRA_IMAGE_IP = "com.railbol.usrc.robotcontrol.image_ip";
     public static final String EXTRA_THERMAL_IP = "com.railbol.usrc.robotcontrol.thermal_ip";
     public static final String EXTRA_RAIL_ROBOT_IP = "com.railbol.usrc.robotcontrol.rail_robot_ip";
-    
+    public static final String EXTRA_RAIL_ROBOT_PORT = "com.railbol.usrc.robotcontrol.rail_robot_port";
+
 
 
     private static final int LISTENER_PORT = 50003;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static String thermalIP;
     public static String railRobotIP;
     private static int voipPort;
-    private static int railRobotPort;
+    public static int railRobotPort;
 
     private ConnTask connTask = null;
 
@@ -124,7 +125,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         imageIP = preferences.getString(IMAGE_IP, "192.168.0.101");
         thermalIP = preferences.getString(THERMAL_IP, "192.168.0.100");
         railRobotIP = preferences.getString(RAIL_ROBOT_IP, "192.168.0.254");
+
         voipPort = preferences.getInt(VOIP_PORT, 1049);
+        railRobotPort = preferences.getInt(RAIL_ROBOT_PORT, 8081);
+
+
         //railRobotPort = preferences.getInt(RAIL_ROBOT_PORT, 8899);
 
 
@@ -276,6 +281,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             intent.putExtra(EXTRA_IMAGE_IP, imageIP);
             intent.putExtra(EXTRA_THERMAL_IP, thermalIP);
             intent.putExtra(EXTRA_RAIL_ROBOT_IP, railRobotIP);
+            intent.putExtra(EXTRA_RAIL_ROBOT_PORT, railRobotPort);
 
             startActivityForResult(intent, SERVER_SETTING_RESULT);
         }
@@ -325,6 +331,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 thermalIP = data.getStringExtra(THERMAL_IP);
                 railRobotIP = data.getStringExtra(RAIL_ROBOT_IP);
                 voipPort = Integer.parseInt(data.getStringExtra(VOIP_PORT));
+                railRobotPort = Integer.parseInt(data.getStringExtra(RAIL_ROBOT_PORT));
 
 
                 Log.e(TAG, "Server ip " + serverIP + " port " + voipPort);
@@ -336,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 edit.putString(THERMAL_IP, thermalIP);
                 edit.putString(RAIL_ROBOT_IP, railRobotIP);
                 edit.putInt(VOIP_PORT, voipPort);
+                edit.putInt(RAIL_ROBOT_PORT, railRobotPort);
                 edit.commit();
 
 

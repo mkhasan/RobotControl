@@ -180,6 +180,37 @@
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Serial Port"
+            android:textSize="20sp"
+            android:textColor="#acffffff"/>
+        <EditText
+            android:id="@+id/rail_robot_port"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@color/blue"
+            android:textColor="#acffffff"
+            android:textSize="20sp"
+            android:background="#80808080"
+            android:layout_marginLeft="20dp"
+            android:text="8081"
+            android:gravity="center"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
 
     <RelativeLayout
