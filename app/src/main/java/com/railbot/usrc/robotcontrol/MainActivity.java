@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final String EXTRA_IMAGE_IP = "com.railbol.usrc.robotcontrol.image_ip";
     public static final String EXTRA_THERMAL_IP = "com.railbol.usrc.robotcontrol.thermal_ip";
     public static final String EXTRA_RAIL_ROBOT_IP = "com.railbol.usrc.robotcontrol.rail_robot_ip";
+    
 
 
     private static final int LISTENER_PORT = 50003;
