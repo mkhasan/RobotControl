@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    tools:context="com.railbot.usrc.robotcontrol.ServerSettingsActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Server IP"
+            android:textSize="20sp"
+            android:textColor="#acffffff"
+            android:layout_alignParentLeft="true"/>
+        <EditText
+            android:id="@+id/ip_address"
+            android:inputType="number|numberDecimal"
+            android:digits="0123456789."
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@color/blue"
+            android:hint="IP Address"
+            android:textColor="#acffffff"
+            android:textSize="20sp"
+            android:background="#80808080"
+            android:layout_marginLeft="20dp"
+            android:text="192.168.0.143"
+            android:gravity="center"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Image Cam IP"
+            android:textSize="20sp"
+            android:textColor="#acffffff"
+            android:layout_alignParentLeft="true"/>
+        <EditText
+            android:id="@+id/image_ip"
+            android:inputType="number|numberDecimal"
+            android:digits="0123456789."
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@color/blue"
+            android:hint="IP Address"
+            android:textColor="#acffffff"
+            android:textSize="20sp"
+            android:background="#80808080"
+            android:layout_marginLeft="20dp"
+            android:text="192.168.0.143"
+            android:gravity="center"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thermal Cam IP"
+            android:textSize="20sp"
+            android:textColor="#acffffff"
+            android:layout_alignParentLeft="true"/>
+        <EditText
+            android:id="@+id/thermal_ip"
+            android:inputType="number|numberDecimal"
+            android:digits="0123456789."
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@color/blue"
+            android:hint="IP Address"
+            android:textColor="#acffffff"
+            android:textSize="20sp"
+            android:background="#80808080"
+            android:layout_marginLeft="20dp"
+            android:text="192.168.0.143"
+            android:gravity="center"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rail Robot IP"
+            android:textSize="20sp"
+            android:textColor="#acffffff"
+            android:layout_alignParentLeft="true"/>
+        <EditText
+            android:id="@+id/railbot_ip"
+            android:inputType="number|numberDecimal"
+            android:digits="0123456789."
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@color/blue"
+            android:hint="IP Address"
+            android:textColor="#acffffff"
+            android:textSize="20sp"
+            android:background="#80808080"
+            android:layout_marginLeft="20dp"
+            android:text="192.168.0.143"
+            android:gravity="center"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VoIP Port"
+            android:textSize="20sp"
+            android:textColor="#acffffff"/>
+        <EditText
+            android:id="@+id/voip_port"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@color/blue"
+            android:textColor="#acffffff"
+            android:textSize="20sp"
+            android:background="#80808080"
+            android:layout_marginLeft="20dp"
+            android:text="1049"
+            android:gravity="center"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Serial Port"
+            android:textSize="20sp"
+            android:textColor="#acffffff"/>
+        <EditText
+            android:id="@+id/rail_robot_port"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@color/blue"
+            android:textColor="#acffffff"
+            android:textSize="20sp"
+            android:background="#80808080"
+            android:layout_marginLeft="20dp"
+            android:text="8081"
+            android:gravity="center"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+        <Button
+            android:id="@+id/set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set"
+            android:textSize="15sp"
+            android:background="@drawable/button_set"
+            android:textColor="#acffffff"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+</LinearLayout>

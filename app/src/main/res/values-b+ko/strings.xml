@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">로봇제어</string>
+    <string name="rail_server_ip">192.168.0.254</string>
+    <string name="rail_server_port">8899</string>
+    <string name="image_camera_ip">192.168.0.101</string>
+    <string name="thermal_camera_ip">192.168.0.100</string>
+    <string name="camera_server_port">80</string>
+
+
+    <string name="speed">Speed</string>
+    <string name="min_speed">0.0</string>
+    <string name="max_speed">4.0</string>
+
+    <string name="stop_on_release">Stop on release</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="select_item">기능선택</string>
+    <string name="motion_only">주행제어 하기 </string>
+    <string name="image_camera">칼라영상 보기</string>
+    <string name="thermal_camera">열영상 보기</string>
+    <string name="image_and_thermal_cam">모든 영상 보기</string>
+    <string name="exit">종료</string>
+
+    <string name="main_could_not_open_image_stream">Could not open image stream</string>
+    <string name="main_could_not_open_ir_stream">Could not open IR stream</string>
+
+    <string name="Speed">Speed</string>
+    <string name="Move">Move</string>
+    <string name="Camera">Camera</string>
+    <string name="Zoom">Zoom</string>
+
+    <string name="forward">Forard </string>
+    <string name="backward">Backward</string>
+    <string name="stop">Stop</string>
+
+    <string name="state">"State: "</string>
+
+    <string name="wait_for_connection">Please wait for the device to be connected... </string>
+    <string name="connected">Connected </string>
+
+    <string name="error">Error</string>
+    <string name="comm_err_msg">Communication Error Occured</string>
+</resources>

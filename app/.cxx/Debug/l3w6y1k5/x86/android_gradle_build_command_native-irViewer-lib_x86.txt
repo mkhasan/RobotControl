@@ -1,0 +1,7 @@
+Executable : /home/hasan/extension/Android/Sdk/cmake/3.10.2.4988404/bin/ninja
+arguments : 
+-C
+/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/l3w6y1k5/x86
+native-irViewer-lib
+jvmArgs : 
+

@@ -1,0 +1,31 @@
+[
+{
+  "directory": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/l3w6y1k5/arm64-v8a",
+  "command": "/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android23 --gcc-toolchain=/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/ir_viewer.cpp.o -c /home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/src/main/cpp/ir_viewer.cpp",
+  "file": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/src/main/cpp/ir_viewer.cpp"
+},
+
+{
+  "directory": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/l3w6y1k5/arm64-v8a",
+  "command": "/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android23 --gcc-toolchain=/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/CircularBuffer.cpp.o -c /home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/src/main/cpp/CircularBuffer.cpp",
+  "file": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/src/main/cpp/CircularBuffer.cpp"
+},
+
+{
+  "directory": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/l3w6y1k5/arm64-v8a",
+  "command": "/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android23 --gcc-toolchain=/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Socket.cpp.o -c /home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/src/main/cpp/Socket.cpp",
+  "file": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/src/main/cpp/Socket.cpp"
+},
+
+{
+  "directory": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/l3w6y1k5/arm64-v8a",
+  "command": "/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android23 --gcc-toolchain=/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Decoder.cpp.o -c /home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/src/main/cpp/Decoder.cpp",
+  "file": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/src/main/cpp/Decoder.cpp"
+},
+
+{
+  "directory": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/l3w6y1k5/arm64-v8a",
+  "command": "/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android23 --gcc-toolchain=/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/hasan/extension/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/native-irViewer-lib.cpp.o -c /home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/src/main/cpp/native-irViewer-lib.cpp",
+  "file": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/src/main/cpp/native-irViewer-lib.cpp"
+}
+]

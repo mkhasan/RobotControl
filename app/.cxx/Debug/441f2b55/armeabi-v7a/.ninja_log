@@ -1,0 +1,4 @@
+# ninja log v5
+2	55	1669691379	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Socket.cpp.o	bc12d783f0316b72
+0	72	1669691379	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/ir_viewer.cpp.o	2bb3da12c81e2e1
+3	151	1669691379	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/native-irViewer-lib.cpp.o	96a13b634ca2929a

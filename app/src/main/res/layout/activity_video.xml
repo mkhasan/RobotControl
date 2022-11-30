@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/black"
+    xmlns:rsv="http://schemas.android.com/apk/res-auto"
+    tools:context="com.railbot.usrc.robotcontrol.VideoActivity">
+
+    <RelativeLayout
+        android:id="@+id/video_view_group"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:visibility="visible">
+
+        <VideoView
+            android:id="@+id/video_view"
+            android:layout_width="@dimen/player_width"
+            android:layout_height="@dimen/player_height"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" >
+        </VideoView>
+
+        <com.railbot.usrc.mediaplayer.VideoSurfaceView
+            android:id="@+id/surface_view"
+            android:layout_width="@dimen/player_width"
+            android:layout_height="@dimen/player_height"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:onClick="sendMessage"/>
+
+        <com.railbot.usrc.robotcontrol.IR_SurfaceView
+            android:id="@+id/ir_view"
+            android:layout_width="@dimen/player_width"
+            android:layout_height="@dimen/player_height"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+
+        <ProgressBar
+            android:id="@+id/loading_view"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"/>
+        <ImageView
+            android:id="@+id/wall_paper"
+            android:layout_width="@dimen/player_width"
+            android:layout_height="@dimen/player_height"
+            android:background="@drawable/marbles"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/control_height"
+        android:visibility="visible">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="75dp"
+                android:layout_marginLeft="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/off_white"
+                    android:text="@string/travel_speed"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.railbot.usrc.robotcontrol.rvs.RangeSliderView
+                        android:id="@+id/speed_slider"
+                        android:layout_width="@dimen/speed_slider_width"
+                        android:layout_height="@dimen/speed_slider_height"
+                        rsv:filledColor="#5A86E0"
+                        rsv:emptyColor="#5A86E0"
+                        android:layout_marginLeft="0dp"/>
+                    <com.railbot.usrc.robotcontrol.LockEditText
+                        android:id="@+id/dist_input"
+                        android:layout_width="40dp"
+                        android:layout_height="30dp"
+                        android:background="@color/blue"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/speed_text_height"
+                    android:orientation="horizontal">
+                    <RelativeLayout
+                        android:id="@+id/speed_text_layout"
+                        android:layout_width="@dimen/speed_slider_width"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/speed_text_0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:text="10"
+                            android:gravity="center"
+                            android:textColor="@color/off_white"/>
+
+                        <TextView
+                            android:id="@+id/speed_text_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="15"
+                            android:gravity="center"
+                            android:textColor="@color/off_white"/>
+
+
+                        <TextView
+                            android:id="@+id/speed_text_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:text="20"
+                            android:gravity="center"
+                            android:textColor="@color/off_white"/>
+
+
+                        <TextView
+                            android:id="@+id/speed_text_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="70dp"
+                            android:text="25"
+                            android:gravity="center"
+                            android:textColor="@color/off_white"/>
+
+                        <TextView
+                            android:id="@+id/speed_text_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="100dp"
+                            android:text="30"
+                            android:gravity="center"
+                            android:textColor="@color/off_white"/>
+
+
+
+                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:text="cm/s"
+                        android:textColor="@color/off_white"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="100dp">
+
+            <RelativeLayout
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dist_sel_panel_height">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/travel_limit"
+                    android:textColor="@color/off_white"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/dec_dist_btn"
+                android:layout_marginLeft="200dp"
+                android:layout_alignParentLeft="true"
+                android:layout_width="@dimen/triangle_btn_width"
+                android:layout_height="@dimen/triangle_btn_height"
+                android:rotation="-90"
+                android:layout_centerVertical="true"
+                android:background="@drawable/triangle_button" />
+
+            <Button
+                android:id="@+id/inc_dist_btn"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="100dp"
+                android:layout_width="@dimen/triangle_btn_width"
+                android:layout_height="@dimen/triangle_btn_height"
+                android:rotation="90"
+                android:layout_centerVertical="true"
+                android:background="@drawable/triangle_button" />
+
+            <TextView
+                android:id="@+id/dist_text"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="100dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/off_white"
+                android:gravity="center"
+                android:text="1 m" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/off_white"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:text="@string/travel_max_limit" />
+
+
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/main_ctrl_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="185dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/cam_ctrl_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp">
+                <Button
+                    android:id="@+id/calibrate_btn"
+                    android:layout_width="@dimen/calib_btn_width"
+                    android:layout_height="@dimen/calib_btn_width"
+                    android:background="@drawable/calibrate"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
+                <Button
+                    android:id="@+id/move_back_btn"
+                    android:layout_width="@dimen/cam_ctrl_btn_width"
+                    android:layout_height="@dimen/cam_ctrl_btn_width"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/cam_ctrl_margin"
+                    android:background="@drawable/move_back"/>
+                <Button
+                    android:id="@+id/move_up_btn"
+                    android:layout_width="@dimen/cam_ctrl_btn_width"
+                    android:layout_height="@dimen/cam_ctrl_btn_width"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/cam_ctrl_margin"
+                    android:background="@drawable/move_up"/>
+                <Button
+                    android:id="@+id/move_front_btn"
+                    android:layout_width="@dimen/cam_ctrl_btn_width"
+                    android:layout_height="@dimen/cam_ctrl_btn_width"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/cam_ctrl_margin"
+                    android:background="@drawable/move_front"/>
+                <Button
+                    android:id="@+id/move_down_btn"
+                    android:layout_width="@dimen/cam_ctrl_btn_width"
+                    android:layout_height="@dimen/cam_ctrl_btn_width"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/cam_ctrl_margin"
+                    android:background="@drawable/move_down"/>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/motion_ctrl_layout"
+                android:layout_width="100dp"
+                android:layout_height="100dp">
+                <Button
+                    android:id="@+id/move_bwd_btn"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="65dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="@dimen/move_btn_side_margin"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/move_btn_bottom_margin"
+                    android:background="@drawable/move_bwd"
+                    android:textColor="@color/off_white"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:text="@string/move_bwd"/>
+                <Button
+                    android:id="@+id/move_fwd_btn"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="65dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="@dimen/move_btn_side_margin"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/move_btn_bottom_margin"
+                    android:background="@drawable/move_fwd"
+                    android:textColor="@color/off_white"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:text="@string/move_fwd"/>
+
+                <Button
+                    android:id="@+id/move_stop_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/stop_margin"
+                    android:background="@drawable/move_stop"/>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/control_height"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/control_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:visibility="visible">
+                <ImageButton
+                    android:id="@+id/stop"
+                    android:layout_width="@dimen/img_btn_width"
+                    android:layout_height="@dimen/img_btn_height"
+                    android:padding="0dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/stop"
+                    android:background="@color/black"
+                    android:scaleType="fitXY" />
+                <TextView
+                    android:id="@+id/speed_label"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:textSize="18sp"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/off_white"
+                    android:text="Speed: 0.0 m/s"/>
+                <TextView
+                    android:id="@+id/state"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="0dp"
+                    android:textSize="18sp"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/off_white"
+                    android:text="@string/state"/>
+
+                <SeekBar
+                    android:id="@+id/speed_bar"
+                    android:layout_width="@dimen/seeker_width"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:paddingTop="@dimen/seekbar_padding"
+                    android:paddingBottom="@dimen/seekbar_padding"
+                    android:layout_below="@id/speed_label"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@color/blue"
+                    android:visibility="visible"/>
+                <TextView
+                    android:id="@+id/max_speed_text"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/off_white"
+                    android:layout_toRightOf="@id/speed_bar"
+                    android:layout_below="@id/state"
+                    android:textSize="15sp"
+                    android:text="Max Speed: 0.0 m/s"
+                    android:visibility="visible"/>
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/move_layout_height"
+                        android:background="@color/black">
+                        <com.jmedeisis.bugstick.Joystick
+                            android:id="@+id/move_stick"
+                            android:layout_width="@dimen/move_stick_length"
+                            android:layout_height="@dimen/move_stick_width"
+                            android:layout_margin="@dimen/default_margin"
+                            android:background="@drawable/bg_base"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            app:start_on_first_touch="false"
+                            app:force_square="false"
+                            app:motion_constraint="Horizontal">
+
+                            <Button
+                                android:layout_width="@dimen/move_stick_width"
+                                android:layout_height="@dimen/move_stick_width"
+                                android:background="@drawable/bg_stick" />
+
+                        </com.jmedeisis.bugstick.Joystick>
+
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Move"
+                            android:layout_below="@id/move_stick"
+                            android:textColor="@color/off_white"
+
+                            android:layout_centerHorizontal="true"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/black"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/joystick_height"
+                            android:layout_alignParentBottom="true"
+                            android:background="@color/black">
+                            <ImageButton
+                                android:id="@+id/pan_back"
+                                android:layout_width="@dimen/img_btn_width"
+                                android:layout_height="@dimen/img_btn_height"
+                                android:padding="0dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="@dimen/pan_btn_horizontal_margin"
+                                android:src="@drawable/back"
+                                android:background="@color/black"
+                                android:scaleType="fitXY"
+                                android:layout_centerVertical="true"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/off_white"
+                                android:text="Pan"
+                                android:layout_centerVertical="true"
+                                android:layout_centerHorizontal="true"
+                                android:visibility="gone"/>
+                            <ImageButton
+                                android:id="@+id/pan_front"
+                                android:layout_width="@dimen/img_btn_width"
+                                android:layout_height="@dimen/img_btn_height"
+                                android:padding="0dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="@dimen/pan_btn_horizontal_margin"
+                                android:src="@drawable/front"
+                                android:background="@color/black"
+                                android:scaleType="fitXY"
+                                android:layout_centerVertical="true"/>
+
+
+
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/black">
+                            <com.jmedeisis.bugstick.Joystick
+                                android:id="@+id/pan_stick"
+                                android:layout_width="@dimen/move_stick_length"
+                                android:layout_height="@dimen/move_stick_width"
+                                android:layout_margin="@dimen/default_margin"
+                                android:background="@drawable/bg_base"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                app:start_on_first_touch="false"
+                                app:force_square="false"
+                                app:motion_constraint="Horizontal">
+
+                                <Button
+                                    android:layout_width="@dimen/move_stick_width"
+                                    android:layout_height="@dimen/move_stick_width"
+                                    android:background="@drawable/bg_stick" />
+
+                            </com.jmedeisis.bugstick.Joystick>
+
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/off_white"
+                                android:text="Pan"
+                                android:layout_centerVertical="true"
+                                android:layout_centerHorizontal="true"
+                                android:visibility="visible"/>
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="@dimen/tilt_layout_width"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@color/black">
+                        <ImageButton
+                            android:id="@+id/tilt_up"
+                            android:layout_width="@dimen/img_btn_width"
+                            android:layout_height="@dimen/img_btn_height"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/up"
+                            android:background="@color/black"
+                            android:scaleType="fitXY"
+                            android:onClick="camUp"/>
+
+                        <com.jmedeisis.bugstick.Joystick
+                            android:id="@+id/tilt_stick"
+                            android:layout_width="@dimen/tilt_stick_width"
+                            android:layout_height="@dimen/tilt_stick_length"
+                            android:layout_margin="@dimen/default_margin"
+                            android:background="@drawable/bg_base"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            app:start_on_first_touch="false"
+                            app:force_square="false"
+                            app:motion_constraint="Vertical">
+
+                            <Button
+                                android:layout_width="@dimen/tilt_stick_width"
+                                android:layout_height="@dimen/tilt_stick_width"
+                                android:background="@drawable/bg_stick" />
+
+                        </com.jmedeisis.bugstick.Joystick>
+
+                        <ImageButton
+                            android:id="@+id/tilt_down"
+                            android:layout_width="@dimen/img_btn_width"
+                            android:layout_height="@dimen/img_btn_height"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:src="@drawable/down"
+                            android:background="@color/black"
+                            android:scaleType="fitXY" />
+
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tilt"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/off_white"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/img_btn_height"
+                        android:background="@color/black">
+                        <ImageButton
+                            android:id="@+id/calibrate"
+                            android:layout_width="@dimen/img_btn_width"
+                            android:layout_height="@dimen/img_btn_height"
+                            android:padding="0dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/icon_set"
+                            android:background="@color/black"
+                            android:scaleType="fitXY" />
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/control_set1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:visibility="gone">
+        <ImageButton
+            android:id="@+id/stop1"
+            android:layout_width="@dimen/img_btn_width"
+            android:layout_height="@dimen/img_btn_height"
+            android:padding="0dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/stop"
+            android:background="@color/black"
+            android:scaleType="fitXY"
+            android:onClick="moveStop"/>
+        <TextView
+            android:id="@+id/speed_label1"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:textSize="18sp"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
+            android:textColor="@color/off_white"
+            android:text="Speed (0.0~4.0)"/>
+        <TextView
+            android:id="@+id/state1"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="0dp"
+            android:textSize="18sp"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:textColor="@color/off_white"
+            android:text="@string/state"/>
+
+        <SeekBar
+            android:id="@+id/speed_bar1"
+            android:layout_width="@dimen/seeker_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:paddingTop="@dimen/seekbar_padding"
+            android:paddingBottom="@dimen/seekbar_padding"
+            android:layout_below="@id/speed_label1"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@color/blue" />
+        <TextView
+            android:id="@+id/speed_text1"
+            android:layout_width="105dp"
+            android:layout_marginLeft="0dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/off_white"
+            android:layout_toRightOf="@id/speed_bar1"
+            android:layout_below="@id/speed_label1"
+            android:textSize="20sp"
+            android:text="0.0 m/s"/>
+
+
+        <LinearLayout
+            android:id="@+id/relative_grp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_below="@id/speed_bar1"
+            android:visibility="visible"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/off_white"
+                android:textSize="20sp"
+                android:text="@string/stop_on_release"
+                android:paddingRight="10dp"
+                android:gravity="center"/>
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/off_white"
+                android:orientation="horizontal"                >
+                <RadioButton android:id="@+id/radio_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/off_white"
+                    android:checked="true"
+                    android:buttonTint="@color/blue"
+                    android:text="@string/yes"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/off_white"
+                    android:buttonTint="@color/blue"
+                    android:text="@string/no"
+                    android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/button_backward"
+            android:layout_width="@dimen/img_btn_width"
+            android:layout_height="@dimen/img_btn_height"
+            android:padding="0dp"
+            android:layout_below="@id/relative_grp1"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/move_btn_horizontal_margin"
+            android:src="@drawable/backward"
+            android:background="@color/black"
+            android:scaleType="fitXY"/>
+        <TextView
+            android:id="@+id/move_text"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/img_btn_height"
+            android:layout_below="@id/relative_grp1"
+            android:text="@string/Move"
+            android:textSize="20sp"
+            android:textColor="@color/off_white"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+
+        <ImageButton
+            android:id="@+id/button_forward"
+            android:layout_width="@dimen/img_btn_width"
+            android:layout_height="@dimen/img_btn_height"
+            android:padding="0dp"
+            android:layout_below="@id/relative_grp1"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/move_btn_horizontal_margin"
+            android:src="@drawable/forward"
+            android:background="@color/black"
+            android:scaleType="fitXY" />
+
+        <ImageButton
+            android:id="@+id/button_up"
+            android:layout_width="@dimen/img_btn_width"
+            android:layout_height="@dimen/img_btn_height"
+            android:layout_below="@id/move_text"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/up"
+            android:background="@color/black"
+            android:scaleType="fitXY"
+            android:onClick="camUp"/>
+
+        <ImageButton
+            android:id="@+id/button_back"
+            android:layout_width="@dimen/img_btn_width"
+            android:layout_height="@dimen/img_btn_height"
+            android:padding="0dp"
+            android:layout_below="@id/button_up"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/camera_btn_horizontal_margin"
+            android:src="@drawable/back"
+            android:background="@color/black"
+            android:scaleType="fitXY"
+            android:onClick="camLeft"/>
+
+        <TextView
+            android:id="@+id/camera_text"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/img_btn_height"
+            android:layout_below="@id/button_up"
+            android:padding="0dp"
+            android:text="@string/Camera"
+            android:textSize="20sp"
+            android:textColor="@color/off_white"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+
+        <ImageButton
+            android:id="@+id/button_front"
+            android:layout_width="@dimen/img_btn_width"
+            android:layout_height="@dimen/img_btn_height"
+            android:padding="0dp"
+            android:layout_below="@id/button_up"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/camera_btn_horizontal_margin"
+            android:src="@drawable/front"
+            android:background="@color/black"
+            android:scaleType="fitXY"
+            android:onClick="camRight"/>
+
+        <ImageButton
+            android:id="@+id/button_down"
+            android:layout_width="@dimen/img_btn_width"
+            android:layout_height="@dimen/img_btn_height"
+            android:layout_below="@id/camera_text"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/down"
+            android:background="@color/black"
+            android:scaleType="fitXY"
+            android:onClick="camDown"/>
+
+        <ImageButton
+            android:id="@+id/button_minus"
+            android:layout_width="@dimen/img_btn_width"
+            android:layout_height="@dimen/img_btn_height"
+            android:padding="0dp"
+            android:layout_below="@id/button_down"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/zoom_btn_horizontal_margin"
+            android:src="@drawable/minus"
+            android:background="@color/black"
+            android:scaleType="fitXY"
+            android:onClick="zoomMinus"/>
+        <TextView
+            android:id="@+id/zoom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/img_btn_height"
+            android:layout_below="@id/button_down"
+            android:text="@string/Zoom"
+            android:textSize="20sp"
+            android:textColor="@color/off_white"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+
+        <ImageButton
+            android:id="@+id/button_plus"
+            android:layout_width="@dimen/img_btn_width"
+            android:layout_height="@dimen/img_btn_height"
+            android:padding="0dp"
+            android:layout_below="@id/button_down"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/zoom_btn_horizontal_margin"
+            android:src="@drawable/plus"
+            android:background="@color/black"
+            android:scaleType="fitXY"
+            android:onClick="zoomPlus"/>
+
+
+    </RelativeLayout>
+
+
+
+
+
+</LinearLayout>
+
+

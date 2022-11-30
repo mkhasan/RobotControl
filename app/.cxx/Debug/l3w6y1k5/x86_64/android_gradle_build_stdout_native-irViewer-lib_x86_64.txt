@@ -1,0 +1,2 @@
+ninja: Entering directory `/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/l3w6y1k5/x86_64'
+ninja: no work to do.

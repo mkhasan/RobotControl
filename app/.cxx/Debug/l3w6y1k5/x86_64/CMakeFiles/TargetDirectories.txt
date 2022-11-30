@@ -1,0 +1,3 @@
+/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/l3w6y1k5/x86_64/CMakeFiles/edit_cache.dir
+/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/l3w6y1k5/x86_64/CMakeFiles/rebuild_cache.dir
+/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/l3w6y1k5/x86_64/CMakeFiles/native-irViewer-lib.dir

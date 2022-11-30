@@ -1,0 +1,92 @@
+ninja: Entering directory `/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/Debug/441f2b55/armeabi-v7a'
+[1/6] Building CXX object CMakeFiles/native-irViewer-lib.dir/src/main/cpp/CircularBuffer.cpp.o
+FAILED: CMakeFiles/native-irViewer-lib.dir/src/main/cpp/CircularBuffer.cpp.o 
+/home/hasan/extension/Android/Sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi23 --sysroot=/home/hasan/extension/Android/Sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -fno-limit-debug-info  -fPIC -MD -MT CMakeFiles/native-irViewer-lib.dir/src/main/cpp/CircularBuffer.cpp.o -MF CMakeFiles/native-irViewer-lib.dir/src/main/cpp/CircularBuffer.cpp.o.d -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/CircularBuffer.cpp.o -c ../../../../src/main/cpp/CircularBuffer.cpp
+../../../../src/main/cpp/CircularBuffer.cpp:80:9: error: use of undeclared identifier 'memcpy'
+        memcpy(dest, m_pBuffer+m_Out, right);
+        ^
+../../../../src/main/cpp/CircularBuffer.cpp:85:9: error: use of undeclared identifier 'memcpy'
+        memcpy(dest+right, m_pBuffer+m_Out, left);
+        ^
+../../../../src/main/cpp/CircularBuffer.cpp:115:9: error: use of undeclared identifier 'memcpy'
+        memcpy(m_pBuffer+m_In, src, right);
+        ^
+../../../../src/main/cpp/CircularBuffer.cpp:121:9: error: use of undeclared identifier 'memcpy'
+        memcpy(m_pBuffer+m_In, src+right, left);
+        ^
+../../../../src/main/cpp/CircularBuffer.cpp:206:9: error: use of undeclared identifier 'memcpy'
+        memcpy(dest, m_pBuffer+tempout, right);
+        ^
+../../../../src/main/cpp/CircularBuffer.cpp:211:9: error: use of undeclared identifier 'memcpy'
+        memcpy(dest+right, m_pBuffer+tempout, left);
+        ^
+../../../../src/main/cpp/CircularBuffer.cpp:318:25: error: use of undeclared identifier 'malloc'
+    m_pBuffer = (BYTE *)malloc(sizeof(BYTE)*m_Size);
+                        ^
+7 errors generated.
+[2/6] Building CXX object CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Decoder.cpp.o
+FAILED: CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Decoder.cpp.o 
+/home/hasan/extension/Android/Sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi23 --sysroot=/home/hasan/extension/Android/Sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -fno-limit-debug-info  -fPIC -MD -MT CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Decoder.cpp.o -MF CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Decoder.cpp.o.d -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Decoder.cpp.o -c ../../../../src/main/cpp/Decoder.cpp
+../../../../src/main/cpp/Decoder.cpp:195:25: error: use of undeclared identifier 'memcpy'
+                        memcpy(&t,temp,sizeof(temp));
+                        ^
+1 error generated.
+[3/6] Building CXX object CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Socket.cpp.o
+../../../../src/main/cpp/Socket.cpp:34:15: warning: implicit conversion of NULL constant to 'pthread_t' (aka 'long') [-Wnull-conversion]
+        , tid(NULL)
+             ~^~~~
+              0
+1 warning generated.
+[4/6] Building CXX object CMakeFiles/native-irViewer-lib.dir/src/main/cpp/ir_viewer.cpp.o
+../../../../src/main/cpp/ir_viewer.cpp:60:9: warning: 'BUFSIZE' macro redefined [-Wmacro-redefined]
+#define BUFSIZE 1024
+        ^
+../../../../src/main/cpp/Protocol.h:13:9: note: previous definition is here
+#define BUFSIZE          1440
+        ^
+../../../../src/main/cpp/ir_viewer.cpp:157:31: warning: format specifies type 'unsigned long' but the argument has type 'struct Viewer *' [-Wformat]
+    LOGE(1, "pViewer is %lx", pViewer);
+                        ~~~   ^~~~~~~
+../../../../src/main/cpp/ir_viewer.h:75:104: note: expanded from macro 'LOGE'
+#define LOGE(level, ...) if (level <= LOG_LEVEL + 10) {__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__);}
+                                                                                                       ^~~~~~~~~~~
+../../../../src/main/cpp/ir_viewer.cpp:254:28: warning: implicit conversion of NULL constant to 'pthread_t' (aka 'long') [-Wnull-conversion]
+    pViewer->decThreadID = NULL;
+                         ~ ^~~~
+                           0
+../../../../src/main/cpp/ir_viewer.cpp:539:30: warning: comparison between NULL and non-pointer ('pthread_t' (aka 'long') and NULL) [-Wnull-arithmetic]
+    if (pViewer->decThreadID != NULL) {
+        ~~~~~~~~~~~~~~~~~~~~ ^  ~~~~
+../../../../src/main/cpp/ir_viewer.cpp:539:33: warning: implicit conversion of NULL constant to 'long' [-Wnull-conversion]
+    if (pViewer->decThreadID != NULL) {
+                             ~~ ^~~~
+                                0
+../../../../src/main/cpp/ir_viewer.cpp:541:32: warning: implicit conversion of NULL constant to 'pthread_t' (aka 'long') [-Wnull-conversion]
+        pViewer->decThreadID = NULL;
+                             ~ ^~~~
+                               0
+../../../../src/main/cpp/ir_viewer.cpp:564:16: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    hostname = "192.168.0.100";
+               ^
+../../../../src/main/cpp/ir_viewer.cpp:570:15: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+        error("ERROR opening socket");
+              ^
+../../../../src/main/cpp/ir_viewer.cpp:591:15: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+        error("ERROR connecting");
+              ^
+../../../../src/main/cpp/ir_viewer.cpp:604:15: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+        error("ERROR writing to socket");
+              ^
+../../../../src/main/cpp/ir_viewer.cpp:612:15: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+        error("ERROR reading from socket");
+              ^
+../../../../src/main/cpp/ir_viewer.cpp:640:16: warning: comparison between NULL and non-pointer ('jlong' (aka 'long long') and NULL) [-Wnull-arithmetic]
+    if (number == NULL) {
+        ~~~~~~ ^  ~~~~
+../../../../src/main/cpp/ir_viewer.cpp:640:19: warning: implicit conversion of NULL constant to 'long long' [-Wnull-conversion]
+    if (number == NULL) {
+               ~~ ^~~~
+                  0
+13 warnings generated.
+[5/6] Building CXX object CMakeFiles/native-irViewer-lib.dir/src/main/cpp/native-irViewer-lib.cpp.o
+ninja: build stopped: subcommand failed.
