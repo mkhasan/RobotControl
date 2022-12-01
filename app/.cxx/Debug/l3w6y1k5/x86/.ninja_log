@@ -78,3 +78,10 @@
 0	94	1669860486	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/ir_viewer.cpp.o	c246457687443d83
 0	176	1669860486	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/native-irViewer-lib.cpp.o	b227ca0ab9a32300
 176	192	1669860486	../../../../build/intermediates/cxx/Debug/l3w6y1k5/obj/x86/libnative-irViewer-lib.so	4d95222c6ac2d18
+0	2	0	clean	21877881a5b40653
+0	63	1669879525	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Decoder.cpp.o	46274b86a97cca2
+0	64	1669879525	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/CircularBuffer.cpp.o	3de72e7b4d588d6c
+0	87	1669879525	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Socket.cpp.o	92e3ddebe498d541
+0	91	1669879525	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/ir_viewer.cpp.o	c246457687443d83
+0	175	1669879525	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/native-irViewer-lib.cpp.o	b227ca0ab9a32300
+175	244	1669879525	../../../../build/intermediates/cxx/Debug/l3w6y1k5/obj/x86/libnative-irViewer-lib.so	4d95222c6ac2d18
