@@ -1,0 +1,40 @@
+{
+  "stringTable": {},
+  "buildFiles": [
+    "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/home/hasan/extension/Android/Sdk/cmake/3.10.2.4988404/bin/ninja",
+      "-C",
+      "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/RelWithDebInfo/9c5i5p1g/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/home/hasan/extension/Android/Sdk/cmake/3.10.2.4988404/bin/ninja",
+    "-C",
+    "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/RelWithDebInfo/9c5i5p1g/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "native-irViewer-lib-RelWithDebInfo-x86": {
+      "buildCommandComponents": [
+        "/home/hasan/extension/Android/Sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/.cxx/RelWithDebInfo/9c5i5p1g/x86",
+        "native-irViewer-lib"
+      ],
+      "buildType": "release",
+      "abi": "x86",
+      "artifactName": "native-irViewer-lib",
+      "output": "/home/hasan/programs/MyProjects/LightWeight/AndroidStudioProjects/RobotControl/app/build/intermediates/cxx/RelWithDebInfo/9c5i5p1g/obj/x86/libnative-irViewer-lib.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {},
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}
