@@ -1,0 +1,3 @@
+[submodule "cam_viewer"]
+	path = cam_viewer
+	url = https://github.com/mkhasan/cam_viewer.git
