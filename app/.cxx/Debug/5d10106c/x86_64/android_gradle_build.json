@@ -1,0 +1,40 @@
+{
+  "stringTable": {},
+  "buildFiles": [
+    "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/opt/Android/cmake/3.10.2.4988404/bin/ninja",
+      "-C",
+      "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/opt/Android/cmake/3.10.2.4988404/bin/ninja",
+    "-C",
+    "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "native-irViewer-lib-Debug-x86_64": {
+      "buildCommandComponents": [
+        "/opt/Android/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/x86_64",
+        "native-irViewer-lib"
+      ],
+      "buildType": "debug",
+      "abi": "x86_64",
+      "artifactName": "native-irViewer-lib",
+      "output": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/build/intermediates/cxx/Debug/5d10106c/obj/x86_64/libnative-irViewer-lib.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {},
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

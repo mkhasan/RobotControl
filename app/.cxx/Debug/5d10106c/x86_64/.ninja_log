@@ -1,0 +1,7 @@
+# ninja log v5
+1	140	1671363716	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Decoder.cpp.o	1576a1eb8f3aa445
+0	140	1671363716	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Socket.cpp.o	9abc729165cb4466
+0	157	1671363716	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/CircularBuffer.cpp.o	1cee0671fe2e6f
+0	178	1671363716	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/ir_viewer.cpp.o	d185d87a707b4798
+1	294	1671363716	CMakeFiles/native-irViewer-lib.dir/src/main/cpp/native-irViewer-lib.cpp.o	9c4b5af88b254a0f
+294	404	1671363717	../../../../build/intermediates/cxx/Debug/5d10106c/obj/x86_64/libnative-irViewer-lib.so	4b0689ecc1e7becc

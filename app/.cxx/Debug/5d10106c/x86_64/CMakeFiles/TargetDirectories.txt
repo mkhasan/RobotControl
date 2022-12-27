@@ -1,0 +1,3 @@
+/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/x86_64/CMakeFiles/edit_cache.dir
+/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/x86_64/CMakeFiles/rebuild_cache.dir
+/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/x86_64/CMakeFiles/native-irViewer-lib.dir

@@ -1,0 +1,31 @@
+[
+{
+  "directory": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/armeabi-v7a",
+  "command": "/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi23 --gcc-toolchain=/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/ir_viewer.cpp.o -c /home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/src/main/cpp/ir_viewer.cpp",
+  "file": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/src/main/cpp/ir_viewer.cpp"
+},
+
+{
+  "directory": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/armeabi-v7a",
+  "command": "/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi23 --gcc-toolchain=/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/CircularBuffer.cpp.o -c /home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/src/main/cpp/CircularBuffer.cpp",
+  "file": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/src/main/cpp/CircularBuffer.cpp"
+},
+
+{
+  "directory": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/armeabi-v7a",
+  "command": "/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi23 --gcc-toolchain=/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Socket.cpp.o -c /home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/src/main/cpp/Socket.cpp",
+  "file": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/src/main/cpp/Socket.cpp"
+},
+
+{
+  "directory": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/armeabi-v7a",
+  "command": "/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi23 --gcc-toolchain=/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/Decoder.cpp.o -c /home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/src/main/cpp/Decoder.cpp",
+  "file": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/src/main/cpp/Decoder.cpp"
+},
+
+{
+  "directory": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/armeabi-v7a",
+  "command": "/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi23 --gcc-toolchain=/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/opt/Android/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_irViewer_lib_EXPORTS  -DJNI -std=c++11 -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-irViewer-lib.dir/src/main/cpp/native-irViewer-lib.cpp.o -c /home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/src/main/cpp/native-irViewer-lib.cpp",
+  "file": "/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/src/main/cpp/native-irViewer-lib.cpp"
+}
+]

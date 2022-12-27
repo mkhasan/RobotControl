@@ -1276,6 +1276,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                 .setTitle("Error")
                 .setMessage("Communication Error Occured")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
                         //finish();
@@ -1300,6 +1301,7 @@ public class VideoActivity extends Activity implements FFListener, IR_ViewerList
                 .setTitle("Delete entry")
                 .setMessage("Are you sure you want to delete this entry?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
                         //finish();

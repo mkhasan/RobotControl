@@ -1,0 +1,7 @@
+Executable : /opt/Android/cmake/3.10.2.4988404/bin/ninja
+arguments : 
+-C
+/home/mecasys/extension/MyProjects/AndroidStudioProjects/RobotControl/app/.cxx/Debug/5d10106c/x86
+native-irViewer-lib
+jvmArgs : 
+
